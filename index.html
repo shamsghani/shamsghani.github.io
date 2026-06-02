@@ -6,7 +6,7 @@
 <title>Shams Ghani — AI Researcher & ML Engineer</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400;500&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 /* ═══════════════════════════════════════════
    THEME TOKENS
@@ -15,43 +15,43 @@
   --transition-theme: background .35s ease, color .35s ease, border-color .35s ease;
 }
 [data-theme="dark"] {
-  --bg:        #080808;
-  --bg2:       #101010;
-  --bg3:       #161616;
-  --text:      #f0ede8;
-  --muted:     #77736e;
-  --border:    rgba(255,255,255,0.07);
-  --border2:   rgba(255,255,255,0.13);
-  --accent:    #c8f060;
-  --accent2:   #60d0f0;
-  --accent3:   #f06090;
-  --glass:     rgba(255,255,255,0.03);
+  --bg:        #100e0b;
+  --bg2:       #181410;
+  --bg3:       #201b16;
+  --text:      #ede8df;
+  --muted:     #7a7068;
+  --border:    rgba(237,232,223,0.07);
+  --border2:   rgba(237,232,223,0.13);
+  --accent:    #7a9e6e;
+  --accent2:   #9e7a6e;
+  --accent3:   #7e4a4a;
+  --glass:     rgba(237,232,223,0.03);
   /* GOL colors */
   --gol-dead:       rgba(255,255,255,0);
-  --gol-alive:      rgba(200,240,96,1);
-  --gol-blob-core:  rgba(200,240,96,0.9);
-  --gol-blob-edge:  rgba(200,240,96,0);
-  --gol-connect:    rgba(200,240,96,0.25);
+  --gol-alive:      rgba(122,158,110,1);
+  --gol-blob-core:  rgba(122,158,110,0.9);
+  --gol-blob-edge:  rgba(122,158,110,0);
+  --gol-connect:    rgba(122,158,110,0.25);
   --gol-bg:         transparent;
 }
 [data-theme="light"] {
-  --bg:        #f5f3ef;
-  --bg2:       #ece9e3;
-  --bg3:       #e2dfd8;
-  --text:      #1a1816;
-  --muted:     #6b6760;
-  --border:    rgba(0,0,0,0.08);
-  --border2:   rgba(0,0,0,0.14);
-  --accent:    #5a8a00;
-  --accent2:   #006080;
-  --accent3:   #a0003a;
-  --glass:     rgba(0,0,0,0.03);
+  --bg:        #f2ede4;
+  --bg2:       #e8e1d5;
+  --bg3:       #ddd5c6;
+  --text:      #1c1510;
+  --muted:     #6b6055;
+  --border:    rgba(28,21,16,0.09);
+  --border2:   rgba(28,21,16,0.16);
+  --accent:    #4a6e40;
+  --accent2:   #7e4a4a;
+  --accent3:   #6e4a2a;
+  --glass:     rgba(28,21,16,0.03);
   /* GOL colors */
   --gol-dead:       rgba(0,0,0,0);
-  --gol-alive:      rgba(60,100,0,1);
-  --gol-blob-core:  rgba(60,100,0,0.85);
-  --gol-blob-edge:  rgba(60,100,0,0);
-  --gol-connect:    rgba(60,100,0,0.2);
+  --gol-alive:      rgba(74,110,64,1);
+  --gol-blob-core:  rgba(74,110,64,0.85);
+  --gol-blob-edge:  rgba(74,110,64,0);
+  --gol-connect:    rgba(74,110,64,0.2);
   --gol-bg:         transparent;
 }
 
@@ -62,8 +62,8 @@
 html{scroll-behavior:smooth}
 body{
   background:var(--bg);color:var(--text);
-  font-family:'Instrument Sans',sans-serif;
-  font-size:15px;line-height:1.7;
+  font-family:'EB Garamond',serif;
+  font-size:16px;line-height:1.75;
   overflow-x:hidden;cursor:none;
   transition:var(--transition-theme);
 }
@@ -84,12 +84,12 @@ body{
 }
 .cursor-ring{
   position:fixed;width:36px;height:36px;
-  border:1px solid rgba(200,240,96,.35);
+  border:1px solid rgba(122,158,110,.3);
   border-radius:50%;pointer-events:none;z-index:9998;
   transform:translate(-50%,-50%);
   transition:width .25s,height .25s,border-color .2s;
 }
-[data-theme="light"] .cursor-ring{border-color:rgba(60,100,0,.3)}
+[data-theme="light"] .cursor-ring{border-color:rgba(74,110,64,.35)}
 
 /* ═══════════════════════════════════════════
    LAYOUT
@@ -205,26 +205,29 @@ nav .inner{
 .hero-eyebrow{
   font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.2em;
   text-transform:uppercase;margin-bottom:1.5rem;
-  color:var(--accent);
+  color:var(--text);
+  opacity:0.75;
   display:flex;align-items:center;gap:1rem;
+  text-shadow:0 1px 12px var(--bg), 0 0 24px var(--bg);
 }
 .hero-eyebrow::before{
-  content:'';display:block;width:32px;height:1px;background:var(--accent);flex-shrink:0;
+  content:'';display:block;width:32px;height:1px;background:var(--text);flex-shrink:0;opacity:0.5;
 }
 .hero-name{
-  font-family:'DM Serif Display',serif;
-  font-size:clamp(48px,8vw,108px);
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(52px,8.5vw,120px);
   line-height:.92;letter-spacing:-.02em;
   margin-bottom:1.2rem;
 }
 .hero-name .solid{color:var(--text)}
 .hero-name .outline{
-  color:transparent;
-  -webkit-text-stroke:1.5px var(--border2);
-  transition:-webkit-text-stroke .35s;
+  color:var(--accent3);
+  opacity:0.7;
+  transition:color .35s, opacity .35s;
 }
 [data-theme="light"] .hero-name .outline{
-  -webkit-text-stroke:1.5px rgba(0,0,0,0.18);
+  color:var(--accent3);
+  opacity:0.65;
 }
 .hero-name em{font-style:italic}
 .hero-desc{
@@ -303,8 +306,8 @@ section{padding:5.5rem 0;transition:background .35s}
 ═══════════════════════════════════════════ */
 .about-grid{display:grid;grid-template-columns:3fr 2fr;gap:4rem;align-items:start}
 .about-text h2{
-  font-family:'DM Serif Display',serif;
-  font-size:clamp(26px,3.5vw,40px);
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(28px,3.8vw,46px);
   line-height:1.15;letter-spacing:-.01em;
   margin-bottom:1.25rem;
 }
@@ -318,8 +321,9 @@ section{padding:5.5rem 0;transition:background .35s}
   transition:var(--transition-theme);
 }
 .stat-num{
-  font-family:'DM Serif Display',serif;
-  font-size:34px;color:var(--accent);line-height:1;margin-bottom:.2rem;
+  font-family:'Cormorant Garamond',serif;
+  font-size:38px;font-weight:400;color:var(--accent);line-height:1;margin-bottom:.2rem;
+  font-style:italic;
   transition:color .35s;
 }
 .stat-lbl{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:.05em}
@@ -365,21 +369,21 @@ section{padding:5.5rem 0;transition:background .35s}
 .project-card:hover::before{transform:scaleY(1)}
 .project-card:hover{background:var(--bg2)}
 .project-header{display:flex;align-items:flex-start;justify-content:space-between;gap:2rem;margin-bottom:.75rem}
-.project-title{font-family:'DM Serif Display',serif;font-size:21px;letter-spacing:-.01em;line-height:1.2}
+.project-title{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:500;letter-spacing:-.01em;line-height:1.2}
 .project-meta{display:flex;align-items:center;gap:1rem;flex-shrink:0}
 .project-year{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted)}
 .project-link{font-family:'DM Mono',monospace;font-size:11px;color:var(--accent);text-decoration:none;letter-spacing:.05em;transition:opacity .15s}
 .project-link:hover{opacity:.7}
 .project-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:1rem}
 .tag{padding:2px 9px;border-radius:2px;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.04em}
-.tag-ml{background:rgba(200,240,96,.08);color:rgba(200,240,96,.8);border:1px solid rgba(200,240,96,.15)}
-.tag-cv{background:rgba(96,208,240,.08);color:rgba(96,208,240,.8);border:1px solid rgba(96,208,240,.15)}
-.tag-llm{background:rgba(240,96,144,.08);color:rgba(240,96,144,.8);border:1px solid rgba(240,96,144,.15)}
-.tag-infra{background:rgba(200,180,255,.08);color:rgba(200,180,255,.8);border:1px solid rgba(200,180,255,.15)}
-[data-theme="light"] .tag-ml{background:rgba(60,100,0,.08);color:rgba(40,80,0,.9);border-color:rgba(60,100,0,.2)}
-[data-theme="light"] .tag-cv{background:rgba(0,80,100,.08);color:rgba(0,60,80,.9);border-color:rgba(0,80,100,.2)}
-[data-theme="light"] .tag-llm{background:rgba(140,0,60,.08);color:rgba(120,0,50,.9);border-color:rgba(140,0,60,.2)}
-[data-theme="light"] .tag-infra{background:rgba(80,60,140,.08);color:rgba(60,40,120,.9);border-color:rgba(80,60,140,.2)}
+.tag-ml{background:rgba(122,158,110,.1);color:rgba(122,158,110,.95);border:1px solid rgba(122,158,110,.2)}
+.tag-cv{background:rgba(158,138,110,.1);color:rgba(180,158,130,.95);border:1px solid rgba(158,138,110,.2)}
+.tag-llm{background:rgba(126,74,74,.12);color:rgba(180,120,110,.95);border:1px solid rgba(126,74,74,.25)}
+.tag-infra{background:rgba(158,138,90,.1);color:rgba(190,165,110,.95);border:1px solid rgba(158,138,90,.2)}
+[data-theme="light"] .tag-ml{background:rgba(74,110,64,.1);color:rgba(40,70,35,.9);border-color:rgba(74,110,64,.25)}
+[data-theme="light"] .tag-cv{background:rgba(110,85,60,.1);color:rgba(80,55,35,.9);border-color:rgba(110,85,60,.2)}
+[data-theme="light"] .tag-llm{background:rgba(100,50,50,.1);color:rgba(80,35,35,.9);border-color:rgba(100,50,50,.2)}
+[data-theme="light"] .tag-infra{background:rgba(110,90,40,.1);color:rgba(85,65,25,.9);border-color:rgba(110,90,40,.2)}
 .project-desc{color:var(--muted);font-size:14px;max-width:620px;transition:color .35s}
 .project-desc strong{color:var(--text);font-weight:500;transition:color .35s}
 
@@ -401,10 +405,10 @@ section{padding:5.5rem 0;transition:background .35s}
 .bar-fill{height:100%;border-radius:2px;display:flex;align-items:center;justify-content:flex-end;padding-right:8px;transition:width 1.2s cubic-bezier(.16,1,.3,1);width:0}
 .bar-fill span{font-family:'DM Mono',monospace;font-size:10px;font-weight:600}
 .b-focal{background:var(--accent)}.b-focal span{color:var(--bg)}
-.b-l1{background:rgba(200,240,96,.3)}.b-l1 span{color:rgba(200,240,96,.8)}
-.b-mse{background:rgba(200,240,96,.18)}.b-mse span{color:rgba(200,240,96,.6)}
-.b-bce{background:rgba(200,240,96,.08)}.b-bce span{color:rgba(200,240,96,.4)}
-[data-theme="light"] .b-focal{background:var(--accent)}.b-focal span{color:#fff}
+.b-l1{background:rgba(122,158,110,.3)}.b-l1 span{color:rgba(122,158,110,.85)}
+.b-mse{background:rgba(122,158,110,.18)}.b-mse span{color:rgba(122,158,110,.65)}
+.b-bce{background:rgba(126,74,74,.15)}.b-bce span{color:rgba(180,120,110,.7)}
+
 .pipeline{display:flex;align-items:center;flex-wrap:nowrap;overflow-x:auto;padding-bottom:4px;gap:0}
 .pipe-step{
   flex-shrink:0;padding:7px 12px;
@@ -412,7 +416,7 @@ section{padding:5.5rem 0;transition:background .35s}
   font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);
   white-space:nowrap;transition:var(--transition-theme);
 }
-.pipe-step.hl{background:color-mix(in srgb, var(--accent) 8%, transparent);border-color:color-mix(in srgb, var(--accent) 25%, transparent);color:var(--accent)}
+.pipe-step.hl{background:rgba(122,158,110,.08);border-color:rgba(122,158,110,.22);color:var(--accent)}
 .pipe-arrow{flex-shrink:0;font-family:'DM Mono',monospace;font-size:10px;color:var(--border2);padding:0 5px}
 .arch-layer{
   display:flex;justify-content:space-between;align-items:center;
@@ -449,7 +453,7 @@ section{padding:5.5rem 0;transition:background .35s}
 }
 .tl-item:hover::before{border-color:var(--accent);background:var(--accent)}
 .tl-date{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);margin-bottom:.3rem}
-.tl-title{font-size:16px;font-weight:500;margin-bottom:.15rem}
+.tl-title{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:500;margin-bottom:.15rem;letter-spacing:-.01em}
 .tl-org{font-family:'DM Mono',monospace;font-size:12px;color:var(--accent2);margin-bottom:.6rem;transition:color .35s}
 .tl-desc{font-size:14px;color:var(--muted);transition:color .35s}
 .tl-desc li{margin-bottom:.25rem;margin-left:1.2rem}
@@ -459,9 +463,10 @@ section{padding:5.5rem 0;transition:background .35s}
 ═══════════════════════════════════════════ */
 .contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:start}
 .contact-head{
-  font-family:'DM Serif Display',serif;
-  font-size:clamp(28px,4vw,48px);
-  line-height:1.1;letter-spacing:-.02em;margin-bottom:1rem;
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(32px,4.5vw,56px);
+  font-weight:400;
+  line-height:1.05;letter-spacing:-.02em;margin-bottom:1rem;
 }
 .contact-head em{font-style:italic;color:var(--accent)}
 .contact-sub{color:var(--muted);font-size:14px;margin-bottom:2rem;transition:color .35s}
@@ -942,191 +947,183 @@ document.querySelectorAll('a,button').forEach(el => {
 });
 
 /* ═══════════════════════════════════════
-   GAME OF LIFE — METABALL BLOB RENDERER
+   GAME OF LIFE
+   
+   Simple and correct:
+   - Fixed cell size, cells stay on the grid always
+   - Each cell has an alpha value (0..1) that smoothly
+     fades in on birth and fades out on death
+   - Drawn as small soft circles, radius slightly under
+     half a cell so they never touch neighbours
+   - GOL logic ticks at a fixed interval; rendering runs
+     every rAF and interpolates the alpha for smoothness
+   - No particles, no world positions, no movement —
+     just the grid, with graceful opacity transitions
 ═══════════════════════════════════════ */
 const canvas = document.getElementById('golCanvas');
-const ctx = canvas.getContext('2d');
+const ctx    = canvas.getContext('2d');
 
-const CELL = 18;       // grid cell size in px
-const FPS  = 8;        // generations per second
-const BLOB_R = 11;     // blob radius (px, > CELL/2 so they overlap & merge)
-const CONNECT_DIST = CELL * 1.7; // distance at which blobs start merging visually
+const CELL     = 16;   // px per grid cell — small enough to see the grid
+const RADIUS   = 5.5;  // circle radius — comfortably inside cell, never touches
+const FPS      = 6;    // GOL generations per second
+const FADE_IN  = 0.12; // alpha added per rAF frame when born  (~8 frames to full)
+const FADE_OUT = 0.08; // alpha subtracted per rAF when dying  (~12 frames to zero)
 
-let COLS, ROWS, grid, next;
-let gen = 0;
-let aliveCount = 0;
-let lastTime = 0;
-const interval = 1000 / FPS;
+let COLS, ROWS;
+let grid;       // Float32Array — alpha per cell (0..1), positive = alive/fading in, negative trick: we use a state array
+let state;      // Uint8Array — 0=dead, 1=alive, 2=born-this-gen, 3=died-this-gen
+let alpha;      // Float32Array — current rendered opacity per cell
+let nextState;  // Uint8Array scratch
 
-// Color packs per theme
-function getColors() {
-  const dark = html.getAttribute('data-theme') === 'dark';
-  return {
-    blobCore: dark ? 'rgba(200,240,96,' : 'rgba(50,90,0,',
-    connect:  dark ? 'rgba(200,240,96,' : 'rgba(50,90,0,',
-    glow:     dark ? '200,240,96'       : '50,90,0',
-  };
-}
-let C = getColors();
-function updateGolColors(){ C = getColors(); }
+let gen = 0, aliveCount = 0;
+let lastTick = 0;
+const tickInterval = 1000 / FPS;
 
-function resize() {
-  canvas.width  = canvas.offsetWidth;
-  canvas.height = canvas.offsetHeight;
-  COLS = Math.floor(canvas.width  / CELL) + 2;
-  ROWS = Math.floor(canvas.height / CELL) + 2;
-  initGrid();
-}
+function idx(r, c) { return r * COLS + c; }
 
 function initGrid() {
-  grid = [];
-  next = [];
-  for (let r=0; r<ROWS; r++) {
-    grid[r] = [];
-    next[r] = [];
-    for (let c=0; c<COLS; c++) {
-      grid[r][c] = Math.random() < 0.28 ? 1 : 0;
-      next[r][c] = 0;
+  const n = ROWS * COLS;
+  state     = new Uint8Array(n);
+  nextState = new Uint8Array(n);
+  alpha     = new Float32Array(n);
+
+  for (let r = 0; r < ROWS; r++) {
+    for (let c = 0; c < COLS; c++) {
+      const alive = Math.random() < 0.25;
+      state[idx(r,c)] = alive ? 1 : 0;
+      alpha[idx(r,c)] = alive ? 1 : 0;
     }
   }
   gen = 0;
 }
 
-function step() {
+function resize() {
+  canvas.width  = canvas.offsetWidth  || window.innerWidth;
+  canvas.height = canvas.offsetHeight || window.innerHeight;
+  COLS = Math.ceil(canvas.width  / CELL) + 1;
+  ROWS = Math.ceil(canvas.height / CELL) + 1;
+  initGrid();
+}
+
+// ── GOL tick ───────────────────────────────────────────────
+function golTick() {
   aliveCount = 0;
-  for (let r=0; r<ROWS; r++) {
-    for (let c=0; c<COLS; c++) {
+
+  for (let r = 0; r < ROWS; r++) {
+    for (let c = 0; c < COLS; c++) {
       let n = 0;
-      for (let dr=-1; dr<=1; dr++) {
-        for (let dc=-1; dc<=1; dc++) {
-          if (dr===0 && dc===0) continue;
-          const nr = (r+dr+ROWS)%ROWS;
-          const nc = (c+dc+COLS)%COLS;
-          n += grid[nr][nc];
+      for (let dr = -1; dr <= 1; dr++)
+        for (let dc = -1; dc <= 1; dc++) {
+          if (!dr && !dc) continue;
+          const nr = (r + dr + ROWS) % ROWS;
+          const nc = (c + dc + COLS) % COLS;
+          const s  = state[idx(nr, nc)];
+          if (s === 1 || s === 2) n++; // alive or born-this-gen count as alive
         }
-      }
-      const alive = grid[r][c];
-      if (alive) {
-        next[r][c] = (n===2||n===3) ? 1 : 0;
-      } else {
-        next[r][c] = (n===3) ? 1 : 0;
-      }
-      if (next[r][c]) aliveCount++;
+
+      const alive = state[idx(r,c)] === 1 || state[idx(r,c)] === 2;
+      const survives = alive ? (n === 2 || n === 3) : (n === 3);
+      nextState[idx(r,c)] = survives ? 1 : 0;
+      if (survives) aliveCount++;
     }
   }
-  // swap buffers
-  [grid, next] = [next, grid];
+
+  // Figure out births and deaths, set transition states
+  for (let i = 0; i < ROWS * COLS; i++) {
+    const wasAlive = state[i] === 1 || state[i] === 2;
+    const willLive = nextState[i] === 1;
+    if (!wasAlive && willLive) {
+      state[i] = 2; // born — alpha will ramp up
+    } else if (wasAlive && !willLive) {
+      state[i] = 3; // dying — alpha will ramp down
+    } else if (wasAlive && willLive) {
+      state[i] = 1; // stays alive
+    } else {
+      state[i] = 0; // stays dead
+    }
+  }
+
   gen++;
 
-  // Detect stagnation — reinject noise if too few alive
-  if (aliveCount < COLS * ROWS * 0.04) {
-    for (let r=0; r<ROWS; r++)
-      for (let c=0; c<COLS; c++)
-        if (Math.random() < 0.12) grid[r][c] = 1;
+  // Stagnation rescue
+  if (aliveCount < COLS * ROWS * 0.05) {
+    for (let r = 0; r < ROWS; r++)
+      for (let c = 0; c < COLS; c++)
+        if (Math.random() < 0.08 && state[idx(r,c)] === 0) {
+          state[idx(r,c)] = 2;
+          aliveCount++;
+        }
   }
 }
 
-// Collect alive cell world positions
-function getAliveCells() {
-  const cells = [];
-  for (let r=0; r<ROWS; r++) {
-    for (let c=0; c<COLS; c++) {
-      if (grid[r][c]) {
-        cells.push({
-          x: c * CELL + CELL/2,
-          y: r * CELL + CELL/2
-        });
-      }
-    }
-  }
-  return cells;
-}
-
+// ── draw ───────────────────────────────────────────────────
 function drawGOL() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  const W = canvas.width, H = canvas.height;
+  ctx.clearRect(0, 0, W, H);
 
-  const cells = getAliveCells();
-  if (cells.length === 0) return;
+  const dark  = html.getAttribute('data-theme') === 'dark';
+  const [cr, cg, cb] = dark ? [122, 158, 110] : [74, 110, 64];
 
-  // --- Draw metaball connections first (blend mode: lighter) ---
-  // For each pair of nearby cells, draw a connecting "neck"
-  ctx.save();
-  ctx.globalCompositeOperation = 'source-over';
+  for (let r = 0; r < ROWS; r++) {
+    for (let c = 0; c < COLS; c++) {
+      const i = idx(r, c);
+      const s = state[i];
 
-  // We'll use a single path per cell: radial gradient blob
-  // Connections: if two blobs are close, draw a filled ellipse between them
-  for (let i=0; i<cells.length; i++) {
-    for (let j=i+1; j<cells.length; j++) {
-      const dx = cells[j].x - cells[i].x;
-      const dy = cells[j].y - cells[i].y;
-      const d  = Math.sqrt(dx*dx + dy*dy);
-      if (d > CONNECT_DIST) continue;
+      // Advance alpha
+      if (s === 1) {
+        alpha[i] = Math.min(1, alpha[i] + FADE_IN);
+      } else if (s === 2) {
+        alpha[i] = Math.min(1, alpha[i] + FADE_IN);
+        if (alpha[i] >= 0.99) state[i] = 1; // fully born
+      } else if (s === 3) {
+        alpha[i] = Math.max(0, alpha[i] - FADE_OUT);
+        if (alpha[i] <= 0) state[i] = 0; // fully dead
+      } else {
+        // dead — bleed off any residual alpha quickly
+        if (alpha[i] > 0) alpha[i] = Math.max(0, alpha[i] - FADE_OUT * 2);
+      }
 
-      // Strength of merge: 1 when touching, 0 at CONNECT_DIST
-      const t = 1 - d/CONNECT_DIST;
-      const alpha = t * t * 0.75;
+      const a = alpha[i];
+      if (a < 0.01) continue;
 
-      // Midpoint
-      const mx2 = (cells[i].x + cells[j].x) / 2;
-      const my2 = (cells[i].y + cells[j].y) / 2;
+      const cx2 = c * CELL + CELL / 2;
+      const cy2 = r * CELL + CELL / 2;
 
-      // Draw a capsule-like neck using an ellipse rotated toward j
-      const angle = Math.atan2(dy, dx);
-      const neckW = d/2 + 1;
-      const neckH = BLOB_R * t * 0.85;
+      // Soft radial gradient per circle — glow fades to zero at RADIUS
+      const grad = ctx.createRadialGradient(cx2, cy2, 0, cx2, cy2, RADIUS);
+      grad.addColorStop(0,    `rgba(${cr},${cg},${cb},${(a * 0.92).toFixed(3)})`);
+      grad.addColorStop(0.45, `rgba(${cr},${cg},${cb},${(a * 0.75).toFixed(3)})`);
+      grad.addColorStop(0.78, `rgba(${cr},${cg},${cb},${(a * 0.30).toFixed(3)})`);
+      grad.addColorStop(1,    `rgba(${cr},${cg},${cb},0)`);
 
-      ctx.save();
-      ctx.translate(mx2, my2);
-      ctx.rotate(angle);
       ctx.beginPath();
-      ctx.ellipse(0, 0, neckW, neckH, 0, 0, Math.PI*2);
-      ctx.fillStyle = `${C.connect}${alpha.toFixed(3)})`;
+      ctx.arc(cx2, cy2, RADIUS, 0, Math.PI * 2);
+      ctx.fillStyle = grad;
       ctx.fill();
-      ctx.restore();
     }
   }
-
-  // --- Draw each blob as radial gradient circle ---
-  for (const cell of cells) {
-    const r2 = BLOB_R * 1.1;
-    const grad = ctx.createRadialGradient(cell.x, cell.y, 0, cell.x, cell.y, r2);
-    grad.addColorStop(0,   `${C.blobCore}0.92)`);
-    grad.addColorStop(0.45,`${C.blobCore}0.75)`);
-    grad.addColorStop(0.75,`${C.blobCore}0.3)`);
-    grad.addColorStop(1,   `${C.blobCore}0)`);
-    ctx.beginPath();
-    ctx.arc(cell.x, cell.y, r2, 0, Math.PI*2);
-    ctx.fillStyle = grad;
-    ctx.fill();
-  }
-
-  ctx.restore();
 }
 
-// Animation loop
+// ── loop ───────────────────────────────────────────────────
 function animate(ts) {
   requestAnimationFrame(animate);
-  if (ts - lastTime < interval) return;
-  lastTime = ts;
-  step();
+  if (ts - lastTick >= tickInterval) {
+    lastTick = ts;
+    golTick();
+    document.getElementById('golMeta').textContent =
+      `gen ${gen} · ${aliveCount} alive`;
+  }
   drawGOL();
-  document.getElementById('golMeta').textContent =
-    `gen ${gen} · ${aliveCount} alive`;
 }
 
-window.addEventListener('resize', () => {
-  canvas.width  = canvas.offsetWidth;
-  canvas.height = canvas.offsetHeight;
-  COLS = Math.floor(canvas.width  / CELL) + 2;
-  ROWS = Math.floor(canvas.height / CELL) + 2;
-  initGrid();
-});
+function updateGolColors() { /* read live each frame */ }
 
-// Init after DOM paint so offsetWidth is real
+window.addEventListener('resize', resize);
+
 setTimeout(() => {
   resize();
   requestAnimationFrame(animate);
-}, 50);
+}, 80);
 
 /* ═══════════════════════════════════════
    BAR CHART ANIMATION
@@ -1171,9 +1168,9 @@ function buildNoise() {
         const sig = 0.3+0.2*Math.sin(nx*.5)*Math.cos(ny*.5);
         v = Math.floor((noise*t+(1-t)*sig)*255);
       }
-      img.data[p*4]   = Math.floor(v*0.45+30*t);
-      img.data[p*4+1] = Math.floor(v*0.65+20*(1-t));
-      img.data[p*4+2] = Math.floor(v*0.95+50*(1-t));
+      img.data[p*4]   = Math.floor(v*0.75+40*(1-t));
+      img.data[p*4+1] = Math.floor(v*0.65+25*(1-t));
+      img.data[p*4+2] = Math.floor(v*0.45+10*t);
       img.data[p*4+3] = 255;
     }
     ctx2.putImageData(img, 0, 0);
