@@ -6,1188 +6,664 @@
 <title>Shams Ghani — AI Researcher & ML Engineer</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@100..800&display=swap" rel="stylesheet">
 <style>
 /* ═══════════════════════════════════════════
-   THEME TOKENS
+   THEME TOKENS - ETHEREAL AWWWARDS STYLE
 ═══════════════════════════════════════════ */
 :root {
-  --transition-theme: background .35s ease, color .35s ease, border-color .35s ease;
+  --transition-theme: background 0.8s cubic-bezier(0.22, 1, 0.36, 1), color 0.8s ease;
+  --curve: cubic-bezier(0.16, 1, 0.3, 1);
 }
 [data-theme="dark"] {
-  --bg:        #100e0b;
-  --bg2:       #181410;
-  --bg3:       #201b16;
-  --text:      #ede8df;
-  --muted:     #7a7068;
-  --border:    rgba(237,232,223,0.07);
-  --border2:   rgba(237,232,223,0.13);
-  --accent:    #7a9e6e;
-  --accent2:   #9e7a6e;
-  --accent3:   #7e4a4a;
-  --glass:     rgba(237,232,223,0.03);
-  /* GOL colors */
-  --gol-dead:       rgba(255,255,255,0);
-  --gol-alive:      rgba(122,158,110,1);
-  --gol-blob-core:  rgba(122,158,110,0.9);
-  --gol-blob-edge:  rgba(122,158,110,0);
-  --gol-connect:    rgba(122,158,110,0.25);
-  --gol-bg:         transparent;
+  --bg: #030305;
+  --bg-trans: rgba(3, 3, 5, 0.7);
+  --text: #e2e2ec;
+  --muted: #8b8b9f;
+  --accent: #a5b4fc;
+  --accent-dim: rgba(165, 180, 252, 0.2);
+  --glass-bg: rgba(255, 255, 255, 0.015);
+  --glass-border: rgba(255, 255, 255, 0.05);
+  --orb-1: 100, 130, 255;
+  --orb-2: 170, 110, 255;
 }
 [data-theme="light"] {
-  --bg:        #f2ede4;
-  --bg2:       #e8e1d5;
-  --bg3:       #ddd5c6;
-  --text:      #1c1510;
-  --muted:     #6b6055;
-  --border:    rgba(28,21,16,0.09);
-  --border2:   rgba(28,21,16,0.16);
-  --accent:    #4a6e40;
-  --accent2:   #7e4a4a;
-  --accent3:   #6e4a2a;
-  --glass:     rgba(28,21,16,0.03);
-  /* GOL colors */
-  --gol-dead:       rgba(0,0,0,0);
-  --gol-alive:      rgba(74,110,64,1);
-  --gol-blob-core:  rgba(74,110,64,0.85);
-  --gol-blob-edge:  rgba(74,110,64,0);
-  --gol-connect:    rgba(74,110,64,0.2);
-  --gol-bg:         transparent;
+  --bg: #f5f6fa;
+  --bg-trans: rgba(245, 246, 250, 0.7);
+  --text: #1a1b26;
+  --muted: #64657a;
+  --accent: #5b75f0;
+  --accent-dim: rgba(91, 117, 240, 0.15);
+  --glass-bg: rgba(0, 0, 0, 0.02);
+  --glass-border: rgba(0, 0, 0, 0.05);
+  --orb-1: 180, 200, 255;
+  --orb-2: 220, 190, 255;
 }
 
 /* ═══════════════════════════════════════════
    RESET & BASE
 ═══════════════════════════════════════════ */
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
-body{
-  background:var(--bg);color:var(--text);
-  font-family:'EB Garamond',serif;
-  font-size:16px;line-height:1.75;
-  overflow-x:hidden;cursor:none;
-  transition:var(--transition-theme);
+*,*::before,*::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; font-size: 16px; }
+body {
+  background: var(--bg); color: var(--text);
+  font-family: 'Inter', sans-serif;
+  line-height: 1.6;
+  overflow-x: hidden; cursor: none;
+  transition: var(--transition-theme);
 }
-::-webkit-scrollbar{width:3px}
-::-webkit-scrollbar-track{background:var(--bg)}
-::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
+a, button { cursor: none !important; }
+::selection { background: var(--accent-dim); color: var(--text); }
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--glass-border); border-radius: 4px; }
+
+/* ═══════════════════════════════════════════
+   NOISE & CANVAS
+═══════════════════════════════════════════ */
+.noise {
+  position: fixed; inset: 0; z-index: 9999;
+  pointer-events: none; opacity: 0.04;
+  mix-blend-mode: overlay;
+}
+[data-theme="light"] .noise { opacity: 0.06; mix-blend-mode: multiply; }
+#bgCanvas {
+  position: fixed; inset: 0; z-index: 0;
+  width: 100%; height: 100%; pointer-events: none;
+}
 
 /* ═══════════════════════════════════════════
    CURSOR
 ═══════════════════════════════════════════ */
-.cursor{
-  position:fixed;width:8px;height:8px;
-  background:var(--accent);border-radius:50%;
-  pointer-events:none;z-index:9999;
-  transform:translate(-50%,-50%);
-  mix-blend-mode:difference;
-  transition:width .15s,height .15s;
+.cursor-dot {
+  position: fixed; top: 0; left: 0; width: 6px; height: 6px;
+  background: var(--accent); border-radius: 50%;
+  pointer-events: none; z-index: 10000;
+  transform: translate(-50%, -50%);
+  transition: width 0.3s var(--curve), height 0.3s var(--curve), opacity 0.3s;
 }
-.cursor-ring{
-  position:fixed;width:36px;height:36px;
-  border:1px solid rgba(122,158,110,.3);
-  border-radius:50%;pointer-events:none;z-index:9998;
-  transform:translate(-50%,-50%);
-  transition:width .25s,height .25s,border-color .2s;
+.cursor-ring {
+  position: fixed; top: 0; left: 0; width: 40px; height: 40px;
+  border: 1px solid var(--accent-dim); border-radius: 50%;
+  pointer-events: none; z-index: 9998;
+  transform: translate(-50%, -50%);
+  transition: width 0.4s var(--curve), height 0.4s var(--curve), border-radius 0.4s var(--curve), border-color 0.4s, background 0.4s;
+  will-change: transform, width, height;
 }
-[data-theme="light"] .cursor-ring{border-color:rgba(74,110,64,.35)}
+.magnetic-wrap { display: inline-block; position: relative; }
+.hover-active .cursor-ring {
+  background: var(--glass-bg);
+  border-color: var(--glass-border); backdrop-filter: blur(2px);
+}
+.hover-active .cursor-dot { opacity: 0; }
 
 /* ═══════════════════════════════════════════
-   LAYOUT
+   LAYOUT & NAV
 ═══════════════════════════════════════════ */
-.wrap{max-width:1080px;margin:0 auto;padding:0 2rem}
+.container { max-width: 1200px; margin: 0 auto; padding: 0 5vw; position: relative; z-index: 2; }
+nav {
+  position: fixed; top: 2rem; left: 50%; transform: translateX(-50%);
+  z-index: 200; display: flex; gap: 1.5rem;
+  padding: 0.75rem 2rem; border-radius: 100px;
+  background: var(--glass-bg); border: 1px solid var(--glass-border);
+  backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+  transition: var(--transition-theme);
+}
+.nav-link {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.7rem;
+  color: var(--muted); text-decoration: none; letter-spacing: 0.1em;
+  text-transform: uppercase; transition: color 0.3s; padding: 0.5rem;
+}
+.nav-link:hover { color: var(--text); }
+
+/* Theme Toggle */
+.theme-toggle {
+  position: fixed; bottom: 2rem; right: 2rem; z-index: 300;
+  width: 44px; height: 44px; border-radius: 50%;
+  background: var(--glass-bg); border: 1px solid var(--glass-border);
+  backdrop-filter: blur(12px); display: flex; align-items: center; justify-content: center;
+  cursor: none; color: var(--text); transition: all 0.3s; font-size: 14px;
+}
+.theme-toggle:hover { background: var(--accent-dim); color: var(--accent); }
 
 /* ═══════════════════════════════════════════
-   NAV
+   TYPOGRAPHY & HERO
 ═══════════════════════════════════════════ */
-nav{
-  position:fixed;top:0;left:0;right:0;z-index:200;
-  border-bottom:1px solid var(--border);
-  background:color-mix(in srgb, var(--bg) 80%, transparent);
-  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
-  transition:var(--transition-theme);
+.hero {
+  min-height: 100vh; display: flex; flex-direction: column;
+  justify-content: center; padding-top: 10vh;
 }
-nav .inner{
-  max-width:1080px;margin:0 auto;padding:0 2rem;
-  display:flex;align-items:center;justify-content:space-between;height:52px;
+.eyebrow {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.75rem;
+  letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent);
+  margin-bottom: 2rem; display: flex; align-items: center; gap: 1rem;
 }
-.nav-logo{
-  font-family:'DM Mono',monospace;font-size:13px;
-  color:var(--accent);letter-spacing:.05em;text-decoration:none;
+.eyebrow::before { content: ''; width: 40px; height: 1px; background: var(--accent); opacity: 0.5; }
+
+.title-massive {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(60px, 12vw, 180px);
+  font-weight: 300; line-height: 0.9; letter-spacing: -0.03em;
+  margin-bottom: 2rem; color: var(--text);
+  /* Text ethereal glow effect */
+  text-shadow: 0 4px 32px rgba(0,0,0,0.2);
 }
-.nav-links{display:flex;gap:2rem}
-.nav-links a{
-  font-family:'DM Mono',monospace;font-size:11px;
-  color:var(--muted);text-decoration:none;letter-spacing:.08em;text-transform:uppercase;
-  transition:color .2s;
+.title-massive i { font-style: italic; color: var(--muted); }
+
+.hero-desc {
+  font-size: clamp(16px, 1.5vw, 20px); color: var(--muted);
+  max-width: 600px; line-height: 1.8; margin-bottom: 3rem; font-weight: 300;
 }
-.nav-links a:hover{color:var(--text)}
+.hero-desc strong { color: var(--text); font-weight: 400; }
+
+.btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  padding: 1rem 2rem; font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--text); text-decoration: none; border-radius: 100px;
+  background: var(--glass-bg); border: 1px solid var(--glass-border);
+  backdrop-filter: blur(12px); transition: all 0.4s var(--curve); cursor: none;
+}
+.btn-primary { background: var(--text); color: var(--bg); border-color: var(--text); }
+.btn-primary:hover { background: var(--accent); color: var(--bg); border-color: var(--accent); box-shadow: 0 0 20px var(--accent-dim); transform: translateY(-2px); }
+.btn:not(.btn-primary):hover { background: var(--glass-border); transform: translateY(-2px); }
 
 /* ═══════════════════════════════════════════
-   THEME TOGGLE — persistent bottom-left
+   CINEMATIC SECTIONS
 ═══════════════════════════════════════════ */
-.theme-toggle{
-  position:fixed;bottom:1.5rem;left:1.5rem;z-index:300;
-  width:48px;height:26px;
-  background:var(--bg3);
-  border:1px solid var(--border2);
-  border-radius:13px;
-  cursor:none;
-  transition:background .3s,border-color .3s;
-  display:flex;align-items:center;padding:3px;
+section { padding: 10rem 0; position: relative; }
+.section-title {
+  font-family: 'Cormorant Garamond', serif; font-size: clamp(40px, 6vw, 80px);
+  font-weight: 300; letter-spacing: -0.02em; margin-bottom: 4rem; line-height: 1;
 }
-.theme-toggle::after{
-  content:'';
-  width:18px;height:18px;border-radius:50%;
-  background:var(--accent);
-  transition:transform .3s cubic-bezier(.34,1.56,.64,1), background .3s;
-  flex-shrink:0;
+.section-title i { font-style: italic; color: var(--muted); }
+
+/* Glass Panels */
+.glass-panel {
+  background: var(--glass-bg); border: 1px solid var(--glass-border);
+  border-radius: 24px; padding: 3rem; backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  transition: transform 0.6s var(--curve), border-color 0.4s;
 }
-[data-theme="light"] .theme-toggle::after{
-  transform:translateX(22px);
+.glass-panel:hover { border-color: rgba(255,255,255,0.15); transform: translateY(-4px); }
+[data-theme="light"] .glass-panel:hover { border-color: rgba(0,0,0,0.15); }
+
+/* About Grid */
+.about-grid { display: grid; grid-template-columns: 1.5fr 1fr; gap: 4rem; align-items: start; }
+.about-text p { font-size: 1.1rem; color: var(--muted); margin-bottom: 1.5rem; font-weight: 300; }
+.about-text p strong { color: var(--text); font-weight: 400; }
+.stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.stat { padding: 2rem; background: var(--glass-bg); border-radius: 16px; border: 1px solid var(--glass-border); }
+.stat-val { font-family: 'Cormorant Garamond', serif; font-size: 3rem; font-style: italic; color: var(--accent); line-height: 1; margin-bottom: 0.5rem; }
+.stat-lbl { font-family: 'JetBrains Mono', monospace; font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); }
+
+/* Projects - Deconstructed */
+.project-row {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 4rem;
+  padding: 4rem 0; border-top: 1px solid var(--glass-border);
+  align-items: center;
 }
-.theme-toggle-icon{
-  position:absolute;
-  font-size:10px;line-height:1;pointer-events:none;
-  transition:opacity .2s;
+.project-info h3 { font-family: 'Cormorant Garamond', serif; font-size: 2.5rem; font-weight: 400; margin-bottom: 1rem; }
+.project-meta { font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: var(--accent); margin-bottom: 1.5rem; display: block; }
+.project-desc { color: var(--muted); font-weight: 300; margin-bottom: 2rem; }
+.tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.tag {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.65rem; padding: 0.4rem 0.8rem;
+  border-radius: 100px; background: var(--glass-bg); border: 1px solid var(--glass-border); color: var(--text);
 }
-.theme-toggle-icon.moon{left:6px;opacity:1}
-.theme-toggle-icon.sun{right:6px;opacity:.4}
-[data-theme="light"] .theme-toggle-icon.moon{opacity:.4}
-[data-theme="light"] .theme-toggle-icon.sun{opacity:1}
-.theme-label{
-  position:fixed;bottom:2rem;left:4.5rem;z-index:300;
-  font-family:'DM Mono',monospace;font-size:10px;
-  color:var(--muted);letter-spacing:.1em;text-transform:uppercase;
-  pointer-events:none;
-  transition:opacity .2s;
-  line-height:26px;
+.project-visual {
+  width: 100%; aspect-ratio: 4/3; border-radius: 16px;
+  background: var(--glass-bg); border: 1px solid var(--glass-border);
+  display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden;
 }
+.project-visual::after {
+  content: ''; position: absolute; inset: 0; background: radial-gradient(circle at center, var(--accent-dim) 0%, transparent 70%); opacity: 0; transition: opacity 0.5s;
+}
+.project-row:hover .project-visual::after { opacity: 1; }
+
+/* Experience Timeline */
+.timeline { position: relative; padding-left: 2rem; }
+.timeline::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 1px; background: var(--glass-border); }
+.tl-item { position: relative; padding-bottom: 4rem; }
+.tl-item::before {
+  content: ''; position: absolute; left: -2rem; top: 8px; width: 11px; height: 11px;
+  border-radius: 50%; background: var(--bg); border: 2px solid var(--accent);
+  transform: translateX(-5px); transition: all 0.3s;
+}
+.tl-item:hover::before { background: var(--accent); box-shadow: 0 0 15px var(--accent-dim); }
+.tl-date { font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: var(--muted); margin-bottom: 0.5rem; }
+.tl-title { font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; font-weight: 400; margin-bottom: 0.25rem; }
+.tl-org { color: var(--accent); font-size: 0.9rem; margin-bottom: 1rem; }
+.tl-desc { color: var(--muted); font-weight: 300; font-size: 0.95rem; }
+.tl-desc li { margin-left: 1.5rem; margin-bottom: 0.5rem; }
+
+/* Contact */
+.contact-huge {
+  font-family: 'Cormorant Garamond', serif; font-size: clamp(40px, 8vw, 120px);
+  font-weight: 300; line-height: 1; margin-bottom: 3rem; text-align: center;
+}
+.contact-huge i { font-style: italic; color: var(--accent); }
+.contact-links { display: flex; justify-content: center; gap: 2rem; flex-wrap: wrap; }
+.c-link {
+  font-family: 'JetBrains Mono', monospace; font-size: 1rem; color: var(--text);
+  text-decoration: none; position: relative; padding: 0.5rem;
+}
+.c-link::after {
+  content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 1px;
+  background: var(--accent); transform: scaleX(0); transform-origin: right; transition: transform 0.4s var(--curve);
+}
+.c-link:hover::after { transform: scaleX(1); transform-origin: left; }
+
+footer { padding: 3rem 0; text-align: center; font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; color: var(--muted); border-top: 1px solid var(--glass-border); margin-top: 5rem; }
 
 /* ═══════════════════════════════════════════
-   HERO
+   SCROLL REVEAL ANIMATIONS
 ═══════════════════════════════════════════ */
-.hero{
-  min-height:100vh;
-  display:grid;
-  grid-template-rows:1fr auto;
-  position:relative;
-  overflow:hidden;
-}
-/* GOL canvas fills top portion */
-#golCanvas{
-  position:absolute;inset:0;
-  width:100%;height:100%;
-  z-index:0;
-  opacity:.85;
-  transition:opacity .4s;
-}
-[data-theme="light"] #golCanvas{opacity:.7}
-
-/* subtle gradient fade at bottom so text stays legible */
-.hero-fade{
-  position:absolute;left:0;right:0;bottom:0;
-  height:55%;z-index:1;pointer-events:none;
-  background:linear-gradient(to top, var(--bg) 20%, transparent 100%);
-  transition:var(--transition-theme);
-}
-.hero-top-fade{
-  position:absolute;left:0;right:0;top:0;
-  height:20%;z-index:1;pointer-events:none;
-  background:linear-gradient(to bottom, var(--bg) 0%, transparent 100%);
-  transition:var(--transition-theme);
-}
-.hero-content{
-  position:relative;z-index:2;
-  padding:0 2rem 90px;
-  max-width:1080px;margin:0 auto;width:100%;
-  align-self:end;
-}
-.hero-eyebrow{
-  font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.2em;
-  text-transform:uppercase;margin-bottom:1.5rem;
-  color:var(--text);
-  opacity:0.75;
-  display:flex;align-items:center;gap:1rem;
-  text-shadow:0 1px 12px var(--bg), 0 0 24px var(--bg);
-}
-.hero-eyebrow::before{
-  content:'';display:block;width:32px;height:1px;background:var(--text);flex-shrink:0;opacity:0.5;
-}
-.hero-name{
-  font-family:'Cormorant Garamond',serif;
-  font-size:clamp(52px,8.5vw,120px);
-  line-height:.92;letter-spacing:-.02em;
-  margin-bottom:1.2rem;
-}
-.hero-name .solid{color:var(--text)}
-.hero-name .outline{
-  color:var(--accent3);
-  opacity:0.7;
-  transition:color .35s, opacity .35s;
-}
-[data-theme="light"] .hero-name .outline{
-  color:var(--accent3);
-  opacity:0.65;
-}
-.hero-name em{font-style:italic}
-.hero-desc{
-  font-size:16px;color:var(--muted);
-  max-width:500px;margin-bottom:2.5rem;line-height:1.8;
-  transition:color .35s;
-}
-.hero-desc strong{color:var(--text);font-weight:500;transition:color .35s}
-.hero-actions{display:flex;gap:1rem;flex-wrap:wrap}
-.btn{
-  display:inline-flex;align-items:center;gap:.5rem;
-  padding:.65rem 1.5rem;
-  font-family:'DM Mono',monospace;font-size:12px;letter-spacing:.06em;
-  text-decoration:none;border-radius:3px;
-  transition:all .2s;cursor:none;
-}
-.btn-primary{
-  background:var(--accent);color:var(--bg);
-  border:1px solid var(--accent);font-weight:500;
-}
-.btn-primary:hover{background:transparent;color:var(--accent)}
-.btn-ghost{
-  background:transparent;color:var(--muted);
-  border:1px solid var(--border2);
-}
-.btn-ghost:hover{color:var(--text);border-color:var(--muted)}
-
-/* GOL generation counter */
-.gol-meta{
-  position:absolute;top:60px;right:1.5rem;z-index:3;
-  font-family:'DM Mono',monospace;font-size:10px;
-  color:var(--muted);letter-spacing:.1em;
-  opacity:.5;
-  transition:color .35s;
-}
-
-/* scroll hint */
-.scroll-hint{
-  position:absolute;bottom:2rem;right:2rem;z-index:3;
-  font-family:'DM Mono',monospace;font-size:10px;
-  color:var(--muted);letter-spacing:.15em;
-  writing-mode:vertical-rl;
-  display:flex;align-items:center;gap:.75rem;
-  opacity:.5;
-}
-.scroll-hint::after{
-  content:'';display:block;width:1px;height:44px;
-  background:linear-gradient(to bottom,var(--muted),transparent);
-}
-
-/* ═══════════════════════════════════════════
-   DIVIDER
-═══════════════════════════════════════════ */
-.divider{
-  height:1px;background:var(--border);
-  margin:0;transition:background .35s;
-}
-
-/* ═══════════════════════════════════════════
-   SECTIONS
-═══════════════════════════════════════════ */
-section{padding:5.5rem 0;transition:background .35s}
-.section-label{
-  font-family:'DM Mono',monospace;font-size:10px;
-  letter-spacing:.2em;text-transform:uppercase;
-  color:var(--accent);margin-bottom:2.5rem;
-  display:flex;align-items:center;gap:1rem;
-}
-.section-label::after{
-  content:'';flex:1;height:1px;
-  background:linear-gradient(to right,var(--border2),transparent);
-}
-
-/* ═══════════════════════════════════════════
-   ABOUT
-═══════════════════════════════════════════ */
-.about-grid{display:grid;grid-template-columns:3fr 2fr;gap:4rem;align-items:start}
-.about-text h2{
-  font-family:'Cormorant Garamond',serif;
-  font-size:clamp(28px,3.8vw,46px);
-  line-height:1.15;letter-spacing:-.01em;
-  margin-bottom:1.25rem;
-}
-.about-text p{color:var(--muted);margin-bottom:1rem;transition:color .35s}
-.about-text p strong{color:var(--text);font-weight:500;transition:color .35s}
-.about-text p em{font-style:italic;color:var(--text)}
-.about-sidebar{display:flex;flex-direction:column;gap:1.25rem}
-.stat-card{
-  background:var(--bg2);border:1px solid var(--border);
-  border-radius:3px;padding:1.25rem 1.5rem;
-  transition:var(--transition-theme);
-}
-.stat-num{
-  font-family:'Cormorant Garamond',serif;
-  font-size:38px;font-weight:400;color:var(--accent);line-height:1;margin-bottom:.2rem;
-  font-style:italic;
-  transition:color .35s;
-}
-.stat-lbl{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:.05em}
-
-/* skills */
-.skills-grid{
-  display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
-  gap:1px;background:var(--border);border:1px solid var(--border);
-  border-radius:3px;overflow:hidden;transition:background .35s;
-}
-.skill-group{background:var(--bg);padding:1.5rem;transition:background .35s}
-.skill-group h4{
-  font-family:'DM Mono',monospace;font-size:10px;
-  letter-spacing:.12em;text-transform:uppercase;
-  color:var(--accent2);margin-bottom:1rem;transition:color .35s;
-}
-.skill-tag{
-  display:inline-block;margin:0 4px 6px 0;padding:3px 9px;
-  border-radius:2px;font-family:'DM Mono',monospace;font-size:10px;
-  color:var(--muted);border:1px solid var(--border);background:var(--bg2);
-  transition:all .15s;
-}
-.skill-tag:hover{color:var(--text);border-color:var(--border2)}
-
-/* ═══════════════════════════════════════════
-   PROJECTS
-═══════════════════════════════════════════ */
-.project-list{
-  display:flex;flex-direction:column;gap:1px;
-  background:var(--border);border:1px solid var(--border);
-  border-radius:3px;overflow:hidden;transition:background .35s;
-}
-.project-card{
-  background:var(--bg);padding:2rem 2.5rem;
-  border-left:2px solid transparent;
-  transition:all .2s;cursor:none;position:relative;
-}
-.project-card::before{
-  content:'';position:absolute;left:0;top:0;bottom:0;width:2px;
-  background:var(--accent);transform:scaleY(0);transition:transform .25s;
-  transform-origin:bottom;
-}
-.project-card:hover::before{transform:scaleY(1)}
-.project-card:hover{background:var(--bg2)}
-.project-header{display:flex;align-items:flex-start;justify-content:space-between;gap:2rem;margin-bottom:.75rem}
-.project-title{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:500;letter-spacing:-.01em;line-height:1.2}
-.project-meta{display:flex;align-items:center;gap:1rem;flex-shrink:0}
-.project-year{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted)}
-.project-link{font-family:'DM Mono',monospace;font-size:11px;color:var(--accent);text-decoration:none;letter-spacing:.05em;transition:opacity .15s}
-.project-link:hover{opacity:.7}
-.project-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:1rem}
-.tag{padding:2px 9px;border-radius:2px;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.04em}
-.tag-ml{background:rgba(122,158,110,.1);color:rgba(122,158,110,.95);border:1px solid rgba(122,158,110,.2)}
-.tag-cv{background:rgba(158,138,110,.1);color:rgba(180,158,130,.95);border:1px solid rgba(158,138,110,.2)}
-.tag-llm{background:rgba(126,74,74,.12);color:rgba(180,120,110,.95);border:1px solid rgba(126,74,74,.25)}
-.tag-infra{background:rgba(158,138,90,.1);color:rgba(190,165,110,.95);border:1px solid rgba(158,138,90,.2)}
-[data-theme="light"] .tag-ml{background:rgba(74,110,64,.1);color:rgba(40,70,35,.9);border-color:rgba(74,110,64,.25)}
-[data-theme="light"] .tag-cv{background:rgba(110,85,60,.1);color:rgba(80,55,35,.9);border-color:rgba(110,85,60,.2)}
-[data-theme="light"] .tag-llm{background:rgba(100,50,50,.1);color:rgba(80,35,35,.9);border-color:rgba(100,50,50,.2)}
-[data-theme="light"] .tag-infra{background:rgba(110,90,40,.1);color:rgba(85,65,25,.9);border-color:rgba(110,90,40,.2)}
-.project-desc{color:var(--muted);font-size:14px;max-width:620px;transition:color .35s}
-.project-desc strong{color:var(--text);font-weight:500;transition:color .35s}
-
-/* project viz */
-.project-viz{
-  margin-top:1.5rem;padding:1.5rem;
-  background:var(--bg3);border:1px solid var(--border);border-radius:3px;
-  transition:var(--transition-theme);
-}
-.viz-label{
-  font-family:'DM Mono',monospace;font-size:10px;
-  letter-spacing:.12em;text-transform:uppercase;
-  color:var(--muted);margin-bottom:1rem;
-}
-.bars{display:flex;flex-direction:column;gap:10px}
-.bar-row{display:flex;align-items:center;gap:12px}
-.bar-name{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);width:80px;flex-shrink:0;text-align:right}
-.bar-track{flex:1;height:20px;background:var(--bg);border-radius:2px;overflow:hidden;transition:background .35s}
-.bar-fill{height:100%;border-radius:2px;display:flex;align-items:center;justify-content:flex-end;padding-right:8px;transition:width 1.2s cubic-bezier(.16,1,.3,1);width:0}
-.bar-fill span{font-family:'DM Mono',monospace;font-size:10px;font-weight:600}
-.b-focal{background:var(--accent)}.b-focal span{color:var(--bg)}
-.b-l1{background:rgba(122,158,110,.3)}.b-l1 span{color:rgba(122,158,110,.85)}
-.b-mse{background:rgba(122,158,110,.18)}.b-mse span{color:rgba(122,158,110,.65)}
-.b-bce{background:rgba(126,74,74,.15)}.b-bce span{color:rgba(180,120,110,.7)}
-
-.pipeline{display:flex;align-items:center;flex-wrap:nowrap;overflow-x:auto;padding-bottom:4px;gap:0}
-.pipe-step{
-  flex-shrink:0;padding:7px 12px;
-  background:var(--bg);border:1px solid var(--border);border-radius:2px;
-  font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);
-  white-space:nowrap;transition:var(--transition-theme);
-}
-.pipe-step.hl{background:rgba(122,158,110,.08);border-color:rgba(122,158,110,.22);color:var(--accent)}
-.pipe-arrow{flex-shrink:0;font-family:'DM Mono',monospace;font-size:10px;color:var(--border2);padding:0 5px}
-.arch-layer{
-  display:flex;justify-content:space-between;align-items:center;
-  padding:7px 12px;border:1px solid var(--border);margin-bottom:-1px;
-  font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);
-  transition:all .15s,var(--transition-theme);
-}
-.arch-layer:hover{border-color:var(--border2);color:var(--text)}
-.arch-layer.enc{background:color-mix(in srgb, var(--accent2) 4%, transparent)}
-.arch-layer.bot{background:color-mix(in srgb, var(--accent) 6%, transparent);color:var(--accent);border-color:color-mix(in srgb, var(--accent) 15%, transparent)}
-.arch-layer.dec{background:color-mix(in srgb, var(--accent3) 4%, transparent)}
-.arch-ch{color:var(--border2);font-size:10px}
-.noise-row{display:flex;align-items:center;gap:6px}
-.noise-box{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px}
-.noise-box canvas{width:100%;aspect-ratio:1;border-radius:2px;border:1px solid var(--border)}
-.noise-lbl{font-family:'DM Mono',monospace;font-size:9px;color:var(--muted);text-align:center}
-.metrics-table{width:100%;border-collapse:collapse;font-family:'DM Mono',monospace;font-size:11px;margin-top:1rem}
-.metrics-table th{color:var(--muted);font-weight:400;letter-spacing:.08em;text-transform:uppercase;padding:6px 10px;border-bottom:1px solid var(--border);text-align:left}
-.metrics-table td{padding:6px 10px;border-bottom:1px solid var(--border);color:var(--muted)}
-.metrics-table tr.winner td{color:var(--accent);font-weight:500}
-.metrics-table tr.bad td{color:var(--muted);opacity:.5}
-
-/* ═══════════════════════════════════════════
-   EXPERIENCE / TIMELINE
-═══════════════════════════════════════════ */
-.timeline{position:relative;padding-left:1.5rem}
-.timeline::before{content:'';position:absolute;left:0;top:8px;bottom:0;width:1px;background:var(--border2)}
-.tl-item{padding-bottom:2.5rem;position:relative}
-.tl-item::before{
-  content:'';position:absolute;left:-1.5rem;top:8px;
-  width:9px;height:9px;background:var(--bg);
-  border:1px solid var(--border2);border-radius:50%;
-  transition:all .2s;
-}
-.tl-item:hover::before{border-color:var(--accent);background:var(--accent)}
-.tl-date{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);margin-bottom:.3rem}
-.tl-title{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:500;margin-bottom:.15rem;letter-spacing:-.01em}
-.tl-org{font-family:'DM Mono',monospace;font-size:12px;color:var(--accent2);margin-bottom:.6rem;transition:color .35s}
-.tl-desc{font-size:14px;color:var(--muted);transition:color .35s}
-.tl-desc li{margin-bottom:.25rem;margin-left:1.2rem}
-
-/* ═══════════════════════════════════════════
-   CONTACT
-═══════════════════════════════════════════ */
-.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:start}
-.contact-head{
-  font-family:'Cormorant Garamond',serif;
-  font-size:clamp(32px,4.5vw,56px);
-  font-weight:400;
-  line-height:1.05;letter-spacing:-.02em;margin-bottom:1rem;
-}
-.contact-head em{font-style:italic;color:var(--accent)}
-.contact-sub{color:var(--muted);font-size:14px;margin-bottom:2rem;transition:color .35s}
-.contact-links{display:flex;flex-direction:column;gap:1rem}
-.contact-link{
-  display:flex;align-items:center;gap:1rem;
-  padding:1rem 1.25rem;
-  background:var(--bg2);border:1px solid var(--border);border-radius:3px;
-  text-decoration:none;transition:all .2s;cursor:none;
-}
-.contact-link:hover{border-color:var(--border2);background:var(--bg3)}
-.c-icon{
-  width:34px;height:34px;background:var(--bg3);
-  border:1px solid var(--border);border-radius:2px;
-  display:flex;align-items:center;justify-content:center;
-  font-size:15px;flex-shrink:0;transition:var(--transition-theme);
-}
-.c-text{flex:1}
-.c-label{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-bottom:2px}
-.c-value{font-size:14px;color:var(--text);font-weight:500;transition:color .35s}
-.c-arrow{font-family:'DM Mono',monospace;font-size:13px;color:var(--muted);transition:transform .2s,color .2s}
-.contact-link:hover .c-arrow{transform:translateX(4px);color:var(--accent)}
-.research-box{
-  padding:2rem;background:var(--bg2);
-  border:1px solid var(--border);border-radius:3px;
-  transition:var(--transition-theme);
-}
-.research-box h3{
-  font-family:'DM Mono',monospace;font-size:10px;
-  color:var(--accent3);letter-spacing:.12em;text-transform:uppercase;margin-bottom:1.25rem;
-  transition:color .35s;
-}
-.r-item{display:flex;align-items:flex-start;gap:.75rem;margin-bottom:1rem;font-size:14px;color:var(--muted)}
-.r-item::before{content:'›';font-family:'DM Mono',monospace;color:var(--accent3);flex-shrink:0;margin-top:1px}
-.r-item strong{color:var(--text);font-weight:500}
-
-/* ═══════════════════════════════════════════
-   FOOTER
-═══════════════════════════════════════════ */
-footer{border-top:1px solid var(--border);padding:2rem 0;transition:border-color .35s}
-footer .inner{display:flex;align-items:center;justify-content:space-between}
-footer .fl,.footer-right{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted)}
-footer .footer-right a{color:var(--muted);text-decoration:none;margin-left:1rem}
-footer .footer-right a:hover{color:var(--text)}
-
-/* ═══════════════════════════════════════════
-   ANIMATIONS
-═══════════════════════════════════════════ */
-@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
-.fu{opacity:0;animation:fadeUp .65s ease forwards}
-.d1{animation-delay:.1s}.d2{animation-delay:.2s}.d3{animation-delay:.35s}.d4{animation-delay:.5s}
+.reveal { opacity: 0; transform: translateY(40px); filter: blur(10px); transition: opacity 1s var(--curve), transform 1s var(--curve), filter 1s var(--curve); will-change: opacity, transform, filter; }
+.reveal.active { opacity: 1; transform: translateY(0); filter: blur(0); }
+.d-1 { transition-delay: 0.1s; } .d-2 { transition-delay: 0.2s; } .d-3 { transition-delay: 0.3s; }
 
 /* ═══════════════════════════════════════════
    RESPONSIVE
 ═══════════════════════════════════════════ */
-@media(max-width:768px){
-  .about-grid,.contact-grid{grid-template-columns:1fr;gap:2rem}
-  .hero-name{font-size:48px}
-  .nav-links{display:none}
-  body{cursor:auto}
-  .cursor,.cursor-ring{display:none}
-  .project-header{flex-direction:column;gap:.5rem}
+@media (max-width: 900px) {
+  .about-grid, .project-row { grid-template-columns: 1fr; gap: 2rem; }
+  .stats-grid { grid-template-columns: 1fr; }
+  .project-row { border-top: none; padding: 2rem 0; }
+  .cursor-dot, .cursor-ring { display: none; }
+  body { cursor: auto; }
+  .btn, .theme-toggle { cursor: pointer; }
+  nav { width: 90%; justify-content: center; padding: 1rem; border-radius: 16px; }
 }
 </style>
 </head>
 <body>
 
-<div class="cursor" id="cur"></div>
-<div class="cursor-ring" id="curR"></div>
+<!-- NOISE OVERLAY -->
+<div class="noise"></div>
+<!-- WEBGL-LIKE CANVAS BACKGROUND -->
+<canvas id="bgCanvas"></canvas>
 
-<!-- THEME TOGGLE -->
-<button class="theme-toggle" id="themeToggle" aria-label="Toggle theme"></button>
-<span class="theme-label" id="themeLabel">dark</span>
+<!-- CURSOR -->
+<div class="cursor-dot" id="cursorDot"></div>
+<div class="cursor-ring" id="cursorRing"></div>
 
-<!-- NAV -->
+<!-- NAVIGATION -->
 <nav>
-  <div class="inner">
-    <a href="#" class="nav-logo">S.Ghani</a>
-    <div class="nav-links">
-      <a href="#about">about</a>
-      <a href="#projects">work</a>
-      <a href="#experience">exp</a>
-      <a href="#contact">contact</a>
-    </div>
-  </div>
+  <div class="magnetic-wrap" data-magnetic="0.2"><a href="#about" class="nav-link magnetic-child">About</a></div>
+  <div class="magnetic-wrap" data-magnetic="0.2"><a href="#work" class="nav-link magnetic-child">Work</a></div>
+  <div class="magnetic-wrap" data-magnetic="0.2"><a href="#experience" class="nav-link magnetic-child">Experience</a></div>
+  <div class="magnetic-wrap" data-magnetic="0.2"><a href="#contact" class="nav-link magnetic-child">Contact</a></div>
 </nav>
 
-<!-- HERO -->
-<section class="hero">
-  <canvas id="golCanvas"></canvas>
-  <div class="hero-top-fade"></div>
-  <div class="hero-fade"></div>
-  <div class="gol-meta" id="golMeta">gen 0 · 0 alive</div>
+<!-- THEME TOGGLE -->
+<div class="magnetic-wrap" style="position: fixed; bottom: 2rem; right: 2rem; z-index: 300;" data-magnetic="0.5">
+  <button class="theme-toggle magnetic-child" id="themeToggle" aria-label="Toggle theme">◑</button>
+</div>
 
-  <div class="hero-content">
-    <div class="hero-eyebrow fu d1">MSc Artificial Intelligence · Queen's University Belfast</div>
-    <h1 class="hero-name fu d2">
-      <span class="solid">M. Shams</span><br>
-      <em class="outline">Ghani</em>
-    </h1>
-    <p class="hero-desc fu d3">
-      <strong>ML Engineer & AI Researcher.</strong> Deep learning for scientific imaging,
-      LLM architectures, autonomous cognition. Building at the boundary of what machines
-      can perceive — and what they can know about their own perceiving.
+<main class="container">
+  
+  <!-- HERO -->
+  <section class="hero">
+    <div class="eyebrow reveal">Artificial Intelligence & ML</div>
+    <h1 class="title-massive reveal d-1">M. Shams<br><i>Ghani</i></h1>
+    <p class="hero-desc reveal d-2">
+      <strong>ML Engineer & AI Researcher.</strong> Focusing on deep learning for scientific imaging, LLM architectures, and autonomous cognition. Building at the boundary of what machines can perceive.
     </p>
-    <div class="hero-actions fu d4">
-      <a href="#contact" class="btn btn-primary">get in touch →</a>
-      <a href="#projects" class="btn btn-ghost">view work</a>
-      <a href="https://github.com/ShamsGhani" target="_blank" class="btn btn-ghost">github ↗</a>
+    <div class="hero-actions reveal d-3" style="display: flex; gap: 1rem; flex-wrap: wrap;">
+      <div class="magnetic-wrap" data-magnetic="0.3"><a href="#contact" class="btn btn-primary magnetic-child">Get in Touch</a></div>
+      <div class="magnetic-wrap" data-magnetic="0.3"><a href="#work" class="btn magnetic-child">View Work</a></div>
     </div>
-  </div>
-  <div class="scroll-hint">scroll</div>
-</section>
+  </section>
 
-<div class="divider"></div>
-
-<!-- ABOUT -->
-<section id="about">
-  <div class="wrap">
-    <div class="section-label">about</div>
+  <!-- ABOUT -->
+  <section id="about">
+    <h2 class="section-title reveal">The <i>Observer</i></h2>
     <div class="about-grid">
-      <div class="about-text">
-        <h2>Researcher at the intersection of deep learning and cognition</h2>
+      <div class="about-text reveal d-1 glass-panel">
         <p>MSc AI graduate from Queen's University Belfast. My dissertation achieved <strong>60–100% performance improvements</strong> on single-molecule localisation microscopy through systematic loss function analysis — establishing that training objective design is as decisive as architectural choice for sparse detection tasks.</p>
-        <p>Industry background spans ML engineering at a computer vision startup (full pipeline ownership from data collection to production), data science at National Museums NI, and consulting. Currently pursuing <strong>PhD applications</strong> focused on autonomous cognition and metacognitive architectures.</p>
-        <p>Beyond the technical: I write poetry, obsess over etymology, and am fascinated by what it means for a system — biological or artificial — to think <em>about</em> its own thinking.</p>
+        <p>Industry background spans ML engineering at a computer vision startup (full pipeline ownership from data collection to production), data science at National Museums NI, and consulting.</p>
+        <p>Beyond the technical: I write poetry, obsess over etymology, and am fascinated by what it means for a system to think <em>about</em> its own thinking.</p>
+        
+        <div style="margin-top: 3rem;">
+          <h4 style="font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: var(--accent); margin-bottom: 1rem; text-transform: uppercase;">Core Arsenal</h4>
+          <div class="tags">
+            <span class="tag">Python</span><span class="tag">PyTorch</span><span class="tag">TensorFlow</span><span class="tag">CUDA</span>
+            <span class="tag">U-Net</span><span class="tag">Diffusion</span><span class="tag">RAG</span><span class="tag">Ollama</span>
+            <span class="tag">GCP</span><span class="tag">Docker</span><span class="tag">FastAPI</span>
+          </div>
+        </div>
       </div>
-      <div class="about-sidebar">
-        <div class="stat-card"><div class="stat-num">60–100%</div><div class="stat-lbl">performance improvement · SMLM</div></div>
-        <div class="stat-card"><div class="stat-num">33.8 dB</div><div class="stat-lbl">PSNR · focal loss model</div></div>
-        <div class="stat-card"><div class="stat-num">10K+</div><div class="stat-lbl">synthetic microscopy samples</div></div>
-        <div class="stat-card"><div class="stat-num">0.500</div><div class="stat-lbl">IoU@0.1 · modified arch</div></div>
+      <div class="stats-grid reveal d-2">
+        <div class="stat"><div class="stat-val">100%</div><div class="stat-lbl">Performance Gain (SMLM)</div></div>
+        <div class="stat"><div class="stat-val">33.8</div><div class="stat-lbl">dB PSNR Focal Loss</div></div>
+        <div class="stat"><div class="stat-val">10K</div><div class="stat-lbl">Synthetic Samples</div></div>
+        <div class="stat"><div class="stat-val">0.5</div><div class="stat-lbl">IoU@0.1 Mod Arch</div></div>
       </div>
     </div>
-    <div style="margin-top:3rem">
-      <div class="section-label" style="margin-bottom:1.5rem">skills</div>
-      <div class="skills-grid">
-        <div class="skill-group"><h4>Core</h4><span class="skill-tag">Python</span><span class="skill-tag">SQL</span><span class="skill-tag">JavaScript</span></div>
-        <div class="skill-group"><h4>ML / DL</h4><span class="skill-tag">PyTorch</span><span class="skill-tag">TensorFlow</span><span class="skill-tag">Keras</span><span class="skill-tag">scikit-learn</span><span class="skill-tag">CUDA</span></div>
-        <div class="skill-group"><h4>Vision</h4><span class="skill-tag">OpenCV</span><span class="skill-tag">U-Net</span><span class="skill-tag">CNNs</span><span class="skill-tag">Diffusion</span><span class="skill-tag">scikit-image</span></div>
-        <div class="skill-group"><h4>LLMs</h4><span class="skill-tag">Transformers</span><span class="skill-tag">FAISS</span><span class="skill-tag">Ollama</span><span class="skill-tag">RAG</span><span class="skill-tag">SentenceTransformers</span></div>
-        <div class="skill-group"><h4>Infra</h4><span class="skill-tag">Docker</span><span class="skill-tag">GCP</span><span class="skill-tag">AWS</span><span class="skill-tag">FastAPI</span><span class="skill-tag">Firebase</span></div>
-        <div class="skill-group"><h4>Research</h4><span class="skill-tag">ThunderSTORM</span><span class="skill-tag">Jupyter</span><span class="skill-tag">LaTeX</span><span class="skill-tag">Hugging Face</span></div>
+  </section>
+
+  <!-- WORK -->
+  <section id="work">
+    <h2 class="section-title reveal">Selected <i>Work</i></h2>
+    
+    <div class="project-row reveal">
+      <div class="project-info">
+        <h3>Deep FOCUS</h3>
+        <span class="project-meta">2025 • MSc Dissertation • Super-Resolution Microscopy</span>
+        <p class="project-desc">Systematic comparative analysis of loss functions for single-molecule localisation microscopy. Implemented Deep-STORM in PyTorch. Focal Loss achieved PSNR 33.8 dB (a 60–100% improvement over regression baselines).</p>
+        <div class="tags"><span class="tag">Focal Loss</span><span class="tag">U-Net</span><span class="tag">PyTorch</span><span class="tag">CUDA</span></div>
       </div>
-    </div>
-  </div>
-</section>
-
-<div class="divider"></div>
-
-<!-- PROJECTS -->
-<section id="projects">
-  <div class="wrap">
-    <div class="section-label">selected work</div>
-    <div class="project-list">
-
-      <!-- DEEP FOCUS -->
-      <div class="project-card">
-        <div class="project-header">
-          <div class="project-title">Deep FOCUS — SMLM Super-Resolution</div>
-          <div class="project-meta">
-            <span class="project-year">2025</span>
-            <span class="project-link">MSc dissertation · QUB</span>
-          </div>
+      <div class="project-visual">
+        <div style="font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; color: var(--muted); text-align: center;">
+          <div style="font-size: 2rem; color: var(--text); margin-bottom: 1rem;">✧</div>
+          33.8 dB PSNR<br>0.834 SSIM
         </div>
-        <div class="project-tags">
-          <span class="tag tag-ml">Focal Loss</span><span class="tag tag-cv">U-Net</span>
-          <span class="tag tag-ml">PyTorch</span><span class="tag tag-cv">SMLM</span>
-          <span class="tag tag-ml">CUDA</span><span class="tag tag-cv">ThunderSTORM</span>
-        </div>
-        <p class="project-desc">
-          Systematic comparative analysis of loss functions for single-molecule localisation microscopy. Generated a <strong>10,000-sample synthetic dataset</strong> via ThunderSTORM, reimplemented Deep-STORM from scratch in PyTorch, and ran a controlled 4-way loss function study. <strong>Focal Loss achieved PSNR 33.8 dB</strong> vs 17–20 dB for regression baselines — a 60–100% improvement — with SSIM 0.83 and IoU@0.1 of 0.50, establishing loss function design as equally critical as architecture.
-        </p>
-        <div class="project-viz">
-          <div class="viz-label">loss function comparison — full dataset (10,000 samples, 20 epochs)</div>
-          <div class="bars">
-            <div class="bar-row"><div class="bar-name">Focal Loss</div><div class="bar-track"><div class="bar-fill b-focal" id="bf" data-w="85"><span>33.8 dB PSNR</span></div></div></div>
-            <div class="bar-row"><div class="bar-name">L1 + L2</div><div class="bar-track"><div class="bar-fill b-l1" id="bl1" data-w="52"><span>20.2 dB</span></div></div></div>
-            <div class="bar-row"><div class="bar-name">MSE</div><div class="bar-track"><div class="bar-fill b-mse" id="bm" data-w="43"><span>17.1 dB</span></div></div></div>
-            <div class="bar-row"><div class="bar-name">BCE</div><div class="bar-track"><div class="bar-fill b-bce" id="bb" data-w="5"><span>−8.3 dB ✗</span></div></div></div>
-          </div>
-
-          <div style="margin-top:1.5rem">
-            <div class="viz-label">full results table — original output layer</div>
-            <table class="metrics-table">
-              <thead><tr><th>Loss function</th><th>PSNR (dB)</th><th>SSIM</th><th>MSE</th></tr></thead>
-              <tbody>
-                <tr class="winner"><td>Focal Loss ★</td><td>31.91</td><td>0.834</td><td>0.000672</td></tr>
-                <tr><td>L1 + L2</td><td>20.18</td><td>0.536</td><td>0.010108</td></tr>
-                <tr><td>MSE</td><td>17.12</td><td>0.077</td><td>0.020488</td></tr>
-                <tr class="bad"><td>BCE</td><td>−8.25 ✗</td><td>−0.000 ✗</td><td>227.2 ✗</td></tr>
-              </tbody>
-            </table>
-          </div>
-
-          <div style="margin-top:1.5rem">
-            <div class="viz-label">U-Net architecture — encoder / bottleneck / decoder</div>
-            <div class="arch-layer enc"><span>Encoder block 1</span><span class="arch-ch">1ch → 32ch · 3×3 conv · BN · ReLU</span></div>
-            <div class="arch-layer enc"><span>Encoder block 2</span><span class="arch-ch">32ch → 64ch · maxpool 2×2</span></div>
-            <div class="arch-layer enc"><span>Encoder block 3</span><span class="arch-ch">64ch → 128ch · maxpool 2×2</span></div>
-            <div class="arch-layer bot"><span>Bottleneck</span><span class="arch-ch">128ch → 512ch · bridge</span></div>
-            <div class="arch-layer dec"><span>Decoder block 3</span><span class="arch-ch">512ch → 128ch · nearest upsample × 2</span></div>
-            <div class="arch-layer dec"><span>Decoder block 2</span><span class="arch-ch">128ch → 64ch · nearest upsample × 2</span></div>
-            <div class="arch-layer dec"><span>Decoder block 1 + output</span><span class="arch-ch">64ch → 32ch → 1ch · 8× total upsample</span></div>
-          </div>
-        </div>
-      </div>
-
-      <!-- RAG -->
-      <div class="project-card">
-        <div class="project-header">
-          <div class="project-title">RAG-Powered PDF QA System</div>
-          <div class="project-meta">
-            <span class="project-year">Mar 2026</span>
-            <a href="https://github.com/ShamsGhani" target="_blank" class="project-link">github ↗</a>
-          </div>
-        </div>
-        <div class="project-tags">
-          <span class="tag tag-llm">RAG</span><span class="tag tag-llm">FAISS</span>
-          <span class="tag tag-llm">Ollama</span><span class="tag tag-llm">SentenceTransformers</span>
-          <span class="tag tag-infra">Local LLM</span>
-        </div>
-        <p class="project-desc">
-          Local retrieval-augmented QA system over a multi-million-PDF corpus. Implements <strong>sentence-aware chunking</strong>, FAISS semantic retrieval, and citation-grounded answers with explicit <strong>hallucination-safe abstention</strong> — refuses to answer when context is insufficient rather than confabulating. Fully on-device via Ollama.
-        </p>
-        <div class="project-viz">
-          <div class="viz-label">retrieval pipeline</div>
-          <div class="pipeline">
-            <div class="pipe-step">PDF ingest</div><div class="pipe-arrow">→</div>
-            <div class="pipe-step hl">sentence chunking</div><div class="pipe-arrow">→</div>
-            <div class="pipe-step">embed</div><div class="pipe-arrow">→</div>
-            <div class="pipe-step hl">FAISS index</div><div class="pipe-arrow">→</div>
-            <div class="pipe-step">top-k retrieve</div><div class="pipe-arrow">→</div>
-            <div class="pipe-step hl">Ollama LLM</div><div class="pipe-arrow">→</div>
-            <div class="pipe-step">cited answer</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- SOUNDSTAGE -->
-      <div class="project-card">
-        <div class="project-header">
-          <div class="project-title">Soundstage — AI Audio Synthesis</div>
-          <div class="project-meta">
-            <span class="project-year">Nov 2023</span>
-            <a href="https://github.com/ShamsGhani" target="_blank" class="project-link">github ↗</a>
-          </div>
-        </div>
-        <div class="project-tags">
-          <span class="tag tag-ml">Latent Diffusion</span><span class="tag tag-ml">1D U-Net</span>
-          <span class="tag tag-infra">GCP</span><span class="tag tag-infra">Flask</span>
-        </div>
-        <p class="project-desc">
-          Led a 4-person team building a text-conditional audio synthesis platform. Architecture: stacked 1D U-Net in latent space conditioned on text embeddings. Deployed on <strong>GCP with Flask API</strong>, monitoring, and structured logging.
-        </p>
-        <div class="project-viz">
-          <div class="viz-label">latent diffusion — denoising steps (t=1000 → t=0)</div>
-          <div class="noise-row" id="noiseRow"></div>
-        </div>
-      </div>
-
-      <!-- DDPM -->
-      <div class="project-card">
-        <div class="project-header">
-          <div class="project-title">Image Synthesis via DDPM</div>
-          <div class="project-meta"><span class="project-year">Nov 2022</span></div>
-        </div>
-        <div class="project-tags">
-          <span class="tag tag-ml">DDPM</span><span class="tag tag-cv">CNN Autoencoder</span>
-          <span class="tag tag-ml">MNIST</span><span class="tag tag-ml">Class-conditional</span>
-        </div>
-        <p class="project-desc">CNN autoencoder with dropout regularisation and custom learning rate scheduling. Generated class-conditional images on MNIST (70,000 images). Explored noise schedule design and denoising step count vs sample quality trade-offs.</p>
-      </div>
-
-      <!-- STYLE TRANSFER -->
-      <div class="project-card">
-        <div class="project-header">
-          <div class="project-title">Live Neural Style Transfer</div>
-          <div class="project-meta">
-            <span class="project-year">Nov 2021</span>
-            <a href="https://github.com/shamsghani/LiveStyleTransfer" target="_blank" class="project-link">github ↗</a>
-          </div>
-        </div>
-        <div class="project-tags">
-          <span class="tag tag-cv">Neural Style Transfer</span><span class="tag tag-cv">COCO</span>
-          <span class="tag tag-cv">Instance Norm</span><span class="tag tag-cv">Real-time</span>
-        </div>
-        <p class="project-desc">Neural style transfer applied to live video. Fast style transfer CNNs trained on COCO (80,000+ images), optimised with <strong>instance normalisation</strong> to minimise frame-to-frame artifacts. Styles: La Muse, Rain Princess, Udnie, The Wave.</p>
-        <div class="project-viz">
-          <div class="viz-label">inference pipeline</div>
-          <div class="pipeline">
-            <div class="pipe-step">live frame</div><div class="pipe-arrow">→</div>
-            <div class="pipe-step hl">content encode</div><div class="pipe-arrow">→</div>
-            <div class="pipe-step">style blend (IN)</div><div class="pipe-arrow">→</div>
-            <div class="pipe-step hl">decode</div><div class="pipe-arrow">→</div>
-            <div class="pipe-step">styled frame</div>
-          </div>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-<div class="divider"></div>
-
-<!-- EXPERIENCE -->
-<section id="experience">
-  <div class="wrap">
-    <div class="section-label">experience</div>
-    <div class="timeline">
-      <div class="tl-item">
-        <div class="tl-date">Apr – Sep 2025</div>
-        <div class="tl-title">Graduate Research Assistant</div>
-        <div class="tl-org">Queen's University Belfast — Dr. Richard Gault</div>
-        <div class="tl-desc"><ul>
-          <li>Deep FOCUS dissertation: focal loss optimisation for super-resolution microscopy</li>
-          <li>Generated 10,000-sample synthetic SMLM dataset; achieved PSNR 33.8 dB, SSIM 0.83, IoU 0.50</li>
-          <li>Reimplemented Deep-STORM end-to-end in PyTorch from deprecated Keras codebase</li>
-        </ul></div>
-      </div>
-      <div class="tl-item">
-        <div class="tl-date">Nov 2025 – Feb 2026</div>
-        <div class="tl-title">Volunteer Data Analyst</div>
-        <div class="tl-org">National Museums NI</div>
-        <div class="tl-desc"><ul>
-          <li>Visitor footfall analysis across multiple sites; built forecasting models for operational planning</li>
-          <li>Delivered visual reports to non-technical stakeholders</li>
-        </ul></div>
-      </div>
-      <div class="tl-item">
-        <div class="tl-date">Jun 2023 – Jun 2024</div>
-        <div class="tl-title">Machine Learning Engineer</div>
-        <div class="tl-org">Profundus — Computer Vision Startup, Islamabad</div>
-        <div class="tl-desc"><ul>
-          <li>Virtual try-on for eyeglasses; full pipeline ownership from data collection to production deployment</li>
-          <li>Multi-modal information extraction pipeline with A/B testing and systematic QA</li>
-          <li>Background removal via contrast maps and image segmentation</li>
-          <li>ML components for IoT medical device across interdisciplinary teams</li>
-        </ul></div>
-      </div>
-      <div class="tl-item">
-        <div class="tl-date">Jul – Oct 2022</div>
-        <div class="tl-title">AI Engineering Intern</div>
-        <div class="tl-org">Profundus</div>
-        <div class="tl-desc">Image search application using TensorFlow and FAISS; deployed on FastAPI with full API documentation and performance monitoring.</div>
-      </div>
-      <div class="tl-item" style="padding-bottom:0">
-        <div class="tl-date">Feb 2021 – Feb 2023</div>
-        <div class="tl-title">Director of External Operations & Senior Consultant</div>
-        <div class="tl-org">GIK Consulting Group</div>
-        <div class="tl-desc">Resolved engineering case study for Y-Combinator startup Byte (pro bono). Training frameworks that improved team performance metrics by 50%.</div>
       </div>
     </div>
 
-    <div style="margin-top:3rem">
-      <div class="section-label" style="margin-bottom:1.5rem">education</div>
+    <div class="project-row reveal">
+      <div class="project-info">
+        <h3>RAG PDF QA System</h3>
+        <span class="project-meta">Mar 2026 • Local LLM Architecture</span>
+        <p class="project-desc">Local retrieval-augmented QA system over a multi-million-PDF corpus. Implements sentence-aware chunking, FAISS semantic retrieval, and citation-grounded answers with explicit hallucination-safe abstention via Ollama.</p>
+        <div class="tags"><span class="tag">RAG</span><span class="tag">FAISS</span><span class="tag">Ollama</span><span class="tag">SentenceTransformers</span></div>
+      </div>
+      <div class="project-visual">
+         <div style="font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; color: var(--muted); text-align: center;">
+          <div style="font-size: 2rem; color: var(--text); margin-bottom: 1rem;">⌘</div>
+          Chunking → FAISS → Retrieve → Generate
+        </div>
+      </div>
+    </div>
+
+    <div class="project-row reveal">
+      <div class="project-info">
+        <h3>Soundstage</h3>
+        <span class="project-meta">Nov 2023 • AI Audio Synthesis</span>
+        <p class="project-desc">Led a 4-person team building a text-conditional audio synthesis platform. Architecture: stacked 1D U-Net in latent space conditioned on text embeddings. Deployed on GCP with Flask API.</p>
+        <div class="tags"><span class="tag">Latent Diffusion</span><span class="tag">1D U-Net</span><span class="tag">GCP</span></div>
+      </div>
+      <div class="project-visual">
+         <div style="font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; color: var(--muted); text-align: center;">
+          <div style="font-size: 2rem; color: var(--text); margin-bottom: 1rem;">∿</div>
+          t=1000 → Denoising → t=0
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EXPERIENCE -->
+  <section id="experience">
+    <h2 class="section-title reveal"><i>Chronology</i></h2>
+    <div class="glass-panel reveal d-1">
       <div class="timeline">
         <div class="tl-item">
-          <div class="tl-date">Sep 2024 – Sep 2025</div>
-          <div class="tl-title">MSc Artificial Intelligence</div>
-          <div class="tl-org">Queen's University Belfast — Russell Group</div>
-          <div class="tl-desc">Machine Learning, Deep Learning, Computer Vision, AI for Health. 88% of QUB research rated world-leading or internationally excellent.</div>
+          <div class="tl-date">Apr 2025 – Sep 2025</div>
+          <div class="tl-title">Graduate Research Assistant</div>
+          <div class="tl-org">Queen's University Belfast</div>
+          <ul class="tl-desc">
+            <li>Deep FOCUS dissertation: focal loss optimisation for super-resolution microscopy.</li>
+            <li>Generated 10,000-sample synthetic SMLM dataset; achieved PSNR 33.8 dB.</li>
+            <li>Reimplemented Deep-STORM end-to-end in PyTorch.</li>
+          </ul>
         </div>
-        <div class="tl-item" style="padding-bottom:0">
-          <div class="tl-date">Aug 2019 – Jun 2023</div>
-          <div class="tl-title">BSc Computer Science</div>
-          <div class="tl-org">GIK Institute of Engineering Sciences & Technology</div>
-          <div class="tl-desc">Specialised in AI, Deep Learning, Data Science, NLP, and Information Retrieval.</div>
+        <div class="tl-item">
+          <div class="tl-date">Jun 2023 – Jun 2024</div>
+          <div class="tl-title">Machine Learning Engineer</div>
+          <div class="tl-org">Profundus</div>
+          <ul class="tl-desc">
+            <li>Virtual try-on for eyeglasses; full pipeline ownership from data collection to production deployment.</li>
+            <li>Multi-modal information extraction pipeline with A/B testing and systematic QA.</li>
+            <li>Background removal via contrast maps and image segmentation.</li>
+          </ul>
+        </div>
+        <div class="tl-item" style="padding-bottom: 0;">
+          <div class="tl-date">Feb 2021 – Feb 2023</div>
+          <div class="tl-title">Director of External Operations</div>
+          <div class="tl-org">GIK Consulting Group</div>
+          <ul class="tl-desc">
+            <li>Resolved engineering case study for Y-Combinator startup Byte.</li>
+            <li>Training frameworks that improved team performance metrics by 50%.</li>
+          </ul>
         </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<div class="divider"></div>
-
-<!-- CONTACT -->
-<section id="contact">
-  <div class="wrap">
-    <div class="section-label">contact</div>
-    <div class="contact-grid">
-      <div>
-        <h2 class="contact-head">Let's build something <em>interesting.</em></h2>
-        <p class="contact-sub">Open to PhD collaborations, research discussions, ML engineering roles, and consulting. Based in Rawalpindi — open to relocation to UK or elsewhere.</p>
-        <div class="contact-links">
-          <a href="mailto:shamsghani1@gmail.com" class="contact-link">
-            <div class="c-icon">✉</div>
-            <div class="c-text"><div class="c-label">email</div><div class="c-value">shamsghani1@gmail.com</div></div>
-            <div class="c-arrow">→</div>
-          </a>
-          <a href="https://linkedin.com/in/shamsghani" target="_blank" class="contact-link">
-            <div class="c-icon" style="font-family:'DM Mono',monospace;font-size:12px;font-weight:600;color:var(--accent2)">in</div>
-            <div class="c-text"><div class="c-label">linkedin</div><div class="c-value">linkedin.com/in/shamsghani</div></div>
-            <div class="c-arrow">→</div>
-          </a>
-          <a href="https://github.com/ShamsGhani" target="_blank" class="contact-link">
-            <div class="c-icon" style="font-family:'DM Mono',monospace;font-size:12px;font-weight:600">gh</div>
-            <div class="c-text"><div class="c-label">github</div><div class="c-value">github.com/ShamsGhani</div></div>
-            <div class="c-arrow">→</div>
-          </a>
-          <a href="tel:+923225000155" class="contact-link">
-            <div class="c-icon">☎</div>
-            <div class="c-text"><div class="c-label">phone (PK)</div><div class="c-value">+92 322 5000155</div></div>
-            <div class="c-arrow">→</div>
-          </a>
-          <a href="tel:+447876369841" class="contact-link">
-            <div class="c-icon">☎</div>
-            <div class="c-text"><div class="c-label">phone (UK)</div><div class="c-value">+44 7876 369841</div></div>
-            <div class="c-arrow">→</div>
-          </a>
-        </div>
-      </div>
-      <div class="research-box">
-        <h3>research interests</h3>
-        <div class="r-item"><span><strong>Autonomous cognition</strong> — can a model develop genuine intrinsic motivation structures?</span></div>
-        <div class="r-item"><span><strong>Metacognitive architectures</strong> — throttled cognitive clocks, steerable interest kernels, unprompted knowledge surfacing</span></div>
-        <div class="r-item"><span><strong>Recursive reasoning & stopping conditions</strong> — semantic drift and entailment scoring as halting criteria</span></div>
-        <div class="r-item"><span><strong>Deep learning for scientific imaging</strong> — microscopy, astronomy, sparse emitter detection</span></div>
-        <div class="r-item"><span><strong>Language & etymology</strong> — how meaning propagates and mutates across time</span></div>
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="reveal">
+      <h2 class="contact-huge">Let's build<br>something <i>insane.</i></h2>
+      <div class="contact-links">
+        <div class="magnetic-wrap" data-magnetic="0.4"><a href="mailto:shamsghani1@gmail.com" class="c-link magnetic-child">Email</a></div>
+        <div class="magnetic-wrap" data-magnetic="0.4"><a href="https://linkedin.com/in/shamsghani" target="_blank" class="c-link magnetic-child">LinkedIn</a></div>
+        <div class="magnetic-wrap" data-magnetic="0.4"><a href="https://github.com/ShamsGhani" target="_blank" class="c-link magnetic-child">GitHub</a></div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
+
+</main>
 
 <footer>
-  <div class="wrap">
-    <div class="inner">
-      <div class="fl">M Shams Ul Haq Ghani · 2025–2026 · Rawalpindi / Belfast</div>
-      <div class="footer-right">
-        <a href="https://github.com/ShamsGhani">github</a>
-        <a href="https://linkedin.com/in/shamsghani">linkedin</a>
-        <a href="mailto:shamsghani1@gmail.com">email</a>
-      </div>
-    </div>
-  </div>
+  <p>M Shams Ul Haq Ghani © 2025–2026. Designed for the Ethereal.</p>
 </footer>
 
 <script>
-/* ═══════════════════════════════════════
-   THEME TOGGLE — persistent via localStorage
-═══════════════════════════════════════ */
+/* ═══════════════════════════════════════════
+   THEME TOGGLE
+═══════════════════════════════════════════ */
 const html = document.documentElement;
 const toggle = document.getElementById('themeToggle');
-const themeLabel = document.getElementById('themeLabel');
-
-// Load saved theme
 const saved = localStorage.getItem('sg-theme') || 'dark';
 html.setAttribute('data-theme', saved);
-themeLabel.textContent = saved;
 
 toggle.addEventListener('click', () => {
   const curr = html.getAttribute('data-theme');
   const next = curr === 'dark' ? 'light' : 'dark';
   html.setAttribute('data-theme', next);
   localStorage.setItem('sg-theme', next);
-  themeLabel.textContent = next;
-  // Refresh GOL colors
-  updateGolColors();
 });
 
-/* ═══════════════════════════════════════
-   CURSOR
-═══════════════════════════════════════ */
-const cur = document.getElementById('cur');
-const curR = document.getElementById('curR');
-let mx=0, my=0, rx=0, ry=0;
-document.addEventListener('mousemove', e => { mx=e.clientX; my=e.clientY; });
-(function loop(){
-  cur.style.left=mx+'px'; cur.style.top=my+'px';
-  rx+=(mx-rx)*.1; ry+=(my-ry)*.1;
-  curR.style.left=rx+'px'; curR.style.top=ry+'px';
-  requestAnimationFrame(loop);
-})();
-document.querySelectorAll('a,button').forEach(el => {
-  el.addEventListener('mouseenter', () => { curR.style.width='52px'; curR.style.height='52px'; });
-  el.addEventListener('mouseleave', () => { curR.style.width='36px'; curR.style.height='36px'; });
+/* ═══════════════════════════════════════════
+   SCROLL REVEAL (INTERSECTION OBSERVER)
+═══════════════════════════════════════════ */
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('active');
+    }
+  });
+}, { threshold: 0.15, rootMargin: "0px 0px -50px 0px" });
+
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+/* ═══════════════════════════════════════════
+   CUSTOM CURSOR & MAGNETIC EFFECT
+═══════════════════════════════════════════ */
+const dot = document.getElementById('cursorDot');
+const ring = document.getElementById('cursorRing');
+let mx = window.innerWidth/2, my = window.innerHeight/2;
+let dx = mx, dy = my; 
+let rx = mx, ry = my;
+let isHovering = false;
+let magneticTarget = null;
+let magneticForce = 0;
+
+window.addEventListener('mousemove', e => {
+  mx = e.clientX;
+  my = e.clientY;
 });
 
-/* ═══════════════════════════════════════
-   GAME OF LIFE
-   
-   Simple and correct:
-   - Fixed cell size, cells stay on the grid always
-   - Each cell has an alpha value (0..1) that smoothly
-     fades in on birth and fades out on death
-   - Drawn as small soft circles, radius slightly under
-     half a cell so they never touch neighbours
-   - GOL logic ticks at a fixed interval; rendering runs
-     every rAF and interpolates the alpha for smoothness
-   - No particles, no world positions, no movement —
-     just the grid, with graceful opacity transitions
-═══════════════════════════════════════ */
-const canvas = document.getElementById('golCanvas');
-const ctx    = canvas.getContext('2d');
+// Magnetic elements setup
+document.querySelectorAll('.magnetic-wrap').forEach(wrap => {
+  const child = wrap.querySelector('.magnetic-child');
+  const force = parseFloat(wrap.dataset.magnetic || 0.3);
+  
+  wrap.addEventListener('mouseenter', () => {
+    isHovering = true;
+    magneticTarget = { wrap, child, force };
+    document.body.classList.add('hover-active');
+    
+    // Morph ring to element size
+    const rect = child.getBoundingClientRect();
+    ring.style.width = `${rect.width + 24}px`;
+    ring.style.height = `${rect.height + 24}px`;
+    ring.style.borderRadius = '100px';
+  });
+  
+  wrap.addEventListener('mouseleave', () => {
+    isHovering = false;
+    magneticTarget = null;
+    child.style.transform = `translate(0px, 0px)`;
+    document.body.classList.remove('hover-active');
+    
+    // Reset ring
+    ring.style.width = '40px';
+    ring.style.height = '40px';
+    ring.style.borderRadius = '50%';
+  });
+});
 
-const CELL     = 16;   // px per grid cell — small enough to see the grid
-const RADIUS   = 5.5;  // circle radius — comfortably inside cell, never touches
-const FPS      = 6;    // GOL generations per second
-const FADE_IN  = 0.12; // alpha added per rAF frame when born  (~8 frames to full)
-const FADE_OUT = 0.08; // alpha subtracted per rAF when dying  (~12 frames to zero)
-
-let COLS, ROWS;
-let grid;       // Float32Array — alpha per cell (0..1), positive = alive/fading in, negative trick: we use a state array
-let state;      // Uint8Array — 0=dead, 1=alive, 2=born-this-gen, 3=died-this-gen
-let alpha;      // Float32Array — current rendered opacity per cell
-let nextState;  // Uint8Array scratch
-
-let gen = 0, aliveCount = 0;
-let lastTick = 0;
-const tickInterval = 1000 / FPS;
-
-function idx(r, c) { return r * COLS + c; }
-
-function initGrid() {
-  const n = ROWS * COLS;
-  state     = new Uint8Array(n);
-  nextState = new Uint8Array(n);
-  alpha     = new Float32Array(n);
-
-  for (let r = 0; r < ROWS; r++) {
-    for (let c = 0; c < COLS; c++) {
-      const alive = Math.random() < 0.25;
-      state[idx(r,c)] = alive ? 1 : 0;
-      alpha[idx(r,c)] = alive ? 1 : 0;
-    }
-  }
-  gen = 0;
-}
-
-function resize() {
-  canvas.width  = canvas.offsetWidth  || window.innerWidth;
-  canvas.height = canvas.offsetHeight || window.innerHeight;
-  COLS = Math.ceil(canvas.width  / CELL) + 1;
-  ROWS = Math.ceil(canvas.height / CELL) + 1;
-  initGrid();
-}
-
-// ── GOL tick ───────────────────────────────────────────────
-function golTick() {
-  aliveCount = 0;
-
-  for (let r = 0; r < ROWS; r++) {
-    for (let c = 0; c < COLS; c++) {
-      let n = 0;
-      for (let dr = -1; dr <= 1; dr++)
-        for (let dc = -1; dc <= 1; dc++) {
-          if (!dr && !dc) continue;
-          const nr = (r + dr + ROWS) % ROWS;
-          const nc = (c + dc + COLS) % COLS;
-          const s  = state[idx(nr, nc)];
-          if (s === 1 || s === 2) n++; // alive or born-this-gen count as alive
-        }
-
-      const alive = state[idx(r,c)] === 1 || state[idx(r,c)] === 2;
-      const survives = alive ? (n === 2 || n === 3) : (n === 3);
-      nextState[idx(r,c)] = survives ? 1 : 0;
-      if (survives) aliveCount++;
-    }
-  }
-
-  // Figure out births and deaths, set transition states
-  for (let i = 0; i < ROWS * COLS; i++) {
-    const wasAlive = state[i] === 1 || state[i] === 2;
-    const willLive = nextState[i] === 1;
-    if (!wasAlive && willLive) {
-      state[i] = 2; // born — alpha will ramp up
-    } else if (wasAlive && !willLive) {
-      state[i] = 3; // dying — alpha will ramp down
-    } else if (wasAlive && willLive) {
-      state[i] = 1; // stays alive
-    } else {
-      state[i] = 0; // stays dead
-    }
-  }
-
-  gen++;
-
-  // Stagnation rescue
-  if (aliveCount < COLS * ROWS * 0.05) {
-    for (let r = 0; r < ROWS; r++)
-      for (let c = 0; c < COLS; c++)
-        if (Math.random() < 0.08 && state[idx(r,c)] === 0) {
-          state[idx(r,c)] = 2;
-          aliveCount++;
-        }
-  }
-}
-
-// ── draw ───────────────────────────────────────────────────
-function drawGOL() {
-  const W = canvas.width, H = canvas.height;
-  ctx.clearRect(0, 0, W, H);
-
-  const dark  = html.getAttribute('data-theme') === 'dark';
-  const [cr, cg, cb] = dark ? [122, 158, 110] : [74, 110, 64];
-
-  for (let r = 0; r < ROWS; r++) {
-    for (let c = 0; c < COLS; c++) {
-      const i = idx(r, c);
-      const s = state[i];
-
-      // Advance alpha
-      if (s === 1) {
-        alpha[i] = Math.min(1, alpha[i] + FADE_IN);
-      } else if (s === 2) {
-        alpha[i] = Math.min(1, alpha[i] + FADE_IN);
-        if (alpha[i] >= 0.99) state[i] = 1; // fully born
-      } else if (s === 3) {
-        alpha[i] = Math.max(0, alpha[i] - FADE_OUT);
-        if (alpha[i] <= 0) state[i] = 0; // fully dead
-      } else {
-        // dead — bleed off any residual alpha quickly
-        if (alpha[i] > 0) alpha[i] = Math.max(0, alpha[i] - FADE_OUT * 2);
-      }
-
-      const a = alpha[i];
-      if (a < 0.01) continue;
-
-      const cx2 = c * CELL + CELL / 2;
-      const cy2 = r * CELL + CELL / 2;
-
-      // Soft radial gradient per circle — glow fades to zero at RADIUS
-      const grad = ctx.createRadialGradient(cx2, cy2, 0, cx2, cy2, RADIUS);
-      grad.addColorStop(0,    `rgba(${cr},${cg},${cb},${(a * 0.92).toFixed(3)})`);
-      grad.addColorStop(0.45, `rgba(${cr},${cg},${cb},${(a * 0.75).toFixed(3)})`);
-      grad.addColorStop(0.78, `rgba(${cr},${cg},${cb},${(a * 0.30).toFixed(3)})`);
-      grad.addColorStop(1,    `rgba(${cr},${cg},${cb},0)`);
-
-      ctx.beginPath();
-      ctx.arc(cx2, cy2, RADIUS, 0, Math.PI * 2);
-      ctx.fillStyle = grad;
-      ctx.fill();
-    }
-  }
-}
-
-// ── loop ───────────────────────────────────────────────────
-function animate(ts) {
-  requestAnimationFrame(animate);
-  if (ts - lastTick >= tickInterval) {
-    lastTick = ts;
-    golTick();
-    document.getElementById('golMeta').textContent =
-      `gen ${gen} · ${aliveCount} alive`;
-  }
-  drawGOL();
-}
-
-function updateGolColors() { /* read live each frame */ }
-
-window.addEventListener('resize', resize);
-
-setTimeout(() => {
-  resize();
-  requestAnimationFrame(animate);
-}, 80);
-
-/* ═══════════════════════════════════════
-   BAR CHART ANIMATION
-═══════════════════════════════════════ */
-let barsAnimated = false;
-const barObs = new IntersectionObserver(entries => {
-  if (entries[0].isIntersecting && !barsAnimated) {
-    barsAnimated = true;
-    ['bf','bl1','bm','bb'].forEach(id => {
-      const el = document.getElementById(id);
-      if (el) el.style.width = el.dataset.w + '%';
+document.querySelectorAll('a, button').forEach(el => {
+  if (!el.closest('.magnetic-wrap')) {
+    el.addEventListener('mouseenter', () => {
+      document.body.classList.add('hover-active');
+      const rect = el.getBoundingClientRect();
+      ring.style.width = `${rect.width + 24}px`;
+      ring.style.height = `${rect.height + 24}px`;
+      ring.style.borderRadius = '100px';
+    });
+    el.addEventListener('mouseleave', () => {
+      document.body.classList.remove('hover-active');
+      ring.style.width = '40px';
+      ring.style.height = '40px';
+      ring.style.borderRadius = '50%';
     });
   }
-}, { threshold: 0.3 });
-const barEl = document.getElementById('bf');
-if (barEl) barObs.observe(barEl);
+});
 
-/* ═══════════════════════════════════════
-   NOISE DIFFUSION VIZ
-═══════════════════════════════════════ */
-function buildNoise() {
-  const row = document.getElementById('noiseRow');
-  if (!row) return;
-  const steps = 7;
-  for (let i=0; i<steps; i++) {
-    const t = 1 - i/(steps-1);
-    const wrap = document.createElement('div');
-    wrap.className = 'noise-box';
-    const c = document.createElement('canvas');
-    c.width = 48; c.height = 48;
-    const ctx2 = c.getContext('2d');
-    const img = ctx2.createImageData(48, 48);
-    for (let p=0; p<48*48; p++) {
-      const nx=p%48, ny=Math.floor(p/48);
-      const noise = Math.random();
-      let v;
-      if (i===steps-1) {
-        const cx=24,cy=24,r=14;
-        const dist = Math.sqrt((nx-cx)**2+(ny-cy)**2);
-        v = dist<r&&dist>r-4 ? 220 : dist<r-4&&dist>r-8 ? 80 : 20;
-      } else {
-        const sig = 0.3+0.2*Math.sin(nx*.5)*Math.cos(ny*.5);
-        v = Math.floor((noise*t+(1-t)*sig)*255);
-      }
-      img.data[p*4]   = Math.floor(v*0.75+40*(1-t));
-      img.data[p*4+1] = Math.floor(v*0.65+25*(1-t));
-      img.data[p*4+2] = Math.floor(v*0.45+10*t);
-      img.data[p*4+3] = 255;
+function renderCursor() {
+  // Lerp cursor dot fast
+  dx += (mx - dx) * 0.4;
+  dy += (my - dy) * 0.4;
+  
+  // Lerp cursor ring slower
+  rx += (mx - rx) * 0.15;
+  ry += (my - ry) * 0.15;
+
+  let finalDx = dx, finalDy = dy;
+  let finalRx = rx, finalRy = ry;
+
+  // Apply magnetic physics
+  if (magneticTarget) {
+    const { wrap, child, force } = magneticTarget;
+    const rect = wrap.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+    
+    // Distance from center of element to mouse
+    const distX = mx - centerX;
+    const distY = my - centerY;
+    
+    // Move child slightly towards mouse
+    child.style.transform = `translate(${distX * force}px, ${distY * force}px)`;
+    
+    // Snap ring to child center
+    finalRx = centerX + distX * force * 0.5;
+    finalRy = centerY + distY * force * 0.5;
+  }
+
+  dot.style.transform = `translate3d(${finalDx}px, ${finalDy}px, 0) translate(-50%, -50%)`;
+  ring.style.transform = `translate3d(${finalRx}px, ${finalRy}px, 0) translate(-50%, -50%)`;
+  
+  requestAnimationFrame(renderCursor);
+}
+requestAnimationFrame(renderCursor);
+
+/* ═══════════════════════════════════════════
+   ETHEREAL ORB CANVAS SIMULATION (WEBGL VIBE)
+═══════════════════════════════════════════ */
+const canvas = document.getElementById('bgCanvas');
+const ctx = canvas.getContext('2d');
+let w, h;
+let orbs = [];
+const ORB_COUNT = 25;
+
+function resize() {
+  w = canvas.width = window.innerWidth;
+  h = canvas.height = window.innerHeight;
+}
+window.addEventListener('resize', resize);
+resize();
+
+class Orb {
+  constructor() {
+    this.reset();
+    // randomize starting position fully
+    this.y = Math.random() * h;
+  }
+  reset() {
+    this.r = Math.random() * 200 + 100; // Large radius for blur effect
+    this.x = Math.random() * w;
+    this.y = h + this.r + Math.random() * 200; // Start below screen
+    this.vx = (Math.random() - 0.5) * 0.5;
+    this.vy = -(Math.random() * 0.5 + 0.2); // Float upwards
+    this.alpha = Math.random() * 0.4 + 0.1;
+    this.type = Math.random() > 0.5 ? 1 : 2;
+  }
+  update() {
+    this.x += this.vx;
+    this.y += this.vy;
+    
+    // Mouse parallax repulsion (slight)
+    const dx = mx - this.x;
+    const dy = my - this.y;
+    const dist = Math.sqrt(dx*dx + dy*dy);
+    if (dist < 400) {
+      this.x -= (dx / dist) * 0.5;
+      this.y -= (dy / dist) * 0.5;
     }
-    ctx2.putImageData(img, 0, 0);
-    const lbl = document.createElement('div');
-    lbl.className = 'noise-lbl';
-    lbl.textContent = i===0?'t=1000':i===steps-1?'t=0':'t='+Math.round(t*1000);
-    wrap.appendChild(c); wrap.appendChild(lbl);
-    row.appendChild(wrap);
-    if (i < steps-1) {
-      const arr = document.createElement('div');
-      arr.style.cssText = 'flex-shrink:0;font-family:"DM Mono",monospace;font-size:10px;color:rgba(255,255,255,.15);padding-bottom:12px;align-self:center';
-      arr.textContent = '→';
-      row.appendChild(arr);
-    }
+
+    if (this.y < -this.r * 2) this.reset();
+  }
+  draw() {
+    const isDark = html.getAttribute('data-theme') === 'dark';
+    const c1 = isDark ? '100, 130, 255' : '180, 200, 255';
+    const c2 = isDark ? '170, 110, 255' : '220, 190, 255';
+    const color = this.type === 1 ? c1 : c2;
+
+    const g = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.r);
+    g.addColorStop(0, `rgba(${color}, ${this.alpha})`);
+    g.addColorStop(1, `rgba(${color}, 0)`);
+    
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
+    ctx.fillStyle = g;
+    ctx.fill();
   }
 }
-buildNoise();
+
+for (let i = 0; i < ORB_COUNT; i++) orbs.push(new Orb());
+
+function renderCanvas() {
+  ctx.clearRect(0, 0, w, h);
+  
+  // Composite operation for glowing effect
+  const isDark = html.getAttribute('data-theme') === 'dark';
+  ctx.globalCompositeOperation = isDark ? 'screen' : 'multiply';
+  
+  orbs.forEach(orb => {
+    orb.update();
+    orb.draw();
+  });
+  
+  // Reset for standard drawing if needed later
+  ctx.globalCompositeOperation = 'source-over';
+  requestAnimationFrame(renderCanvas);
+}
+requestAnimationFrame(renderCanvas);
+
 </script>
 </body>
 </html>
