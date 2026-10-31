@@ -25,7 +25,7 @@ const { svg } = buildItanzRig();
           <span class="iso-plate-corner" data-corner="fig">Fig 3.0</span>
           <span class="iso-plate-corner" data-corner="title">MULTIMODAL RETRIEVOMETER</span>
           <span class="iso-plate-corner" data-corner="hint">TRIGGER AUDIT · TOGGLE RETRIEVAL DEPTH</span>
-          <span class="iso-plate-corner" data-corner="readout" id="itanzReadout">K=3 PARETO ELBOW · DISAMBIGUATION GATED: 98.1% PRECISION · 0 HALLUCINATIONS</span>
+          <span class="iso-plate-corner" data-corner="readout" id="itanzReadout">K=3 PARETO BOUND · DISAMBIGUATION GATED · ABSTENTION TRIPWIRE ARMED</span>
         </div>
         
         <div class="rig-svg-host" set:html={svg} />
@@ -82,7 +82,7 @@ const { svg } = buildItanzRig();
 
     const ragModes = {
       pareto: {
-        text: 'K=3 PARETO ELBOW · DISAMBIGUATION GATED: 98.1% PRECISION · 0 HALLUCINATIONS',
+        text: 'K=3 PARETO BOUND · DISAMBIGUATION GATED · ABSTENTION TRIPWIRE ARMED',
         needleCollision: 0.12,
         needleColor: '#38bdf8',
         scanY: 0
@@ -94,7 +94,7 @@ const { svg } = buildItanzRig();
         scanY: 25
       },
       vlm: {
-        text: 'VLM CLINICAL EXTRACTION: PYMUPDF RASTERIZED · 99.4% PYDANTIC VALIDATION COMPLIANT',
+        text: 'VLM CLINICAL EXTRACTION: PYMUPDF RASTERIZED · PYDANTIC SCHEMA VALIDATED',
         needleCollision: 0.05,
         needleColor: '#00e5a3',
         scanY: -25
