@@ -27,7 +27,7 @@ export const site = {
   description: 'Machine Learning Engineer with production computer vision experience and research in scientific imaging.',
   email: 'shamsghani1@gmail.com',
   phoneUK: '+44 7876 369841',
-  phonePK: '+92 300 0000000',
+  phonePK: '+92 322 5000155',
   location: 'Islamabad, Pakistan',
   visaStatus: 'Valid UK Visa until Jan 2028 (Available to relocate to the UK, no immediate sponsorship required)',
   socials: [

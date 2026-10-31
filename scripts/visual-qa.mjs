@@ -42,3 +42,4 @@ import { preview } from 'astro';
   await server.stop();
   process.exit(0);
 })();
+

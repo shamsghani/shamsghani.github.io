@@ -141,7 +141,7 @@ const htmlContent = `<!DOCTYPE html>
   <div class="title">Machine Learning Engineer · Computer Vision & Representation Learning</div>
   <div class="contact-bar">
     <span class="contact-item">📧 shamsghani1@gmail.com</span>
-    <span class="contact-item">📱 +44 7876 369841 (UK)</span>
+    <span class="contact-item">📱 +44 7876 369841 (UK) · +92 322 5000155 (PK)</span>
     <span class="contact-item">📍 Islamabad, Pakistan</span>
     <span class="contact-item">🔗 <a href="https://linkedin.com/in/shamsghani">linkedin.com/in/shamsghani</a></span>
     <span class="contact-item">💻 <a href="https://github.com/ShamsGhani">github.com/ShamsGhani</a></span>
