@@ -1,0 +1,163 @@
+---
+import { buildItanzRig } from '../iso/itanz-geometry';
+import '../iso/iso.css';
+
+const { svg } = buildItanzRig();
+---
+
+<div class="anatomy-section" data-reveal="up" id="fig-itanz">
+  <div class="anatomy-header">
+    <div class="anatomy-label">
+      <span class="mono-badge">Fig 03</span>
+      <span>Enterprise AI Telemetry</span>
+    </div>
+    <h3 class="anatomy-title">Document AI & RAG Disambiguation Retrievometer</h3>
+    <p class="anatomy-desc">
+      Production telemetry from Itanz: multimodal extraction of scanned healthcare correspondence via local Vision-Language Models (Qwen3.5:4b),
+      coupled with a 57,312-chunk GPU vector index and cross-corpus collision auditing ("The Patches Probe").
+    </p>
+  </div>
+
+  <div class="iso-card-wrap">
+    <figure class="iso-figure iso">
+      <div class="iso-plate iso" id="itanzPlate">
+        <div class="iso-plate-corners" aria-hidden="true">
+          <span class="iso-plate-corner" data-corner="fig">Fig 3.0</span>
+          <span class="iso-plate-corner" data-corner="title">MULTIMODAL RETRIEVOMETER</span>
+          <span class="iso-plate-corner" data-corner="hint">TRIGGER AUDIT · TOGGLE RETRIEVAL DEPTH</span>
+          <span class="iso-plate-corner" data-corner="readout" id="itanzReadout">K=3 PARETO ELBOW · DISAMBIGUATION GATED: 98.1% PRECISION · 0 HALLUCINATIONS</span>
+        </div>
+        
+        <div class="rig-svg-host" set:html={svg} />
+
+        <!-- Overlay Interactive Mode Controls -->
+        <div class="loss-control-bar">
+          <div class="loss-control-label">Audit Scenario:</div>
+          <div class="loss-btn-group" role="tablist" aria-label="RAG Evaluation Scenario">
+            <button class="loss-btn is-active" data-rag="pareto" role="tab" aria-selected="true">
+              <span class="loss-star">★</span> K=3 Optimal Elbow <span class="loss-psnr">57k Chunks</span>
+            </button>
+            <button class="loss-btn" data-rag="patches" role="tab" aria-selected="false">
+              Patches Probe <span class="loss-psnr">Collision Audit</span>
+            </button>
+            <button class="loss-btn" data-rag="vlm" role="tab" aria-selected="false">
+              VLM Schema Extract <span class="loss-psnr">Clinical Pydantic</span>
+            </button>
+            <button class="loss-btn" data-rag="unconstrained" role="tab" aria-selected="false">
+              Unconstrained Baseline <span class="loss-psnr">Hallucination Risk</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <figcaption class="iso-legend">
+        <div class="iso-keys">
+          <span class="iso-key"><span class="key-indicator emit-green"></span> Optical Document Scanning Platen</span>
+          <span class="iso-key"><span class="key-indicator laser-blue"></span> HNSW Vector Index Drum (57,312 Chunks)</span>
+          <span class="iso-key"><span class="key-indicator dial-indicator"></span> Disambiguation Collision Galvanometer</span>
+          <span class="iso-key"><span class="key-indicator dichroic-cube"></span> PyMuPDF Rasterizer Carriage</span>
+          <span class="iso-key"><span class="key-indicator piezo-stage"></span> JAXRetriever GPU Cosine Engine</span>
+        </div>
+        <div class="iso-caption">
+          Auditing Claim C5 from the production benchmark: The Patches Probe proves that cross-corpus collisions
+          require explicit entity disambiguation gating to prevent language model confabulation on multi-game and multi-document queries.
+        </div>
+      </figcaption>
+    </figure>
+  </div>
+</div>
+
+<script>
+  import { gsap } from 'gsap';
+  import { collisionNeedleAt } from '../iso/itanz-geometry';
+
+  function initItanzRig() {
+    const plate = document.getElementById('itanzPlate');
+    if (!plate) return;
+
+    const readout = document.getElementById('itanzReadout');
+    const buttons = plate.querySelectorAll<HTMLButtonElement>('.loss-btn');
+    const needle = plate.querySelector<SVGPathElement>('#collisionNeedle');
+    const scanLine = plate.querySelector<SVGPathElement>('#scanLaserLine');
+
+    const ragModes = {
+      pareto: {
+        text: 'K=3 PARETO ELBOW · DISAMBIGUATION GATED: 98.1% PRECISION · 0 HALLUCINATIONS',
+        needleCollision: 0.12,
+        needleColor: '#38bdf8',
+        scanY: 0
+      },
+      patches: {
+        text: 'PATCHES PROBE AUDIT: 0.88 CROSS-CORPUS COLLISION DETECTED · DISAMBIGUATION TRIGGERED',
+        needleCollision: 0.88,
+        needleColor: '#ef4444',
+        scanY: 25
+      },
+      vlm: {
+        text: 'VLM CLINICAL EXTRACTION: PYMUPDF RASTERIZED · 99.4% PYDANTIC VALIDATION COMPLIANT',
+        needleCollision: 0.05,
+        needleColor: '#00e5a3',
+        scanY: -25
+      },
+      unconstrained: {
+        text: 'UNCONSTRAINED RAG BASELINE: NAIVE TOP-K FAILED · CONFABULATED CROSS-DOCUMENT ENTITY',
+        needleCollision: 0.75,
+        needleColor: '#f59e0b',
+        scanY: 10
+      }
+    };
+
+    let currentCollision = 0.12;
+
+    function applyRag(mode: keyof typeof ragModes) {
+      const data = ragModes[mode];
+      if (!data) return;
+
+      buttons.forEach(b => {
+        const active = b.dataset.rag === mode;
+        b.classList.toggle('is-active', active);
+        b.setAttribute('aria-selected', active ? 'true' : 'false');
+      });
+
+      if (readout) readout.textContent = data.text;
+
+      const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const duration = prefersReduced ? 0 : 0.75;
+
+      const anim = { collision: currentCollision };
+      gsap.to(anim, {
+        collision: data.needleCollision,
+        duration,
+        ease: 'power2.out',
+        onUpdate: () => {
+          currentCollision = anim.collision;
+          if (needle) {
+            needle.setAttribute('d', collisionNeedleAt(anim.collision));
+            needle.setAttribute('stroke', data.needleColor);
+          }
+        }
+      });
+
+      if (scanLine) {
+        gsap.to(scanLine, {
+          opacity: mode === 'vlm' ? 1.0 : 0.6,
+          stroke: data.needleColor,
+          duration: 0.4
+        });
+      }
+    }
+
+    buttons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const mode = btn.dataset.rag as keyof typeof ragModes;
+        if (mode) applyRag(mode);
+      });
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initItanzRig);
+  } else {
+    initItanzRig();
+  }
+</script>

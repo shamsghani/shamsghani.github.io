@@ -1,0 +1,921 @@
+---
+// FigureDeepFocus.astro — Interactive SMLM Reconstruction & Loss Objective Comparator
+---
+
+<div class="smlm-studio" data-reveal="up" id="fig-deepfocus">
+  <div class="smlm-header">
+    <div class="smlm-label">
+      <span class="mono-badge">Fig 01</span>
+      <span>Empirical Loss Surface Comparison</span>
+    </div>
+    <h3 class="smlm-title">SMLM Super-Resolution: Neural Loss Function Objective Benchmark</h3>
+    <p class="smlm-desc">
+      In single-molecule localization microscopy (SMLM), sparse fluorescent blinking isolates individual fluorophores to overcome the ~250nm Abbe diffraction limit.
+      Compare how neural loss landscape geometry modulates gradient flow across 10,000 synthetic samples to resolve sub-diffraction emitters.
+    </p>
+  </div>
+
+  <div class="smlm-card">
+    <!-- Top Instrument Bar -->
+    <div class="smlm-bar">
+      <div class="bar-left">
+        <span class="status-indicator"></span>
+        <span class="bar-tag">PYTORCH SMLM ENGINE · 10,000 SAMPLES</span>
+      </div>
+      <div class="bar-right">
+        <span class="bar-coords">λ = 525nm · NA = 1.49 · 100x TIRF</span>
+      </div>
+    </div>
+
+    <!-- Main Visualizer Grid -->
+    <div class="smlm-display">
+      <!-- Interactive Canvas -->
+      <div class="smlm-canvas-wrap">
+        <canvas id="smlm-canvas" class="smlm-canvas" aria-label="Interactive Single-Molecule Localization Microscopy loss comparator showing emitter reconstruction"></canvas>
+        
+        <!-- Reticle Crosshair & Measurement Overlays -->
+        <div class="smlm-reticle" aria-hidden="true">
+          <div class="reticle-line reticle-x"></div>
+          <div class="reticle-line reticle-y"></div>
+          <div class="reticle-marker reticle-top"><span>+100 nm</span></div>
+          <div class="reticle-marker reticle-bottom"><span>-100 nm</span></div>
+          <div class="reticle-marker reticle-left"><span>-100 nm</span></div>
+          <div class="reticle-marker reticle-right"><span>+100 nm</span></div>
+          <div class="scale-legend">
+            <span>200nm (ABBE DIFFRACTION LIMIT)</span>
+            <div class="legend-bar"></div>
+          </div>
+        </div>
+
+        <!-- Mode Overlay Watermark -->
+        <div class="mode-watermark" id="smlm-watermark">
+          FOCAL LOSS (γ=2.0)
+        </div>
+      </div>
+
+      <!-- Live Loss Analytics Sidebar -->
+      <div class="smlm-analytics">
+        <div class="analytics-card active-card">
+          <span class="card-kicker">SELECTED OBJECTIVE</span>
+          <div class="card-metric" id="smlm-obj-name">Focal Loss (γ=2.0, α=0.25)</div>
+          <p class="card-explainer" id="smlm-obj-explainer">
+            Dynamically downweights easy negative background pixels by factor (1 - pt)^γ, preventing zero-photon gradient saturation and pinpointing sub-diffraction coordinates.
+          </p>
+        </div>
+
+        <div class="metrics-row">
+          <div class="sub-metric">
+            <span class="sub-label">RECONSTRUCTION PSNR</span>
+            <span class="sub-value val-accent" id="smlm-psnr">33.8 dB</span>
+            <span class="sub-delta" id="smlm-psnr-delta">+16.7 dB vs Baseline</span>
+          </div>
+          <div class="sub-metric">
+            <span class="sub-label">LOCALIZATION FWHM</span>
+            <span class="sub-value" id="smlm-fwhm">18 nm</span>
+            <span class="sub-regime" id="smlm-fwhm-regime">Sub-diffraction</span>
+          </div>
+        </div>
+
+        <div class="metrics-row">
+          <div class="sub-metric">
+            <span class="sub-label">STRUCTURAL SSIM</span>
+            <span class="sub-value" id="smlm-ssim">0.834</span>
+            <span class="sub-regime">High Fidelity</span>
+          </div>
+          <div class="sub-metric">
+            <span class="sub-label">BACKGROUND SPARSITY</span>
+            <span class="sub-value">99.8%</span>
+            <span class="sub-regime">Extreme Class Imbalance</span>
+          </div>
+        </div>
+
+        <div class="formula-box">
+          <span class="formula-label">LOSS FORMULATION</span>
+          <code class="formula-code" id="smlm-formula">FL(p) = -α (1 - p)^γ · log(p)</code>
+        </div>
+      </div>
+    </div>
+
+    <!-- Interactive Loss Selection Controls -->
+    <div class="smlm-controls">
+      <div class="control-label">Select Loss Function:</div>
+      <div class="control-buttons" role="tablist" aria-label="Loss Objective Comparator">
+        <button class="loss-pill is-active" data-loss="focal" role="tab" aria-selected="true">
+          <span class="pill-star">★</span>
+          <span class="pill-title">Focal Loss</span>
+          <span class="pill-badge badge-green">33.8 dB</span>
+        </button>
+        <button class="loss-pill" data-loss="l1" role="tab" aria-selected="false">
+          <span class="pill-title">L1 + L2 Joint</span>
+          <span class="pill-badge">20.2 dB</span>
+        </button>
+        <button class="loss-pill" data-loss="mse" role="tab" aria-selected="false">
+          <span class="pill-title">MSE Baseline</span>
+          <span class="pill-badge">17.1 dB</span>
+        </button>
+        <button class="loss-pill" data-loss="bce" role="tab" aria-selected="false">
+          <span class="pill-title">BCE</span>
+          <span class="pill-badge badge-red">−8.3 dB</span>
+        </button>
+        <button class="loss-pill" data-loss="raw" role="tab" aria-selected="false">
+          <span class="pill-title">Raw Diffraction</span>
+          <span class="pill-badge">Abbe Limit</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="smlm-footnote">
+    <strong>Key Finding:</strong> In sparse single-molecule microscopy, >99.8% of pixels contain zero photons. Standard MSE distributes gradient updates uniformly across the empty dark-field, washing out sparse emitter signals. Focal Loss focuses gradient updates strictly on the ~0.2% active fluorophores, achieving single-molecule centroid localization down to ~18nm.
+  </div>
+</div>
+
+<style>
+  .smlm-studio {
+    margin: 3.5rem 0;
+    font-family: var(--f-sans, system-ui, sans-serif);
+  }
+
+  .smlm-header {
+    margin-bottom: 1.5rem;
+  }
+
+  .smlm-label {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-family: var(--f-mono);
+    font-size: var(--t-xs, 0.75rem);
+    color: var(--c-muted);
+    margin-bottom: 0.5rem;
+  }
+
+  .mono-badge {
+    padding: 0.15rem 0.45rem;
+    background: rgba(0, 229, 163, 0.12);
+    color: var(--c-accent, #00e5a3);
+    border: 1px solid rgba(0, 229, 163, 0.3);
+    border-radius: 2px;
+    font-weight: 500;
+  }
+
+  .smlm-title {
+    font-family: var(--f-display, system-ui);
+    font-size: clamp(1.25rem, 1.1rem + 1vw, 1.75rem);
+    font-weight: 600;
+    color: var(--c-fg);
+    letter-spacing: -0.02em;
+    margin-bottom: 0.5rem;
+  }
+
+  .smlm-desc {
+    color: var(--c-muted);
+    font-size: 0.92rem;
+    line-height: 1.55;
+    max-width: 68ch;
+  }
+
+  .smlm-card {
+    background: #090c12;
+    border: 1px solid rgba(238, 243, 248, 0.12);
+    border-radius: 4px;
+    overflow: hidden;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5);
+  }
+
+  .smlm-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.7rem 1.1rem;
+    background: #06080c;
+    border-bottom: 1px solid rgba(238, 243, 248, 0.08);
+    font-family: var(--f-mono);
+    font-size: 0.72rem;
+  }
+
+  .bar-left {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .status-indicator {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--c-accent, #00e5a3);
+    box-shadow: 0 0 8px var(--c-accent, #00e5a3);
+  }
+
+  .bar-tag {
+    color: var(--c-fg);
+    font-weight: 500;
+  }
+
+  .bar-coords {
+    color: var(--c-muted);
+  }
+
+  .smlm-display {
+    display: grid;
+    grid-template-columns: 1.25fr 1fr;
+    background: #040507;
+  }
+
+  .smlm-canvas-wrap {
+    position: relative;
+    aspect-ratio: 4 / 3;
+    background: #030406;
+    overflow: hidden;
+    border-right: 1px solid rgba(238, 243, 248, 0.08);
+  }
+
+  .smlm-canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+    cursor: crosshair;
+  }
+
+  .smlm-reticle {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+
+  .reticle-line {
+    position: absolute;
+    background: rgba(238, 243, 248, 0.08);
+  }
+  .reticle-x { top: 50%; left: 0; right: 0; height: 1px; transform: translateY(-50%); }
+  .reticle-y { left: 50%; top: 0; bottom: 0; width: 1px; transform: translateX(-50%); }
+
+  .reticle-marker {
+    position: absolute;
+    font-family: var(--f-mono);
+    font-size: 0.6rem;
+    color: rgba(241, 245, 249, 0.85);
+  }
+  .reticle-top { top: 8px; left: 50%; transform: translateX(-50%); }
+  .reticle-bottom { bottom: 8px; left: 50%; transform: translateX(-50%); }
+  .reticle-left { left: 8px; top: 50%; transform: translateY(-50%); }
+  .reticle-right { right: 8px; top: 50%; transform: translateY(-50%); }
+
+  .scale-legend {
+    position: absolute;
+    bottom: 12px;
+    right: 14px;
+    font-family: var(--f-mono);
+    font-size: 0.62rem;
+    color: #cbd5e1;
+    text-align: right;
+  }
+
+  .legend-bar {
+    width: 60px;
+    height: 2px;
+    background: #cbd5e1;
+    margin-top: 3px;
+    margin-left: auto;
+    position: relative;
+  }
+  .legend-bar::before, .legend-bar::after {
+    content: '';
+    position: absolute;
+    top: -2px;
+    width: 1px;
+    height: 6px;
+    background: #cbd5e1;
+  }
+  .legend-bar::before { left: 0; }
+  .legend-bar::after { right: 0; }
+
+  .mode-watermark {
+    position: absolute;
+    top: 14px;
+    left: 14px;
+    font-family: var(--f-mono);
+    font-size: 0.68rem;
+    font-weight: 600;
+    color: var(--c-accent, #00e5a3);
+    background: rgba(8, 10, 14, 0.85);
+    padding: 0.25rem 0.55rem;
+    border: 1px solid rgba(0, 229, 163, 0.3);
+    border-radius: 2px;
+    letter-spacing: 0.05em;
+  }
+
+  .smlm-analytics {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1.5rem;
+    background: #090c12;
+    border-left: 1px solid rgba(238, 243, 248, 0.08);
+  }
+
+  .analytics-card {
+    background: rgba(238, 243, 248, 0.03);
+    border: 1px solid rgba(238, 243, 248, 0.08);
+    border-radius: 3px;
+    padding: 1rem;
+  }
+
+  .card-kicker {
+    display: block;
+    font-family: var(--f-mono);
+    font-size: 0.62rem;
+    color: var(--c-accent, #00e5a3);
+    letter-spacing: 0.08em;
+    margin-bottom: 0.35rem;
+  }
+
+  .card-metric {
+    font-family: var(--f-display, system-ui);
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: var(--c-fg);
+    margin-bottom: 0.45rem;
+  }
+
+  .card-explainer {
+    font-size: 0.82rem;
+    line-height: 1.45;
+    color: var(--c-muted);
+    margin: 0;
+  }
+
+  .metrics-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+  }
+
+  .sub-metric {
+    background: rgba(238, 243, 248, 0.02);
+    border: 1px solid rgba(238, 243, 248, 0.06);
+    border-radius: 3px;
+    padding: 0.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .sub-label {
+    font-family: var(--f-mono);
+    font-size: 0.6rem;
+    color: var(--c-muted);
+    letter-spacing: 0.05em;
+  }
+
+  .sub-value {
+    font-family: var(--f-mono);
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: var(--c-fg);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .val-accent {
+    color: var(--c-accent, #00e5a3);
+  }
+
+  .sub-delta {
+    font-family: var(--f-mono);
+    font-size: 0.65rem;
+    color: var(--c-accent, #00e5a3);
+  }
+
+  .sub-regime {
+    font-family: var(--f-mono);
+    font-size: 0.65rem;
+    color: var(--c-muted);
+  }
+
+  .formula-box {
+    margin-top: auto;
+    background: #05070a;
+    border: 1px solid rgba(238, 243, 248, 0.08);
+    border-radius: 3px;
+    padding: 0.75rem;
+  }
+
+  .formula-label {
+    display: block;
+    font-family: var(--f-mono);
+    font-size: 0.6rem;
+    color: var(--c-muted);
+    letter-spacing: 0.06em;
+    margin-bottom: 0.25rem;
+  }
+
+  .formula-code {
+    font-family: var(--f-mono);
+    font-size: 0.78rem;
+    color: #38bdf8;
+    display: block;
+    overflow-x: auto;
+  }
+
+  .smlm-controls {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.85rem;
+    padding: 0.85rem 1.1rem;
+    background: #06080c;
+    border-top: 1px solid rgba(238, 243, 248, 0.08);
+  }
+
+  .control-label {
+    font-family: var(--f-mono);
+    font-size: 0.72rem;
+    color: var(--c-muted);
+  }
+
+  .control-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .loss-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.45rem 0.8rem;
+    background: rgba(238, 243, 248, 0.07);
+    border: 1px solid rgba(238, 243, 248, 0.22);
+    border-radius: 3px;
+    font-family: var(--f-mono);
+    font-size: 0.72rem;
+    color: #e2e8f0;
+    cursor: pointer;
+    transition: all 0.18s ease;
+    min-height: 36px;
+  }
+
+  .loss-pill:hover {
+    background: rgba(238, 243, 248, 0.14);
+    border-color: rgba(238, 243, 248, 0.38);
+    transform: translateY(-1px);
+  }
+
+  .loss-pill.is-active {
+    background: rgba(0, 229, 163, 0.14);
+    border-color: var(--c-accent, #00e5a3);
+    color: #ffffff;
+    box-shadow: 0 0 12px rgba(0, 229, 163, 0.25);
+  }
+
+  .pill-star {
+    color: var(--c-accent, #00e5a3);
+  }
+
+  .pill-badge {
+    padding: 0.1rem 0.35rem;
+    background: rgba(238, 243, 248, 0.12);
+    border-radius: 2px;
+    font-size: 0.65rem;
+    color: #cbd5e1;
+  }
+
+  .badge-green {
+    background: rgba(0, 229, 163, 0.25);
+    color: var(--c-accent, #00e5a3);
+    font-weight: 600;
+  }
+
+  .badge-red {
+    background: rgba(239, 68, 68, 0.25);
+    color: #fca5a5;
+  }
+
+  .smlm-footnote {
+    margin-top: 1rem;
+    padding: 0.85rem 1.1rem;
+    background: rgba(238, 243, 248, 0.02);
+    border-left: 2px solid var(--c-accent, #00e5a3);
+    font-size: 0.8rem;
+    line-height: 1.5;
+    color: var(--c-muted);
+  }
+
+  .smlm-footnote strong {
+    color: var(--c-fg);
+  }
+
+  /* Light Theme Laboratory Workstation Styling */
+  :global([data-theme="light"]) .smlm-card {
+    background: #ffffff;
+    border-color: rgba(10, 16, 29, 0.12);
+    box-shadow: 0 12px 32px rgba(10, 16, 29, 0.06);
+  }
+
+  :global([data-theme="light"]) .smlm-bar {
+    background: #f8fafc;
+    border-bottom-color: rgba(10, 16, 29, 0.08);
+  }
+
+  :global([data-theme="light"]) .bar-tag {
+    color: #0f172a;
+  }
+
+  :global([data-theme="light"]) .bar-coords {
+    color: #64748b;
+  }
+
+  :global([data-theme="light"]) .smlm-analytics {
+    background: #ffffff;
+    border-left-color: rgba(10, 16, 29, 0.08);
+  }
+
+  :global([data-theme="light"]) .analytics-card {
+    background: #f8fafc;
+    border-color: rgba(10, 16, 29, 0.08);
+  }
+
+  :global([data-theme="light"]) .card-metric {
+    color: #0f172a;
+  }
+
+  :global([data-theme="light"]) .card-explainer {
+    color: #475569;
+  }
+
+  :global([data-theme="light"]) .sub-metric {
+    background: #f8fafc;
+    border-color: rgba(10, 16, 29, 0.08);
+  }
+
+  :global([data-theme="light"]) .sub-label {
+    color: #64748b;
+  }
+
+  :global([data-theme="light"]) .sub-value {
+    color: #0f172a;
+  }
+
+  :global([data-theme="light"]) .val-accent {
+    color: #059669;
+  }
+
+  :global([data-theme="light"]) .sub-delta {
+    color: #059669;
+  }
+
+  :global([data-theme="light"]) .sub-regime {
+    color: #64748b;
+  }
+
+  :global([data-theme="light"]) .formula-box {
+    background: #f8fafc;
+    border-color: rgba(10, 16, 29, 0.1);
+  }
+
+  :global([data-theme="light"]) .formula-label {
+    color: #64748b;
+  }
+
+  :global([data-theme="light"]) .formula-code {
+    color: #0284c7;
+  }
+
+  :global([data-theme="light"]) .smlm-controls {
+    background: #f8fafc;
+    border-top-color: rgba(10, 16, 29, 0.08);
+  }
+
+  :global([data-theme="light"]) .control-label {
+    color: #64748b;
+  }
+
+  :global([data-theme="light"]) .loss-pill {
+    background: #ffffff;
+    border-color: rgba(10, 16, 29, 0.16);
+    color: #0f172a;
+  }
+
+  :global([data-theme="light"]) .loss-pill:hover {
+    background: #f1f5f9;
+    border-color: rgba(10, 16, 29, 0.3);
+  }
+
+  :global([data-theme="light"]) .loss-pill.is-active {
+    background: rgba(5, 150, 105, 0.1);
+    border-color: #059669;
+    color: #065f46;
+    box-shadow: 0 0 12px rgba(5, 150, 105, 0.15);
+  }
+
+  :global([data-theme="light"]) .pill-badge {
+    background: rgba(10, 16, 29, 0.06);
+    color: #475569;
+  }
+
+  :global([data-theme="light"]) .smlm-footnote {
+    background: #f8fafc;
+    border-left-color: #059669;
+    color: #475569;
+  }
+
+  @media (max-width: 900px) {
+    .smlm-display {
+      grid-template-columns: 1fr;
+    }
+    .smlm-canvas-wrap {
+      border-right: none;
+      border-bottom: 1px solid rgba(238, 243, 248, 0.08);
+    }
+  }
+</style>
+
+<script>
+  import { onPage } from '@/engine';
+
+  onPage(() => {
+    const canvas = document.getElementById('smlm-canvas') as HTMLCanvasElement | null;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    // Analytics elements
+    const objName = document.getElementById('smlm-obj-name');
+    const objExplainer = document.getElementById('smlm-obj-explainer');
+    const psnrEl = document.getElementById('smlm-psnr');
+    const psnrDelta = document.getElementById('smlm-psnr-delta');
+    const fwhmEl = document.getElementById('smlm-fwhm');
+    const fwhmRegime = document.getElementById('smlm-fwhm-regime');
+    const ssimEl = document.getElementById('smlm-ssim');
+    const formulaEl = document.getElementById('smlm-formula');
+    const watermark = document.getElementById('smlm-watermark');
+    const buttons = document.querySelectorAll<HTMLButtonElement>('.loss-pill');
+
+    let width = 0;
+    let height = 0;
+    let dpr = 1;
+    let currentMode = 'focal';
+    let animFrame: number;
+    let time = 0;
+
+    // Simulated Biological Ground Truth Microtubule Filaments
+    const filaments = [
+      [
+        { x: 0.15, y: 0.82 }, { x: 0.28, y: 0.70 }, { x: 0.40, y: 0.58 },
+        { x: 0.52, y: 0.46 }, { x: 0.65, y: 0.34 }, { x: 0.78, y: 0.24 }, { x: 0.88, y: 0.16 }
+      ],
+      [
+        { x: 0.20, y: 0.20 }, { x: 0.32, y: 0.34 }, { x: 0.44, y: 0.48 },
+        { x: 0.56, y: 0.60 }, { x: 0.70, y: 0.72 }, { x: 0.82, y: 0.82 }
+      ],
+      [
+        { x: 0.18, y: 0.50 }, { x: 0.32, y: 0.52 }, { x: 0.48, y: 0.50 },
+        { x: 0.64, y: 0.48 }, { x: 0.80, y: 0.46 }
+      ]
+    ];
+
+    type Emitter = { x: number; y: number; intensity: number; phase: number };
+    const emitters: Emitter[] = [];
+    filaments.forEach((strand) => {
+      strand.forEach((pt) => {
+        emitters.push({
+          x: pt.x,
+          y: pt.y,
+          intensity: 0.8 + Math.random() * 0.2,
+          phase: Math.random() * Math.PI * 2
+        });
+      });
+    });
+
+    const dataset = {
+      focal: {
+        name: 'Focal Loss (γ=2.0, α=0.25)',
+        explainer: 'Dynamically downweights easy negative background pixels by factor (1 - pt)^γ, preventing zero-photon gradient saturation and pinpointing sub-diffraction coordinates.',
+        psnr: '33.8 dB',
+        delta: '+16.7 dB vs Baseline',
+        fwhm: '18 nm',
+        regime: 'Sub-diffraction Truth',
+        ssim: '0.834',
+        formula: 'FL(p) = -α (1 - p)^γ · log(p)',
+        watermark: 'FOCAL LOSS (γ=2.0) · 33.8 dB',
+        sigma: 2.2,
+        haloOpacity: 0.15,
+        coreColor: '#00e5a3',
+        noiseLevel: 0.02,
+        drawFilaments: true
+      },
+      l1: {
+        name: 'Joint L1 + L2 Loss',
+        explainer: 'Penalizes absolute distance and squared error jointly. Leads to coordinate smearing along orthogonal axes and false bridging between adjacent fluorophores.',
+        psnr: '20.2 dB',
+        delta: '+3.1 dB vs Baseline',
+        fwhm: '48 nm',
+        regime: 'Coordinate Smear',
+        ssim: '0.612',
+        formula: 'L(y, ŷ) = ||y - ŷ||₁ + λ||y - ŷ||₂²',
+        watermark: 'L1 + L2 LOSS · 20.2 dB',
+        sigma: 7.5,
+        haloOpacity: 0.45,
+        coreColor: '#94a3b8',
+        noiseLevel: 0.08,
+        drawFilaments: true
+      },
+      mse: {
+        name: 'MSE Baseline (Standard L2)',
+        explainer: 'Standard mean-squared error spreads gradient updates across all 99.8% background pixels equally. The signal vanishes in sparse emitter regimes, leaving diffuse blurry halos.',
+        psnr: '17.1 dB',
+        delta: 'Reference Baseline',
+        fwhm: '112 nm',
+        regime: 'Diffuse Halos',
+        ssim: '0.485',
+        formula: 'MSE(y, ŷ) = (1/N) Σ (yᵢ - ŷᵢ)²',
+        watermark: 'MSE BASELINE · 17.1 dB',
+        sigma: 18.0,
+        haloOpacity: 0.65,
+        coreColor: '#64748b',
+        noiseLevel: 0.14,
+        drawFilaments: false
+      },
+      bce: {
+        name: 'Binary Cross-Entropy (BCE)',
+        explainer: 'Severely penalizes false negatives on sparse grids, causing the network to hallucinate background fluorophores everywhere. Mode collapse occurs.',
+        psnr: '−8.3 dB',
+        delta: 'Catastrophic Degradation',
+        fwhm: '> 250 nm',
+        regime: 'Mode Collapse (Noise Fog)',
+        ssim: '0.120',
+        formula: 'BCE(y, p) = -[y·log(p) + (1-y)·log(1-p)]',
+        watermark: 'BCE LOSS · MODE COLLAPSE',
+        sigma: 24.0,
+        haloOpacity: 0.85,
+        coreColor: '#ef4444',
+        noiseLevel: 0.45,
+        drawFilaments: false
+      },
+      raw: {
+        name: 'Raw Optical Sensor (Abbe Limit)',
+        explainer: 'Simulated wide-field EM-CCD optical acquisition. Emitters overlap into diffraction-limited Airy disks with Poisson photon shot noise, masking sub-cellular structure.',
+        psnr: '14.2 dB',
+        delta: 'Optical Diffraction Limit',
+        fwhm: '280 nm',
+        regime: 'Diffraction Blur (Abbe)',
+        ssim: '0.310',
+        formula: 'PSF(r) = [2·J₁(kr) / (kr)]² + Poisson(λ)',
+        watermark: 'RAW EM-CCD CAMERA · ABBE LIMIT',
+        sigma: 34.0,
+        haloOpacity: 0.90,
+        coreColor: '#38bdf8',
+        noiseLevel: 0.28,
+        drawFilaments: false
+      }
+    };
+
+    function resize() {
+      if (!canvas) return;
+      dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const rect = canvas.getBoundingClientRect();
+      width = rect.width;
+      height = rect.height;
+      canvas.width = Math.round(width * dpr);
+      canvas.height = Math.round(height * dpr);
+      ctx?.scale(dpr, dpr);
+    }
+
+    resize();
+    window.addEventListener('resize', resize);
+
+    function setMode(mode: string) {
+      currentMode = mode;
+      const data = dataset[mode as keyof typeof dataset];
+      if (!data) return;
+
+      buttons.forEach((btn) => {
+        const isActive = btn.dataset.loss === mode;
+        btn.classList.toggle('is-active', isActive);
+        btn.setAttribute('aria-selected', isActive ? 'true' : 'false');
+      });
+
+      if (objName) objName.textContent = data.name;
+      if (objExplainer) objExplainer.textContent = data.explainer;
+      if (psnrEl) psnrEl.textContent = data.psnr;
+      if (psnrDelta) psnrDelta.textContent = data.delta;
+      if (fwhmEl) fwhmEl.textContent = data.fwhm;
+      if (fwhmRegime) fwhmRegime.textContent = data.regime;
+      if (ssimEl) ssimEl.textContent = data.ssim;
+      if (formulaEl) formulaEl.textContent = data.formula;
+      if (watermark) watermark.textContent = data.watermark;
+    }
+
+    buttons.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const loss = btn.dataset.loss;
+        if (loss) setMode(loss);
+      });
+    });
+
+    function draw() {
+      if (!ctx || !canvas) return;
+      time += 0.02;
+
+      ctx.clearRect(0, 0, width, height);
+
+      const d = dataset[currentMode as keyof typeof dataset] || dataset.focal;
+
+      // Dark field background
+      ctx.fillStyle = '#030406';
+      ctx.fillRect(0, 0, width, height);
+
+      // Nanometer grid lines
+      ctx.strokeStyle = 'rgba(238, 243, 248, 0.03)';
+      ctx.lineWidth = 1;
+      const step = width / 12;
+      for (let x = 0; x < width; x += step) {
+        ctx.beginPath();
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, height);
+        ctx.stroke();
+      }
+      for (let y = 0; y < height; y += step) {
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(width, y);
+        ctx.stroke();
+      }
+
+      // Draw faint microtubule lattice if mode reveals structure
+      if (d.drawFilaments) {
+        ctx.strokeStyle = currentMode === 'focal' ? 'rgba(0, 229, 163, 0.45)' : 'rgba(148, 163, 184, 0.25)';
+        ctx.lineWidth = currentMode === 'focal' ? 1.5 : 1.0;
+        filaments.forEach((strand) => {
+          ctx.beginPath();
+          strand.forEach((pt, i) => {
+            const x = pt.x * width;
+            const y = pt.y * height;
+            if (i === 0) ctx.moveTo(x, y);
+            else ctx.lineTo(x, y);
+          });
+          ctx.stroke();
+        });
+      }
+
+      // Draw background noise speckles for BCE / Raw
+      if (d.noiseLevel > 0.05) {
+        const numNoise = Math.floor(d.noiseLevel * 400);
+        ctx.fillStyle = currentMode === 'bce' ? 'rgba(239, 68, 68, 0.25)' : 'rgba(56, 189, 248, 0.18)';
+        for (let i = 0; i < numNoise; i++) {
+          const nx = (Math.sin(time + i * 3.7) * 0.5 + 0.5) * width;
+          const ny = (Math.cos(time + i * 5.3) * 0.5 + 0.5) * height;
+          ctx.fillRect(nx, ny, 1.5, 1.5);
+        }
+      }
+
+      // Draw fluorophore emitters
+      emitters.forEach((em) => {
+        const x = em.x * width;
+        const y = em.y * height;
+        const blink = Math.sin(time * 2.0 + em.phase) * 0.15 + 0.85;
+
+        // Outer point spread function halo
+        const radGrad = ctx.createRadialGradient(x, y, 0, x, y, d.sigma * 2.2);
+        radGrad.addColorStop(0, d.coreColor);
+        radGrad.addColorStop(0.4, currentMode === 'focal' ? 'rgba(56, 189, 248, 0.3)' : d.coreColor);
+        radGrad.addColorStop(1, 'rgba(0, 0, 0, 0)');
+
+        ctx.fillStyle = radGrad;
+        ctx.globalAlpha = d.haloOpacity * blink;
+        ctx.beginPath();
+        ctx.arc(x, y, d.sigma * 2.2, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Pinpoint centroid core for high-resolution modes
+        if (currentMode === 'focal' || currentMode === 'l1') {
+          ctx.globalAlpha = 1.0;
+          ctx.fillStyle = '#ffffff';
+          ctx.beginPath();
+          ctx.arc(x, y, currentMode === 'focal' ? 2.0 : 3.0, 0, Math.PI * 2);
+          ctx.fill();
+
+          // Centroid reticle tick
+          if (currentMode === 'focal') {
+            ctx.strokeStyle = '#00e5a3';
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.arc(x, y, 5.0, 0, Math.PI * 2);
+            ctx.stroke();
+          }
+        }
+      });
+
+      ctx.globalAlpha = 1.0;
+      animFrame = requestAnimationFrame(draw);
+    }
+
+    draw();
+
+    return () => {
+      cancelAnimationFrame(animFrame);
+      window.removeEventListener('resize', resize);
+    };
+  });
+</script>

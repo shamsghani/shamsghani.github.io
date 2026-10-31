@@ -1,0 +1,122 @@
+---
+import { ClientRouter } from 'astro:transitions';
+import { site } from '../data/site';
+import Loader from '../components/Loader.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import '../styles/tokens.css';
+import '../styles/engine.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+  theme?: string;
+}
+
+const { title, description = site.description, image = '/og.png', theme } = Astro.props;
+const fullTitle = title ? `${title} · ${site.shortName}` : `${site.name} · ${site.role}`;
+const canonical = new URL(Astro.url.pathname, Astro.site ?? site.url).href;
+const ogImage = new URL(image, Astro.site ?? site.url).href;
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: site.name,
+  jobTitle: site.role,
+  url: site.url,
+  email: `mailto:${site.email}`,
+  alumniOf: [
+    {
+      '@type': 'CollegeOrUniversity',
+      name: "Queen's University Belfast"
+    },
+    {
+      '@type': 'CollegeOrUniversity',
+      name: 'GIK Institute of Engineering Sciences and Technology'
+    }
+  ],
+  sameAs: site.socials.map((s) => s.href),
+  knowsAbout: [
+    'Artificial Intelligence',
+    'Machine Learning Engineering',
+    'Single-Molecule Localization Microscopy (SMLM)',
+    'Focal Loss Optimization',
+    'Contrastive Representation Learning',
+    'Autonomous Agent Systems',
+    'Hardware Protocols & Reverse Engineering'
+  ]
+};
+---
+
+<!doctype html>
+<html lang="en" transition:animate="none" data-theme={theme || 'dark'}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <meta name="theme-color" content="#080a0e" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+
+    <!-- Open Graph / Social -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImage} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <!-- Local Font Preload -->
+    <link rel="preload" href="/fonts/host-grotesk-400_700-normal.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/jetbrains-mono-400_600-normal.woff2" as="font" type="font/woff2" crossorigin />
+
+    <!-- Schema.org JSON-LD -->
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+
+    <!-- Anti-flash inline script before first paint -->
+    <script is:inline>
+      document.documentElement.classList.add('js');
+      if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        document.documentElement.classList.add('motion');
+      }
+      try {
+        const saved = localStorage.getItem('shams-theme');
+        if (saved) document.documentElement.setAttribute('data-theme', saved);
+      } catch (e) {}
+    </script>
+
+    <ClientRouter />
+  </head>
+
+  <body>
+    <a class="skip-link" href="#main">Skip to main content</a>
+
+    <!-- Persisted motion layers -->
+    <div id="gl" aria-hidden="true" transition:persist></div>
+    <div id="curtain" aria-hidden="true" transition:persist><div class="curtain__panel"></div></div>
+    <div id="cursor" aria-hidden="true" transition:persist><span data-cursor-label></span></div>
+    
+    <Loader />
+    <Nav />
+
+    <main id="main" tabindex="-1">
+      <slot />
+    </main>
+
+    <Footer />
+
+    <!-- Initialize Motion Engine on client -->
+    <script>
+      import { start } from '../engine/astro';
+      import { setupMotion } from '../motion/setup';
+      start(setupMotion);
+    </script>
+  </body>
+</html>
+

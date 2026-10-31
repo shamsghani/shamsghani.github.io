@@ -1,0 +1,246 @@
+---
+import { site } from '../data/site';
+---
+
+<header class="site-header" data-layer="content">
+  <div class="header-inner">
+    <a href="/" class="brand-link" data-magnetic="0.2">
+      <span class="brand-symbol">◆</span>
+      <span class="brand-name">{site.shortName}</span>
+      <span class="brand-badge">ML & Perception</span>
+    </a>
+
+    <div class="header-center">
+      <span class="reticle-coord">{site.coordinates}</span>
+      <span class="status-indicator">
+        <span class="status-dot"></span> Trainee @ Itanz · ML Engineer
+      </span>
+    </div>
+
+    <nav class="nav-links" aria-label="Main Navigation">
+      <a href="/#research" class="nav-item" data-cursor="View">
+        <span class="nav-num">01</span>
+        <span class="nav-text">Research</span>
+      </a>
+      <a href="/#metacognition" class="nav-item" data-cursor="SCS">
+        <span class="nav-num">02</span>
+        <span class="nav-text">Metacognition</span>
+      </a>
+      <a href="/#contributions" class="nav-item" data-cursor="Open">
+        <span class="nav-num">03</span>
+        <span class="nav-text">Contributions</span>
+      </a>
+      <a href="/#lab" class="nav-item" data-cursor="Lab">
+        <span class="nav-num">04</span>
+        <span class="nav-text">Lab</span>
+      </a>
+      <a href="/#record" class="nav-item" data-cursor="Record">
+        <span class="nav-num">05</span>
+        <span class="nav-text">Record</span>
+      </a>
+      <a href="/#contact" class="nav-item" data-cursor="Terminal">
+        <span class="nav-num">06</span>
+        <span class="nav-text">Contact</span>
+      </a>
+
+      <!-- Theme Switcher -->
+      <button class="theme-switch" id="themeSwitch" aria-label="Toggle theme">
+        <span class="theme-switch-icon" aria-hidden="true">◐</span>
+      </button>
+    </nav>
+  </div>
+</header>
+
+<script>
+  import { scrollToTarget } from '../engine/scroll';
+
+  function initHeader() {
+    // 1. Theme toggle with deduplicated direct handler
+    const themeBtn = document.getElementById('themeSwitch');
+    const html = document.documentElement;
+
+    if (themeBtn) {
+      themeBtn.onclick = (e) => {
+        e.preventDefault();
+        const currentTheme = html.getAttribute('data-theme') || 'dark';
+        const nextTheme = currentTheme === 'light' ? 'dark' : 'light';
+        html.setAttribute('data-theme', nextTheme);
+        try {
+          localStorage.setItem('shams-theme', nextTheme);
+        } catch (err) {}
+      };
+    }
+
+    // 2. Smooth in-page anchor navigation via Lenis engine
+    const navAnchors = document.querySelectorAll<HTMLAnchorElement>('.nav-links a[href*="#"], .brand-link');
+    navAnchors.forEach((link) => {
+      link.onclick = (e) => {
+        const href = link.getAttribute('href');
+        if (!href) return;
+
+        // Brand link back to top
+        if (href === '/' && (window.location.pathname === '/' || window.location.pathname === '')) {
+          e.preventDefault();
+          scrollToTarget(0, 0);
+          history.pushState(null, '', '/');
+          return;
+        }
+
+        const hashIndex = href.indexOf('#');
+        if (hashIndex !== -1) {
+          const path = href.slice(0, hashIndex);
+          const hash = href.slice(hashIndex + 1);
+
+          const isSamePage = path === '' || path === '/' || path === window.location.pathname;
+          if (isSamePage && hash) {
+            const target = document.getElementById(hash);
+            if (target) {
+              e.preventDefault();
+              scrollToTarget(target, -70);
+              history.pushState(null, '', `#${hash}`);
+            }
+          }
+        }
+      };
+    });
+  }
+
+  // Handle both initial load and Astro client-side page loads
+  document.addEventListener('astro:page-load', initHeader);
+  initHeader();
+</script>
+
+<style>
+  .site-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: var(--z-header, 50);
+    padding: 0.65rem var(--gutter);
+    background: var(--c-header-bg, rgba(8, 10, 14, 0.94));
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--c-line);
+    transition: background 0.3s ease, border-color 0.3s ease;
+  }
+
+  :global([data-theme="light"]) .site-header {
+    background: var(--c-header-bg, rgba(247, 249, 252, 0.95));
+  }
+
+  .header-inner {
+    max-width: var(--max-w);
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1.5rem;
+  }
+
+  .brand-link {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--f-display);
+    font-weight: 600;
+    font-size: var(--t-m);
+    letter-spacing: -0.02em;
+    color: var(--c-fg);
+  }
+
+  .brand-symbol {
+    color: var(--c-accent);
+    font-size: 0.75rem;
+    line-height: 1;
+  }
+
+  .brand-badge {
+    font-family: var(--f-mono);
+    font-size: var(--t-xs);
+    font-weight: 400;
+    color: var(--c-muted);
+    padding: 0.15rem 0.45rem;
+    border: 1px solid var(--c-line-strong);
+    border-radius: 2px;
+    letter-spacing: 0.02em;
+  }
+
+  .header-center {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    font-family: var(--f-mono);
+    font-size: var(--t-xs);
+    color: var(--c-muted);
+  }
+
+  .status-indicator {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  .status-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--c-accent);
+    box-shadow: 0 0 6px var(--c-accent);
+  }
+
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .nav-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    font-family: var(--f-mono);
+    font-size: var(--t-xs);
+    color: var(--c-muted);
+    padding: 0.5rem 0.3rem;
+    min-height: 36px;
+    transition: color 0.2s ease, transform 0.2s ease;
+  }
+
+  .nav-item:hover,
+  .nav-item:focus-visible {
+    color: var(--c-fg);
+  }
+
+  .nav-num {
+    color: var(--c-accent);
+    font-size: 0.65rem;
+  }
+
+  .theme-switch {
+    display: grid;
+    place-items: center;
+    width: 2rem;
+    height: 2rem;
+    border: 1px solid var(--c-line-strong);
+    border-radius: var(--radius);
+    color: var(--c-fg);
+    transition: border-color 0.2s ease, background 0.2s ease;
+  }
+
+  .theme-switch:hover,
+  .theme-switch:focus-visible {
+    border-color: var(--c-accent);
+    background: rgba(0, 229, 163, 0.08);
+  }
+
+  @media (max-width: 1000px) {
+    .header-center { display: none; }
+  }
+
+  @media (max-width: 768px) {
+    .brand-badge { display: none; }
+    .nav-num { display: none; }
+    .nav-links { gap: 0.5rem; }
+  }
+</style>

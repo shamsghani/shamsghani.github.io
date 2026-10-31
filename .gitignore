@@ -1,0 +1,22 @@
+# Build and package output
+dist/
+.astro/
+node_modules/
+
+# Environment and local files
+.env
+.env.*
+!.env.example
+
+# Logs and test artifacts
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+.shots/
+report.json
+
+# OS files
+.DS_Store
+Thumbs.db
+

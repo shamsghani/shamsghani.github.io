@@ -1,0 +1,139 @@
+---
+import Base from '../layouts/Base.astro';
+---
+
+<Base title="404: Optical Horizon Undefined" description="The requested coordinates lie outside the resolving limit of the sensor array.">
+  <div class="not-found-wrap" data-layer="content">
+    <div class="not-found-card" data-reveal="scale">
+      <div class="reticle-error-badge">SIGNAL LOSS // ERROR 404</div>
+      <h1 class="not-found-heading">Coordinates Outside Resolving Horizon</h1>
+      <p class="not-found-desc">
+        The requested trajectory fell beyond the numerical aperture of the objective lens.
+        Zero photons detected at this spatial focal plane.
+      </p>
+
+      <div class="error-telemetry">
+        <div class="err-row">
+          <span class="err-k">ESTIMATED APERTURE:</span>
+          <span class="err-v">NA 1.49 Oil Immersion</span>
+        </div>
+        <div class="err-row">
+          <span class="err-k">FOCAL DRIFT:</span>
+          <span class="err-v">Δz = ∞ nm (Unbounded)</span>
+        </div>
+        <div class="err-row">
+          <span class="err-k">CONFIDENCE:</span>
+          <span class="err-v">0.000 (Abstention Enforced)</span>
+        </div>
+      </div>
+
+      <div class="not-found-actions">
+        <a href="/" class="return-home-btn" data-magnetic="0.2">
+          <span>Re-Center Optical Horizon</span>
+          <span class="btn-arrow">→</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</Base>
+
+<style>
+  .not-found-wrap {
+    min-height: 85vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: clamp(6rem, 4rem + 4vw, 8rem) var(--gutter);
+  }
+  .not-found-card {
+    max-width: 620px;
+    width: 100%;
+    background: var(--c-card);
+    border: 1px solid var(--c-line-strong);
+    border-radius: var(--radius-card);
+    padding: clamp(2rem, 1.5rem + 2vw, 3.5rem);
+    text-align: center;
+    box-shadow: 0 16px 40px rgba(0,0,0,0.3);
+  }
+  .reticle-error-badge {
+    display: inline-block;
+    font-family: var(--f-mono);
+    font-size: var(--t-xs);
+    color: #ef4444;
+    background: rgba(239, 68, 68, 0.1);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    padding: 3px 9px;
+    border-radius: var(--radius);
+    letter-spacing: 0.1em;
+    margin-bottom: 1.5rem;
+  }
+  .not-found-heading {
+    font-family: var(--f-display);
+    font-size: var(--t-l);
+    font-weight: 500;
+    line-height: 1.2;
+    color: var(--c-fg);
+    margin-bottom: 1rem;
+  }
+  .not-found-desc {
+    color: var(--c-muted);
+    font-size: var(--t-body);
+    line-height: 1.6;
+    margin-bottom: 2rem;
+  }
+
+  .error-telemetry {
+    background: rgba(9, 11, 15, 0.6);
+    border: 1px solid var(--c-line);
+    border-radius: var(--radius);
+    padding: 1.25rem;
+    margin-bottom: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    text-align: left;
+  }
+  .err-row {
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--f-mono);
+    font-size: 11px;
+  }
+  .err-k {
+    color: var(--c-muted);
+  }
+  .err-v {
+    color: var(--c-accent);
+  }
+
+  .not-found-actions {
+    display: flex;
+    justify-content: center;
+  }
+  .return-home-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.85rem 1.8rem;
+    background: var(--c-accent);
+    color: var(--c-bg);
+    font-family: var(--f-mono);
+    font-size: var(--t-xs);
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    text-decoration: none;
+    border-radius: var(--radius);
+    transition: all 0.25s ease;
+  }
+  .return-home-btn:hover {
+    background: #00ffb5;
+    transform: translateY(-2px);
+  }
+  .btn-arrow {
+    transition: transform 0.25s ease;
+  }
+  .return-home-btn:hover .btn-arrow {
+    transform: translateX(4px);
+  }
+</style>

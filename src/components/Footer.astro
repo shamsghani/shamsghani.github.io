@@ -1,0 +1,593 @@
+---
+import { site } from '../data/site';
+---
+
+<footer class="site-footer" id="contact" data-layer="content">
+  <div class="footer-wrap">
+    <div class="footer-top">
+      <div class="footer-hero-block" data-reveal="up">
+        <span class="footer-kicker">INITIATE DISPATCH</span>
+        <h2 class="footer-heading">Working at the convergence of perception, loss topology & systems engineering.</h2>
+        
+        <!-- Olivia Arents-inspired Visitor Contact Terminal -->
+        <div class="terminal-card">
+          <div class="terminal-bar">
+            <span class="terminal-dot"></span>
+            <span class="terminal-title">VISITOR DISPATCH CONSOLE</span>
+          </div>
+          <form class="terminal-form" id="visitorDispatchForm">
+            <div class="terminal-prompt">
+              <span class="prompt-prefix">visitor@lab:~$</span>
+              <input 
+                type="text" 
+                id="visitorName" 
+                placeholder="Your name or organization" 
+                class="terminal-input"
+                required
+              />
+            </div>
+            <div class="terminal-prompt">
+              <span class="prompt-prefix">intent:~$</span>
+              <select id="visitorIntent" class="terminal-select" aria-label="Visitor intent and inquiry type">
+                <option value="Machine Learning Engineering">Machine Learning Engineering Role</option>
+                <option value="Research Collaboration">AI / Perception Research</option>
+                <option value="Consultancy or Systems">Low-Level Systems / Hardware</option>
+                <option value="Saying Hello">Connecting from Belfast or Abroad</option>
+              </select>
+            </div>
+            <div class="terminal-prompt">
+              <span class="prompt-prefix">note:~$</span>
+              <input 
+                type="text" 
+                id="visitorNote" 
+                placeholder="Short message or idea..." 
+                class="terminal-input"
+              />
+            </div>
+            <div class="terminal-actions">
+              <button type="submit" class="terminal-submit-btn">
+                <span>[ TRANSMIT DISPATCH ]</span>
+                <span class="arrow-glyph">→</span>
+              </button>
+              <span class="terminal-status" id="terminalStatus">Ready for input</span>
+            </div>
+          </form>
+        </div>
+
+        <div class="footer-actions">
+          <a href={`mailto:${site.email}`} class="action-btn-primary" data-magnetic="0.3">
+            <span>Direct Email</span>
+            <span class="arrow-glyph">→</span>
+          </a>
+          <a href="https://github.com/ShamsGhani" target="_blank" rel="noopener noreferrer" class="action-btn-ghost">
+            <span>GitHub</span>
+            <span class="arrow-glyph">↗</span>
+          </a>
+          <a href="https://linkedin.com/in/shamsghani" target="_blank" rel="noopener noreferrer" class="action-btn-ghost">
+            <span>LinkedIn</span>
+            <span class="arrow-glyph">↗</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="footer-meta-block" data-reveal="up" data-delay="0.15">
+        <div class="meta-section">
+          <div class="meta-label">Location & Availability</div>
+          <div class="meta-value">{site.location}</div>
+          <div class="meta-note">Currently at Itanz (Graduate Trainee). Open to immediate high-impact roles and relocation.</div>
+        </div>
+
+        <div class="meta-section">
+          <div class="meta-label">Communication Channels</div>
+          <div class="meta-link-row">
+            <span class="link-label">Email:</span>
+            <a href={`mailto:${site.email}`} class="mono-link">{site.email}</a>
+          </div>
+          <div class="meta-link-row">
+            <span class="link-label">Phone:</span>
+            <a href={`tel:${site.phoneUK}`} class="mono-link">{site.phoneUK}</a>
+          </div>
+          <div class="meta-link-row">
+            <span class="link-label">Coordinates:</span>
+            <span class="mono-link">{site.coordinates}</span>
+          </div>
+        </div>
+
+        <div class="meta-section">
+          <div class="meta-label">Active Research Pillars</div>
+          <ul class="focus-list">
+            <li>Single-Molecule Localization Microscopy (SMLM)</li>
+            <li>Loss Landscape Topology & Severe Class Imbalance</li>
+            <li>Contrastive Representation Learning (MNRL)</li>
+            <li>Low-Level USB HID Protocols & WebHID</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div class="footer-legal">
+        <span>© {new Date().getFullYear()} {site.name}</span>
+        <span class="dot-sep">·</span>
+        <span>MSc Artificial Intelligence, Queen's University Belfast</span>
+        <span class="dot-sep">·</span>
+        <span>Itanz AI Trainee</span>
+      </div>
+
+      <div class="footer-meta-stats">
+        <span class="status-live-tag">
+          <span class="pulse-ring"></span>
+          BELFAST LOCAL: <span id="belfastClock">--:--:-- GMT</span>
+        </span>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  function setupFooter() {
+    // Live clock
+    function updateClock() {
+      const clockEl = document.getElementById('belfastClock');
+      if (!clockEl) return;
+      const now = new Date();
+      clockEl.textContent = now.toLocaleTimeString('en-GB', {
+        timeZone: 'Europe/London',
+        hour12: false
+      }) + ' GMT';
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+
+    // Visitor dispatch form
+    const form = document.getElementById('visitorDispatchForm') as HTMLFormElement | null;
+    const status = document.getElementById('terminalStatus');
+    if (!form || !status) return;
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const name = (document.getElementById('visitorName') as HTMLInputElement).value;
+      const intent = (document.getElementById('visitorIntent') as HTMLSelectElement).value;
+      const note = (document.getElementById('visitorNote') as HTMLInputElement).value;
+
+      const subject = encodeURIComponent(`[Dispatch] ${intent} from ${name}`);
+      const body = encodeURIComponent(`Hi Shams,\n\nName: ${name}\nIntent: ${intent}\nMessage: ${note}\n\nSent via shamsghani.github.io dispatch terminal.`);
+
+      status.textContent = 'Preparing email dispatch...';
+      status.style.color = 'var(--c-accent)';
+
+      setTimeout(() => {
+        window.location.href = `mailto:shamsghani1@gmail.com?subject=${subject}&body=${body}`;
+        status.textContent = 'Transmitted! Mail client opened.';
+      }, 350);
+    });
+  }
+
+  document.addEventListener('astro:page-load', setupFooter);
+  setupFooter();
+</script>
+
+<style>
+  .site-footer {
+    position: relative;
+    background: #050608;
+    border-top: 1px solid var(--c-line-strong);
+    padding: clamp(3rem, 2rem + 4vw, 6rem) var(--gutter) 2.5rem;
+    color: var(--c-fg);
+    overflow: hidden;
+  }
+
+
+  .footer-wrap {
+    max-width: var(--max-w);
+    margin: 0 auto;
+  }
+
+  .footer-top {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: clamp(2rem, 1.5rem + 3vw, 5rem);
+    margin-bottom: clamp(3rem, 2rem + 4vw, 5rem);
+  }
+
+  .footer-kicker {
+    display: inline-block;
+    font-family: var(--f-mono);
+    font-size: var(--t-xs);
+    color: var(--c-accent);
+    letter-spacing: 0.1em;
+    margin-bottom: 1rem;
+  }
+
+  .footer-heading {
+    font-family: var(--f-display);
+    font-size: var(--t-l);
+    font-weight: 500;
+    line-height: 1.25;
+    letter-spacing: -0.02em;
+    margin-bottom: 2rem;
+    max-width: 32ch;
+  }
+
+  /* Visitor dispatch terminal */
+  .terminal-card {
+    background: rgba(15, 19, 26, 0.95);
+    border: 1px solid var(--c-line-strong);
+    border-radius: var(--radius-card);
+    padding: 1.25rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
+  }
+
+
+  .terminal-bar {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding-bottom: 0.75rem;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid var(--c-line);
+    font-family: var(--f-mono);
+    font-size: var(--t-xs);
+    color: var(--c-muted);
+  }
+
+  .terminal-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--c-accent);
+    box-shadow: 0 0 6px var(--c-accent);
+  }
+
+  .terminal-form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+  }
+
+  .terminal-prompt {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    font-family: var(--f-mono);
+    font-size: var(--t-xs);
+    background: rgba(8, 10, 14, 0.6);
+    padding: 0.5rem 0.75rem;
+    border: 1px solid var(--c-line);
+    border-radius: 2px;
+  }
+
+
+  .prompt-prefix {
+    color: var(--c-accent);
+    white-space: nowrap;
+    user-select: none;
+  }
+
+  .terminal-input,
+  .terminal-select {
+    flex: 1;
+    background: none;
+    border: none;
+    outline: none;
+    color: var(--c-fg);
+    font-family: var(--f-mono);
+    font-size: var(--t-xs);
+  }
+
+  .terminal-select option {
+    background: var(--c-card);
+    color: var(--c-fg);
+  }
+
+  .terminal-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 0.5rem;
+  }
+
+  .terminal-submit-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-family: var(--f-mono);
+    font-size: var(--t-xs);
+    color: var(--c-accent);
+    padding: 0.45rem 0.85rem;
+    border: 1px solid rgba(0, 229, 163, 0.4);
+    border-radius: 2px;
+    transition: all 0.2s ease;
+  }
+
+  .terminal-submit-btn:hover {
+    background: rgba(0, 229, 163, 0.12);
+    border-color: var(--c-accent);
+    transform: translateY(-1px);
+  }
+
+  .terminal-status {
+    font-family: var(--f-mono);
+    font-size: 0.7rem;
+    color: var(--c-muted);
+  }
+
+  .footer-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .action-btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.4rem;
+    background: var(--c-accent);
+    color: #040507;
+    font-family: var(--f-mono);
+    font-size: var(--t-xs);
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    border-radius: var(--radius);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .action-btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 20px rgba(0, 229, 163, 0.35);
+  }
+
+  .action-btn-ghost {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.4rem;
+    border: 1px solid var(--c-line-strong);
+    color: var(--c-fg);
+    font-family: var(--f-mono);
+    font-size: var(--t-xs);
+    border-radius: var(--radius);
+    transition: border-color 0.2s ease, background 0.2s ease;
+  }
+
+  .action-btn-ghost:hover {
+    border-color: var(--c-accent);
+    background: rgba(0, 229, 163, 0.05);
+  }
+
+  .footer-meta-block {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    padding-left: clamp(0rem, 0rem + 2vw, 2rem);
+    border-left: 1px solid var(--c-line);
+  }
+
+  .meta-label {
+    font-family: var(--f-mono);
+    font-size: var(--t-xs);
+    color: var(--c-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 0.5rem;
+  }
+
+  .meta-value {
+    font-size: var(--t-m);
+    font-weight: 500;
+    margin-bottom: 0.25rem;
+  }
+
+  .meta-note {
+    font-size: 0.85rem;
+    color: var(--c-muted);
+    line-height: 1.5;
+  }
+
+  .meta-link-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--f-mono);
+    font-size: var(--t-xs);
+    min-height: 36px;
+    margin-bottom: 0.25rem;
+  }
+
+  .link-label {
+    color: var(--c-muted);
+    width: 6rem;
+  }
+
+  .mono-link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 32px;
+    padding: 0.25rem 0;
+    color: var(--c-fg);
+    transition: color 0.2s ease;
+  }
+
+  .mono-link:hover {
+    color: var(--c-accent);
+  }
+
+  .focus-list {
+    list-style: none;
+    padding: 0;
+    font-family: var(--f-mono);
+    font-size: 0.8rem;
+    color: var(--c-muted);
+  }
+
+  .focus-list li {
+    position: relative;
+    padding-left: 1.1rem;
+    margin-bottom: 0.35rem;
+  }
+
+  .focus-list li::before {
+    content: '▪';
+    position: absolute;
+    left: 0;
+    color: var(--c-accent);
+  }
+
+  .footer-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 2rem;
+    border-top: 1px solid var(--c-line);
+    font-family: var(--f-mono);
+    font-size: var(--t-xs);
+    color: var(--c-muted);
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .dot-sep {
+    margin: 0 0.5rem;
+  }
+
+  .status-live-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .pulse-ring {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--c-accent);
+  }
+
+  /* Light Theme Overrides */
+  :global([data-theme="light"]) .site-footer {
+    background: #f8fafc;
+    border-top-color: rgba(15, 23, 42, 0.08);
+  }
+
+  :global([data-theme="light"]) .footer-heading {
+    color: #0f172a;
+  }
+
+  :global([data-theme="light"]) .terminal-card {
+    background: #ffffff;
+    border-color: rgba(15, 23, 42, 0.12);
+    box-shadow: 0 8px 30px rgba(15, 23, 42, 0.05);
+  }
+
+  :global([data-theme="light"]) .terminal-bar {
+    border-bottom-color: rgba(15, 23, 42, 0.08);
+    color: #64748b;
+  }
+
+  :global([data-theme="light"]) .terminal-prompt {
+    background: #f1f5f9;
+    border-color: rgba(15, 23, 42, 0.1);
+  }
+
+  :global([data-theme="light"]) .prompt-prefix {
+    color: #059669;
+  }
+
+  :global([data-theme="light"]) .terminal-input,
+  :global([data-theme="light"]) .terminal-select {
+    color: #0f172a;
+  }
+
+  :global([data-theme="light"]) .terminal-input::placeholder {
+    color: #94a3b8;
+  }
+
+  :global([data-theme="light"]) .terminal-select option {
+    background: #ffffff;
+    color: #0f172a;
+  }
+
+  :global([data-theme="light"]) .terminal-submit-btn {
+    border-color: rgba(5, 150, 105, 0.4);
+    color: #059669;
+    background: rgba(5, 150, 105, 0.04);
+  }
+
+  :global([data-theme="light"]) .terminal-submit-btn:hover {
+    background: rgba(5, 150, 105, 0.12);
+    border-color: #059669;
+  }
+
+  :global([data-theme="light"]) .terminal-status {
+    color: #64748b;
+  }
+
+  :global([data-theme="light"]) .action-btn-primary {
+    background: #059669;
+    color: #ffffff;
+    box-shadow: 0 4px 16px rgba(5, 150, 105, 0.25);
+  }
+
+  :global([data-theme="light"]) .action-btn-ghost {
+    border-color: rgba(15, 23, 42, 0.2);
+    color: #0f172a;
+  }
+
+  :global([data-theme="light"]) .action-btn-ghost:hover {
+    border-color: #059669;
+    background: rgba(5, 150, 105, 0.06);
+    color: #059669;
+  }
+
+  :global([data-theme="light"]) .footer-meta-block {
+    border-left-color: rgba(15, 23, 42, 0.1);
+  }
+
+  :global([data-theme="light"]) .meta-label {
+    color: #64748b;
+  }
+
+  :global([data-theme="light"]) .meta-value {
+    color: #0f172a;
+  }
+
+  :global([data-theme="light"]) .meta-note {
+    color: #475569;
+  }
+
+  :global([data-theme="light"]) .link-label {
+    color: #64748b;
+  }
+
+  :global([data-theme="light"]) .mono-link {
+    color: #0f172a;
+  }
+
+  :global([data-theme="light"]) .mono-link:hover {
+    color: #059669;
+  }
+
+  :global([data-theme="light"]) .focus-list {
+    color: #334155;
+  }
+
+  :global([data-theme="light"]) .footer-bottom {
+    border-top-color: rgba(15, 23, 42, 0.08);
+    color: #64748b;
+  }
+
+  @media (max-width: 900px) {
+    .footer-top {
+      grid-template-columns: 1fr;
+    }
+    .footer-meta-block {
+      padding-left: 0;
+      border-left: none;
+      border-top: 1px solid var(--c-line);
+      padding-top: 2rem;
+    }
+  }
+</style>
+
