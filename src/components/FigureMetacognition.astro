@@ -19,7 +19,8 @@
     <div class="meta-bar">
       <div class="meta-bar__left">
         <span class="meta-indicator"></span>
-        <span class="meta-bar__title">SCS-1 METACOGNITIVE SUPERVISOR</span>
+        <span class="meta-bar__title">SCS-1: SUPERVISORY HARNESS · ITERATIVE REASONING</span>
+        <span class="proto-tag">Illustrative Simulation · Not Benchmark Results</span>
       </div>
       <div class="meta-bar__right">
         <button class="analogy-toggle" id="analogyToggle">
@@ -123,35 +124,35 @@
               <span class="btn-dot"></span>
               <div class="btn-text">
                 <span class="btn-name">Multi-Step Convergence</span>
-                <span class="btn-sub">3 passes · Optimal Halting</span>
+                <span class="btn-sub">3 passes · Optimal Halting Gate</span>
               </div>
             </button>
             <button class="scenario-btn" data-scenario="easy" role="tab" aria-selected="false">
               <span class="btn-dot"></span>
               <div class="btn-text">
-                <span class="btn-name">Easy Problem Early Exit</span>
-                <span class="btn-sub">1 pass · 68% token reduction</span>
+                <span class="btn-name">Easy Query Early Exit</span>
+                <span class="btn-sub">1 pass · Early Exit on Semantic Stability</span>
               </div>
             </button>
             <button class="scenario-btn" data-scenario="rumination" role="tab" aria-selected="false">
               <span class="btn-dot dot-warn"></span>
               <div class="btn-text">
                 <span class="btn-name">Rumination & Escape</span>
-                <span class="btn-sub">Stuck state · Temp ramp breakout</span>
+                <span class="btn-sub">Attractor loop · Temp ramp breakout</span>
               </div>
             </button>
           </div>
         </div>
 
-        <!-- Comparative Metrics Summary -->
+        <!-- Comparative Architecture Summary -->
         <div class="efficiency-summary">
           <div class="eff-stat">
-            <span class="eff-label">REASONING ACCURACY</span>
-            <span class="eff-val val-green" id="effAcc">94.2%</span>
+            <span class="eff-label">HALTING CRITERIA</span>
+            <span class="eff-val val-green" id="effAcc">Drift &lt; ε ∧ Entailment &gt; θ</span>
           </div>
           <div class="eff-stat">
-            <span class="eff-label">COMPUTE ALLOCATION</span>
-            <span class="eff-val" id="effTokens">Adaptive (-48% tokens)</span>
+            <span class="eff-label">CONTEXT BUFFER</span>
+            <span class="eff-val" id="effTokens">Sliding Window Memory</span>
           </div>
         </div>
       </div>
@@ -159,7 +160,7 @@
   </div>
 
   <div class="meta-footer-note">
-    <strong>Cognitive Justification:</strong> Human reasoning does not execute fixed-length computation. Executive metacognition monitors the internal "Feeling of Rightness" to halt when reasoning has converged, while pattern interrupts prevent depressive rumination loops. SCS-1 replicates this executive oversight externally around any generative model.
+    <strong>Cognitive Justification:</strong> Human reasoning does not execute fixed-length computation. Executive metacognition monitors internal coherence to halt when reasoning has stabilized, while pattern interrupts prevent repetitive rumination loops. SCS-1 is inspired by this executive cognitive control principle, separating external supervisory monitoring from the underlying generative model.
   </div>
 </div>
 
@@ -844,8 +845,8 @@
             escape: 'Standby · Nominal',
             escapeWarn: false,
             log: '[t=1] Draft generated. Drift: 0.78 (active) · Entailment: 0.38 (flawed). Gate: CONTINUE.',
-            acc: '78.5%',
-            tokens: 'Iteration 1/3'
+            acc: 'Drift Active',
+            tokens: 'Iter 1: Draft Pass'
           },
           {
             step: 2,
@@ -857,12 +858,12 @@
             escape: 'Standby · Nominal',
             escapeWarn: false,
             log: '[t=2] Refinement pass. Drift: 0.32 · Entailment: 0.74. Logic converging.',
-            acc: '88.1%',
-            tokens: 'Iteration 2/3'
+            acc: 'Entailment Rising',
+            tokens: 'Iter 2: Refinement'
           },
           {
             step: 3,
-            thought: 'Pass 3: "Convergence achieved: Coordinate centroid verified at sub-diffraction 18nm resolution. Zero remaining logical gaps."',
+            thought: 'Pass 3: "Convergence achieved: Coordinate centroid verified at sub-diffraction ~20 nm resolution. Zero remaining logical gaps."',
             drift: 0.08,
             entail: 0.94,
             gate: 'HALT: OPTIMAL CONVERGENCE',
@@ -870,8 +871,8 @@
             escape: 'Standby · Verified',
             escapeWarn: false,
             log: '[t=3] [CRITERIA MET] Drift (0.08 < 0.15) ∧ Entailment (0.94 > 0.85). EMITTING SOLUTION.',
-            acc: '94.2%',
-            tokens: '-48% compute vs fixed'
+            acc: 'Conjunctive Gate: HALT',
+            tokens: 'Sliding Buffer Clean'
           }
         ]
       },
@@ -886,9 +887,9 @@
             gateActive: true,
             escape: 'Standby · Nominal',
             escapeWarn: false,
-            log: '[t=1] [EASY QUERY DETECTED] High entailment (0.96) + Low drift (0.05). Halting immediately at t=1. Tokens saved: 68%.',
-            acc: '98.0%',
-            tokens: '-68% token reduction'
+            log: '[t=1] [EASY QUERY DETECTED] High entailment (0.96) + Low drift (0.05). Early halting triggered at t=1.',
+            acc: 'Conjunctive Gate: HALT',
+            tokens: 'Single Pass Exit'
           }
         ]
       },
@@ -904,8 +905,8 @@
             escape: 'Standby · Nominal',
             escapeWarn: false,
             log: '[t=1] Initial pass: Entailment low (0.40). Iterating...',
-            acc: '45.0%',
-            tokens: 'Iteration 1'
+            acc: 'Gating: CONTINUE',
+            tokens: 'Iter 1: Hypothesis'
           },
           {
             step: 2,
@@ -917,8 +918,8 @@
             escape: 'WARNING: Rumination Detected',
             escapeWarn: true,
             log: '[t=2] [ALERT] Drift dropped (0.12) but Entailment failed (0.38). Model is ruminating in a local attractor!',
-            acc: '48.0%',
-            tokens: 'Attractor detected'
+            acc: 'Entailment Stalled',
+            tokens: 'Loop Detected'
           },
           {
             step: 3,
@@ -930,8 +931,8 @@
             escape: 'ESCAPE TRIGGERED (Temp +0.5)',
             escapeWarn: false,
             log: '[t=3] Anti-Rumination Circuit fired temperature ramp (+0.5). Model escaped stuck loop and pivoted.',
-            acc: '74.0%',
-            tokens: 'Breakout successful'
+            acc: 'Temp Ramp (+0.5)',
+            tokens: 'Attractor Escaped'
           },
           {
             step: 4,
@@ -943,8 +944,8 @@
             escape: 'Stabilized Post-Breakout',
             escapeWarn: false,
             log: '[t=4] [CRITERIA MET] Post-escape convergence verified. Emitting solution.',
-            acc: '92.5%',
-            tokens: 'Recovered & Verified'
+            acc: 'Conjunctive Gate: HALT',
+            tokens: 'Solution Emitted'
           }
         ]
       }

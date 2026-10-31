@@ -34,6 +34,9 @@ p { text-wrap: pretty; }
   position: fixed;
   left: var(--gutter);
   top: -120px;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-100%);
   z-index: calc(var(--z-loader) + 10);
   padding: 0.6em 1em;
   background: var(--c-accent);
@@ -42,12 +45,15 @@ p { text-wrap: pretty; }
   font-size: var(--t-xs);
   font-weight: 600;
   border-radius: var(--radius);
-  transition: top 0.2s ease;
+  transition: top 0.2s ease, opacity 0.2s ease, transform 0.2s ease;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
 }
 .skip-link:focus,
 .skip-link:focus-visible {
   top: var(--gutter);
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
   outline: 2px solid var(--c-accent-alt);
   outline-offset: 2px;
 }

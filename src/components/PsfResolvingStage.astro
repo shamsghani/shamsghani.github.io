@@ -551,9 +551,9 @@ const { class: className = '' } = Astro.props;
       if (hudPsnr && hudFwhm && hudRegime) {
         const psnrProgress = Math.min(p / 0.68, 1);
         const psnrVal = (18.2 + psnrProgress * (33.8 - 18.2)).toFixed(1);
-        const fwhmVal = Math.round(280 - psnrProgress * (280 - 18));
+        const fwhmVal = Math.round(280 - psnrProgress * (280 - 20));
         hudPsnr.textContent = `${psnrVal} dB`;
-        hudFwhm.textContent = `${fwhmVal} nm`;
+        hudFwhm.textContent = `~${fwhmVal} nm`;
 
         if (p < 0.28) {
           hudRegime.textContent = 'Diffraction Blur';

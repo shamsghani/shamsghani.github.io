@@ -15,6 +15,7 @@ yarn-error.log*
 pnpm-debug.log*
 .shots/
 report.json
+shot-*.png
 
 # OS files
 .DS_Store

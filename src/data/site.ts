@@ -21,18 +21,33 @@ export const site = {
   name: 'Muhammad Shams Ghani',
   shortName: 'Shams Ghani',
   role: 'Machine Learning Engineer',
-  secondaryRole: 'AI & Perception Researcher',
-  tagline: 'Deep Learning for Scientific Imaging, Representation Learning & Cognitive Systems',
+  secondaryRole: 'Computer Vision & Representation Learning',
+  tagline: 'Computer Vision, Loss Topology, Representation Learning & Cognitive Systems',
   url: 'https://shamsghani.github.io',
-  description: 'Machine Learning Engineer and researcher specializing in sub-diffraction microscopy, loss topology, representation learning, and cognitive harnesses.',
+  description: 'Machine Learning Engineer with production computer vision experience and research in scientific imaging.',
   email: 'shamsghani1@gmail.com',
   phoneUK: '+44 7876 369841',
-  location: 'Belfast, UK',
-  coordinates: '54.5844° N, 5.9340° W', // Queen's University Belfast
+  phonePK: '+92 300 0000000',
+  location: 'Islamabad, Pakistan',
+  visaStatus: 'Valid UK Visa until Jan 2028 (Available to relocate to the UK, no immediate sponsorship required)',
   socials: [
     { label: 'GitHub', href: 'https://github.com/ShamsGhani' },
     { label: 'LinkedIn', href: 'https://linkedin.com/in/shamsghani' },
     { label: 'Email', href: 'mailto:shamsghani1@gmail.com' }
+  ],
+  shippedSystems: [
+    {
+      title: 'Eyewear Virtual Try-On',
+      desc: 'Owned the machine learning pipeline from dataset collection to real-time client personalization.'
+    },
+    {
+      title: 'Visual Search Microservice',
+      desc: 'Microservice over 10,000+ catalog items, served via FastAPI (VGG16 embeddings + Annoy, later migrated to FAISS).'
+    },
+    {
+      title: 'Automated Cataloging',
+      desc: 'Multimodal feature extraction and segmentation-based background removal using contrast maps across 10,000+ product images.'
+    }
   ],
   education: [
     {
@@ -57,7 +72,7 @@ export const site = {
       role: 'Graduate Trainee (AI & ML Engineering)',
       organization: 'Itanz',
       type: 'Industrial ML & Enterprise Research',
-      period: '2025 to Present',
+      period: 'Oct 2026 to Present',
       bullets: [
         'Fine-tuned dense retrieval encoders (all-MiniLM-L6-v2) via Multiple Negatives Ranking Loss (MNRL) on 57,312 Soulsborne chunks, resolving cross-game polysemy and boosting MRR@10 by +0.13 and Hit Rate@1 to >80%.',
         'Engineered an automated Document AI pipeline rendering scanned clinical PDFs to high-DPI payloads for local Vision-Language Models (Qwen3.5) with Pydantic schema validation.',
@@ -66,15 +81,15 @@ export const site = {
       ]
     },
     {
-      role: 'Graduate Research Assistant (MSc Dissertation)',
-      organization: "Queen's University Belfast (Dr. Richard Gault)",
+      role: 'MSc Dissertation Project (Supervised by Dr. Richard Gault)',
+      organization: "Queen's University Belfast",
       type: 'Scientific Research',
       period: 'Apr 2025 to Sep 2025',
       bullets: [
-        'Formulated Deep FOCUS: systematic evaluation of loss function dynamics (Focal Loss vs MSE/L1/BCE) in Single-Molecule Localization Microscopy (SMLM).',
-        'Synthesized a 10,000-sample ground-truth microscopy dataset via ThunderSTORM with controlled photon and FWHM modeling.',
-        'Achieved 33.8 dB PSNR with Focal Loss (vs 17 to 20 dB for regression baselines), SSIM of 0.834, and IoU@0.1 of 0.500 (60% to 100% empirical improvement).',
-        'Proved that loss function landscape geometry is equally critical as neural architecture in extreme spatial class imbalance (>99.5% zero-photon background pixels).'
+        'Formulated Deep FOCUS: systematic evaluation of loss function dynamics (Focal Loss vs MSE, L1+L2, and BCE) in Single-Molecule Localization Microscopy (SMLM).',
+        'Synthesized a 10,000-sample ground-truth microscopy dataset via ThunderSTORM simulation benchmark with controlled photon statistics and emitter density.',
+        'Achieved 33.8 dB PSNR with Focal Loss (+13.6 dB vs L1+L2 and +16.7 dB vs MSE baselines) at ~20 nm spatial resolution; BCE failed to train usefully (-8.3 dB), attributed to extreme spatial sparsity (>99.5% zero-photon background).',
+        'Demonstrated on simulated data that under severe class imbalance, the training objective matters at least as much as neural architecture.'
       ]
     },
     {
@@ -83,10 +98,10 @@ export const site = {
       type: 'Computer Vision Startup, Islamabad',
       period: 'Jun 2023 to Jun 2024',
       bullets: [
-        'Owned the end-to-end machine learning lifecycle for an eyewear virtual try-on system from dataset collection to real-time client deployment.',
+        'Owned the end-to-end machine learning pipeline for an eyewear virtual try-on system from dataset collection to real-time client personalization.',
         'Engineered neural background segmentation using contrast maps and image segmentation, eliminating manual product tagging.',
-        'Built multi-modal feature extraction and automated cataloging systems validated through production A/B testing and systematic QA.',
-        'Contributed ML components embedded in IoT medical hardware within an interdisciplinary engineering team.'
+        'Built multi-modal feature extraction and automated cataloging systems processing 10,000+ product images.',
+        'Delivered scalable image processing pipelines for production ML systems.'
       ]
     },
     {
@@ -95,28 +110,39 @@ export const site = {
       type: 'Computer Vision & Search',
       period: 'Jul 2022 to Oct 2022',
       bullets: [
-        'Built a high-dimensional visual search microservice for Gulzari Optics (10,000+ items) using TensorFlow and FAISS indexing.',
+        'Built a visual search microservice for Gulzari Optics (10,000+ items) using VGG16 embeddings + Annoy via DeepImageSearch, served via FastAPI (later updated to FAISS).',
         'Deployed via FastAPI with full interactive documentation, error handling, and performance monitoring.'
       ]
-    },
-    {
-      role: 'Volunteer Data Analyst',
-      organization: 'National Museums NI',
-      type: 'Data Modeling & Analytics',
-      period: 'Nov 2024 to Feb 2025',
-      bullets: [
-        'Modeled visitor footfall dynamics across multiple museum sites to identify seasonal patterns and attendance trends.',
-        'Built forecasting models to project future visitor volumes, directly informing staffing and exhibition planning.'
-      ]
-    },
+    }
+  ],
+  leadership: [
     {
       role: 'Director of External Operations & Senior Consultant',
       organization: 'GIK Consulting Group',
-      type: 'Strategic Engineering Consulting',
+      type: 'Leadership & Extracurricular',
       period: 'Feb 2021 to Feb 2023',
       bullets: [
         'Resolved complex engineering case study for Y Combinator-backed startup Byte (pro bono).',
         'Designed analytical training frameworks that improved junior consultant performance metrics by 50%.'
+      ]
+    },
+    {
+      role: 'President',
+      organization: 'Microsoft Learn Student Ambassadors Club',
+      type: 'Leadership & Extracurricular',
+      period: '2021 to 2023',
+      bullets: [
+        'Led technical training workshops on cloud computing and Python for 100+ students at GIKI.',
+        'Organized coding challenges and hackathons to expand student developer engagement.'
+      ]
+    },
+    {
+      role: 'National Organizational Development Lead',
+      organization: 'AIESEC Pakistan',
+      type: 'Leadership & Extracurricular',
+      period: 'Aug 2021 to Feb 2022',
+      bullets: [
+        'Redesigned succession frameworks and annual planning processes across 11 local committees.'
       ]
     }
   ],
@@ -180,14 +206,14 @@ export const caseStudies: CaseStudy[] = [
     institution: "Queen's University Belfast",
     metrics: [
       { label: 'Reconstruction PSNR', value: '33.8 dB' },
-      { label: 'Baseline Gain', value: '+60% to 100%' },
+      { label: 'Gain vs L1+L2', value: '+13.6 dB' },
+      { label: 'Gain vs MSE', value: '+16.7 dB' },
       { label: 'SSIM Index', value: '0.834' },
-      { label: 'IoU @ 0.1 Threshold', value: '0.500' },
       { label: 'Spatial Resolution', value: '~20 nm' }
     ],
-    summary: 'A systematic empirical investigation demonstrating that loss function landscape geometry is the decisive bottleneck in sub-diffraction single-molecule localization microscopy (SMLM).',
+    summary: 'On a 10,000-sample synthetic benchmark, a focal-loss objective outperformed the MSE, L1+L2 and BCE objectives used in regression baselines such as Deep-STORM: 33.8 dB PSNR versus 20.2 dB (L1+L2) and 17.1 dB (MSE).',
     problem: 'Optical fluorescence microscopy cannot resolve biological structures smaller than ~200 to 250 nm due to wave diffraction (the Abbe limit). While Single-Molecule Localization Microscopy (SMLM) blinks emitters to isolate individual molecules, sensor frames exhibit extreme spatial sparsity (>99.5% background pixels). Existing regression baselines (Deep-STORM) utilize MSE or L1+L2 objectives that dilute emitter signal gradients, producing blurred coordinates and false negatives.',
-    hypothesis: 'Modulating the loss landscape with Focal Loss (gamma = 2.0, alpha = 0.25) dynamically suppresses gradients from easy non-emitter background pixels and concentrates backpropagation on sparse emitter centroids, achieving nanoscale resolution without increasing parameter count.',
+    hypothesis: 'Modulating the loss landscape with Focal Loss (gamma = 2.0, alpha = 0.25) dynamically downweights gradients from easy non-emitter background pixels and concentrates backpropagation on sparse emitter centroids, recovering nanoscale resolution without increasing parameter count.',
     methodology: [
       'Generated a rigorous 10,000-sample synthetic dataset via ImageJ ThunderSTORM simulating realistic EMCCD noise, controlled photon counts, and point spread function (PSF) FWHM characteristics.',
       'Reimplemented the Deep-STORM encoder-decoder architecture from scratch in PyTorch with CUDA acceleration (1-32-64-128-512 channel progression with 8x upsampling).',
@@ -195,10 +221,10 @@ export const caseStudies: CaseStudy[] = [
       'Quantified localization accuracy using Peak Signal-to-Noise Ratio (PSNR), Structural Similarity (SSIM), MSE, and Intersection over Union (IoU).'
     ],
     findings: [
-      'Focal Loss achieved 33.8 dB PSNR compared to 20.2 dB for L1+L2 and 17.1 dB for MSE, representing a 60% to 100% empirical improvement in localization fidelity.',
-      'BCE suffered catastrophic gradient collapse (-8.3 dB PSNR) due to the overwhelming class imbalance of zero-photon pixels.',
-      'Focal Loss attained an SSIM of 0.834 (vs 0.536 for L1+L2 and 0.077 for MSE), recovering sharp emitter point-spread centroids down to 20nm resolution.',
-      'Established the generalizable principle that loss landscape geometry dominates neural architecture for sparse scientific inverse problems.'
+      'Focal Loss achieved 33.8 dB PSNR compared to 20.2 dB for L1+L2 and 17.1 dB for MSE on simulated ThunderSTORM data (+13.6 dB and +16.7 dB improvements).',
+      'BCE failed to train usefully (-8.3 dB PSNR), attributed to the extreme class imbalance of zero-photon background pixels.',
+      'Focal Loss attained an SSIM of 0.834 (vs 0.536 for L1+L2 and 0.077 for MSE), recovering sharp emitter point-spread centroids down to ~20 nm resolution.',
+      'Results suggest that, in this regime, the training objective matters at least as much as the architecture. Evaluation is on simulated data.'
     ],
     architecture: [
       { layer: 'Input Stage', spec: '1 channel · 208×208 px diffraction-blurred patch' },
@@ -215,39 +241,38 @@ export const caseStudies: CaseStudy[] = [
   },
   {
     slug: 'metacognitive-harness-scs',
-    title: 'SCS-1: Recursive Reasoning & Metacognitive Gating Harness',
-    shortTitle: 'Metacognitive Harness (SCS-1)',
+    title: 'SCS-1: Supervisory Harness for Iterative Reasoning',
+    shortTitle: 'SCS-1 Reasoning Harness',
     category: 'Cognitive Architectures',
     year: 2026,
     institution: 'Cognitive Systems & Adaptive Inference',
     metrics: [
-      { label: 'Halting Signal', value: 'Drift ∧ NLI Entailment' },
-      { label: 'Adaptive Compute', value: '-48% Tokens' },
-      { label: 'Rumination Escape', value: 'Temperature Ramp' },
-      { label: 'Context Buffer', value: 'Sliding Window' },
-      { label: 'State Model', value: 'Ongoing Prototype' }
+      { label: 'Halting Signal', value: 'Drift ∧ NLI' },
+      { label: 'Escape Circuit', value: 'Temperature Ramp' },
+      { label: 'Working Memory', value: 'Sliding Window' },
+      { label: 'Status', value: 'Ongoing Prototype' }
     ],
-    summary: 'An ongoing effort to create an executive supervisory harness that acts upon iterative reasoning to explore whether external metacognitive oversight can cultivate adaptive cognitive awareness in neural systems.',
-    problem: 'Standard language models lack metacognitive awareness of their own reasoning quality. Naive iterative refinement often degrades into obsessive rumination, circling in local attractor basins where the model repeats identical logical flaws while saturating the context window with redundant history.',
-    hypothesis: 'Encapsulating an iterative generative model within an external metacognitive harness combining semantic drift tracking, NLI entailment scoring, a sliding context window, and anti-rumination escape triggers enables adaptive computation without human intervention.',
+    summary: 'An experimental supervisory harness for iterative LLM reasoning. It tracks semantic drift between reasoning steps, checks NLI entailment to decide when to halt, and applies a temperature ramp when the model gets stuck in repeated reasoning.',
+    problem: 'Standard language models lack an external executive mechanism to evaluate the quality of their own iterative reasoning steps. Unsupervised multi-pass generation frequently slips into circular rumination, repeating identical errors while saturating the context window.',
+    hypothesis: 'Encapsulating an autoregressive generator within an external supervisory harness combining semantic drift tracking, directional NLI entailment verification, a sliding context window, and anti-rumination temperature ramps enables grounded multi-pass reasoning.',
     methodology: [
-      'Calibrated semantic drift ||z_t - z_{t-1}|| against reasoning accuracy to establish when lexical formulation has naturally converged.',
+      'Calibrated semantic drift ||z_t - z_{t-1}|| across successive step embeddings to identify lexical and thematic divergence.',
       'Formulated an NLI entailment verifier checking step-to-step directional coherence, preventing premature halting when phrasing stabilizes around logical gaps.',
-      'Implemented a conjunctive halting gate (Drift < ε ∧ Entailment > θ) that halts in 1 pass on simple tasks while allocating extended multi-step compute on complex logic.',
-      'Designed an anti-rumination escape mechanism that detects persistent low-entailment attractor states and injects temperature ramps (+0.5) to dislodge the reasoning trajectory.',
-      'Ablated context-feed strategies, demonstrating that a concise sliding window recap prevents context window decay and outperforms full history accumulation.'
+      'Implemented a conjunctive halting gate (Drift < ε ∧ Entailment > θ) that halts multi-pass iteration when drift stabilizes and directional entailment holds.',
+      'Designed an anti-rumination escape mechanism that detects persistent attractor loops and injects temperature ramps (+0.5) to dislodge reasoning trajectories.',
+      'Employed a concise sliding window memory buffer to prevent context window saturation during extended iteration.'
     ],
     findings: [
-      'Conjunctive gating achieved 94.2% reasoning accuracy while cutting token expenditure by 48% compared to fixed-iteration baselines.',
-      'On simple benchmark queries, the harness triggered immediate early exits at t=1, saving over 68% compute with zero overthinking degradation.',
-      'Anti-rumination temperature ramps resolved 76% of persistent stuck-state attractor loops without human intervention.',
-      'Demonstrated that adaptive compute and human-like cognitive stopping emerge naturally from multi-signal executive metacognitive supervision.'
+      'Architectural decoupling separates the generative reasoning core from the executive verification harness.',
+      'Conjunctive gating checks both semantic stabilization and directional entailment before emitting an exit signal.',
+      'Anti-rumination circuits detect non-converging attractor states and trigger temperature ramps to escape repetitive loops.',
+      'Sliding window memory maintains a distilled token buffer without saturating the attention context.'
     ],
     architecture: [
       { layer: 'Generative Core', spec: 'Autoregressive reasoning model · Hypothesis step generator' },
-      { layer: 'Semantic Drift Monitor', spec: 'Vector displacement tracker ||z_t - z_{t-1}|| · Lexical convergence gauge' },
-      { layer: 'Logical Entailment Gate', spec: 'NLI directional coherence verifier · Premise-to-hypothesis soundness check' },
-      { layer: 'Conjunctive Halting Arbiter', spec: 'Adaptive compute exit rule: HALT iff (Drift < ε) ∧ (Entailment > θ)' },
+      { layer: 'Semantic Drift Monitor', spec: 'Vector displacement tracker ||z_t - z_{t-1}|| · Step stability gauge' },
+      { layer: 'Logical Entailment Gate', spec: 'NLI directional coherence verifier · Premise-to-hypothesis consistency' },
+      { layer: 'Conjunctive Halting Arbiter', spec: 'Adaptive exit rule: HALT iff (Drift < ε) ∧ (Entailment > θ)' },
       { layer: 'Anti-Rumination Circuit', spec: 'Attractor loop detector · Dynamic temperature ramp (+0.5) escape injection' },
       { layer: 'Sliding Window Memory', spec: 'Distilled working memory buffer · Elimination of context saturation' }
     ],

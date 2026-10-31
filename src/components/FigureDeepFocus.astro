@@ -67,11 +67,11 @@
           <div class="sub-metric">
             <span class="sub-label">RECONSTRUCTION PSNR</span>
             <span class="sub-value val-accent" id="smlm-psnr">33.8 dB</span>
-            <span class="sub-delta" id="smlm-psnr-delta">+16.7 dB vs Baseline</span>
+            <span class="sub-delta" id="smlm-psnr-delta">+13.6 dB vs L1+L2 · +16.7 dB vs MSE</span>
           </div>
           <div class="sub-metric">
             <span class="sub-label">LOCALIZATION FWHM</span>
-            <span class="sub-value" id="smlm-fwhm">18 nm</span>
+            <span class="sub-value" id="smlm-fwhm">~20 nm</span>
             <span class="sub-regime" id="smlm-fwhm-regime">Sub-diffraction</span>
           </div>
         </div>
@@ -126,7 +126,7 @@
   </div>
 
   <div class="smlm-footnote">
-    <strong>Key Finding:</strong> In sparse single-molecule microscopy, >99.8% of pixels contain zero photons. Standard MSE distributes gradient updates uniformly across the empty dark-field, washing out sparse emitter signals. Focal Loss focuses gradient updates strictly on the ~0.2% active fluorophores, achieving single-molecule centroid localization down to ~18nm.
+    <strong>Key Finding:</strong> Results suggest that, in this regime, the training objective matters at least as much as the architecture. On a 10,000-sample synthetic benchmark, Focal Loss outperformed Deep-STORM baseline regression objectives (33.8 dB vs 20.2 dB L1+L2 and 17.1 dB MSE), achieving sub-diffraction localization down to ~20 nm. Evaluation is on simulated ThunderSTORM data.
   </div>
 </div>
 
@@ -691,10 +691,10 @@
     const dataset = {
       focal: {
         name: 'Focal Loss (γ=2.0, α=0.25)',
-        explainer: 'Dynamically downweights easy negative background pixels by factor (1 - pt)^γ, preventing zero-photon gradient saturation and pinpointing sub-diffraction coordinates.',
+        explainer: 'Dynamically downweights easy negative background pixels by factor (1 - pt)^γ, concentrating backpropagation gradients on sparse sub-diffraction fluorophores.',
         psnr: '33.8 dB',
-        delta: '+16.7 dB vs Baseline',
-        fwhm: '18 nm',
+        delta: '+13.6 dB vs L1+L2 · +16.7 dB vs MSE',
+        fwhm: '~20 nm',
         regime: 'Sub-diffraction Truth',
         ssim: '0.834',
         formula: 'FL(p) = -α (1 - p)^γ · log(p)',
@@ -707,12 +707,12 @@
       },
       l1: {
         name: 'Joint L1 + L2 Loss',
-        explainer: 'Penalizes absolute distance and squared error jointly. Leads to coordinate smearing along orthogonal axes and false bridging between adjacent fluorophores.',
+        explainer: 'Deep-STORM regression baseline. Combines absolute distance and squared error, producing reasonable centroids but blurry overlapping emitters.',
         psnr: '20.2 dB',
-        delta: '+3.1 dB vs Baseline',
+        delta: '-13.6 dB vs Focal Loss',
         fwhm: '48 nm',
         regime: 'Coordinate Smear',
-        ssim: '0.612',
+        ssim: '0.536',
         formula: 'L(y, ŷ) = ||y - ŷ||₁ + λ||y - ŷ||₂²',
         watermark: 'L1 + L2 LOSS · 20.2 dB',
         sigma: 7.5,
@@ -725,7 +725,7 @@
         name: 'MSE Baseline (Standard L2)',
         explainer: 'Standard mean-squared error spreads gradient updates across all 99.8% background pixels equally. The signal vanishes in sparse emitter regimes, leaving diffuse blurry halos.',
         psnr: '17.1 dB',
-        delta: 'Reference Baseline',
+        delta: '-16.7 dB vs Focal Loss',
         fwhm: '112 nm',
         regime: 'Diffuse Halos',
         ssim: '0.485',
@@ -739,14 +739,14 @@
       },
       bce: {
         name: 'Binary Cross-Entropy (BCE)',
-        explainer: 'Severely penalizes false negatives on sparse grids, causing the network to hallucinate background fluorophores everywhere. Mode collapse occurs.',
+        explainer: 'Failed to train usefully (−8.3 dB PSNR), attributed to extreme class imbalance (>99.5% zero-photon background).',
         psnr: '−8.3 dB',
-        delta: 'Catastrophic Degradation',
+        delta: 'Failed Baseline',
         fwhm: '> 250 nm',
-        regime: 'Mode Collapse (Noise Fog)',
+        regime: 'Failed (Noise Fog)',
         ssim: '0.120',
         formula: 'BCE(y, p) = -[y·log(p) + (1-y)·log(1-p)]',
-        watermark: 'BCE LOSS · MODE COLLAPSE',
+        watermark: 'BCE LOSS · FAILED (−8.3 dB)',
         sigma: 24.0,
         haloOpacity: 0.85,
         coreColor: '#ef4444',

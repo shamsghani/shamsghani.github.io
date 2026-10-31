@@ -74,7 +74,7 @@ import { site } from '../data/site';
         <div class="meta-section">
           <div class="meta-label">Location & Availability</div>
           <div class="meta-value">{site.location}</div>
-          <div class="meta-note">Currently at Itanz (Graduate Trainee). Open to immediate high-impact roles and relocation.</div>
+          <div class="meta-note">{site.visaStatus}</div>
         </div>
 
         <div class="meta-section">
@@ -82,14 +82,15 @@ import { site } from '../data/site';
           <div class="meta-link-row">
             <span class="link-label">Email:</span>
             <a href={`mailto:${site.email}`} class="mono-link">{site.email}</a>
+            <button type="button" id="copyEmailBtn" class="copy-email-btn" title="Copy email address">Copy</button>
           </div>
           <div class="meta-link-row">
-            <span class="link-label">Phone:</span>
+            <span class="link-label">Phone (UK):</span>
             <a href={`tel:${site.phoneUK}`} class="mono-link">{site.phoneUK}</a>
           </div>
           <div class="meta-link-row">
-            <span class="link-label">Coordinates:</span>
-            <span class="mono-link">{site.coordinates}</span>
+            <span class="link-label">Phone (PK):</span>
+            <a href={`tel:${site.phonePK}`} class="mono-link">{site.phonePK}</a>
           </div>
         </div>
 
@@ -117,7 +118,7 @@ import { site } from '../data/site';
       <div class="footer-meta-stats">
         <span class="status-live-tag">
           <span class="pulse-ring"></span>
-          BELFAST LOCAL: <span id="belfastClock">--:--:-- GMT</span>
+          <span>AVAILABLE FOR UK RELOCATION · NO IMMEDIATE SPONSORSHIP</span>
         </span>
       </div>
     </div>
@@ -126,18 +127,19 @@ import { site } from '../data/site';
 
 <script>
   function setupFooter() {
-    // Live clock
-    function updateClock() {
-      const clockEl = document.getElementById('belfastClock');
-      if (!clockEl) return;
-      const now = new Date();
-      clockEl.textContent = now.toLocaleTimeString('en-GB', {
-        timeZone: 'Europe/London',
-        hour12: false
-      }) + ' GMT';
+    // 1-click email copy button
+    const copyBtn = document.getElementById('copyEmailBtn');
+    if (copyBtn) {
+      copyBtn.onclick = () => {
+        navigator.clipboard.writeText('shamsghani1@gmail.com');
+        copyBtn.textContent = 'Copied!';
+        copyBtn.classList.add('is-copied');
+        setTimeout(() => {
+          copyBtn.textContent = 'Copy';
+          copyBtn.classList.remove('is-copied');
+        }, 2000);
+      };
     }
-    setInterval(updateClock, 1000);
-    updateClock();
 
     // Visitor dispatch form
     const form = document.getElementById('visitorDispatchForm') as HTMLFormElement | null;
@@ -414,6 +416,30 @@ import { site } from '../data/site';
     color: var(--c-accent);
   }
 
+  .copy-email-btn {
+    margin-left: 0.5rem;
+    padding: 0.2rem 0.5rem;
+    font-family: var(--f-mono);
+    font-size: 0.65rem;
+    color: var(--c-accent);
+    background: rgba(0, 229, 163, 0.08);
+    border: 1px solid rgba(0, 229, 163, 0.25);
+    border-radius: 2px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .copy-email-btn:hover {
+    background: rgba(0, 229, 163, 0.18);
+    border-color: var(--c-accent);
+  }
+
+  .copy-email-btn.is-copied {
+    background: var(--c-accent);
+    color: #050608;
+    font-weight: 600;
+  }
+
   .focus-list {
     list-style: none;
     padding: 0;
@@ -567,6 +593,22 @@ import { site } from '../data/site';
 
   :global([data-theme="light"]) .mono-link:hover {
     color: #059669;
+  }
+
+  :global([data-theme="light"]) .copy-email-btn {
+    color: #059669;
+    background: rgba(5, 150, 105, 0.08);
+    border-color: rgba(5, 150, 105, 0.3);
+  }
+
+  :global([data-theme="light"]) .copy-email-btn:hover {
+    background: rgba(5, 150, 105, 0.16);
+    border-color: #059669;
+  }
+
+  :global([data-theme="light"]) .copy-email-btn.is-copied {
+    background: #059669;
+    color: #ffffff;
   }
 
   :global([data-theme="light"]) .focus-list {

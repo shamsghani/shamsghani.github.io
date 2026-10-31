@@ -7,40 +7,43 @@ import { site } from '../data/site';
     <a href="/" class="brand-link" data-magnetic="0.2">
       <span class="brand-symbol">◆</span>
       <span class="brand-name">{site.shortName}</span>
-      <span class="brand-badge">ML & Perception</span>
+      <span class="brand-badge">Applied ML</span>
     </a>
 
     <div class="header-center">
-      <span class="reticle-coord">{site.coordinates}</span>
+      <span class="reticle-coord">Valid UK Visa (Jan 2028)</span>
       <span class="status-indicator">
-        <span class="status-dot"></span> Trainee @ Itanz · ML Engineer
+        <span class="status-dot"></span> Trainee @ Itanz (Oct 2026–Present)
       </span>
     </div>
 
     <nav class="nav-links" aria-label="Main Navigation">
-      <a href="/#research" class="nav-item" data-cursor="View">
+      <a href="/#shipped" class="nav-item" data-cursor="Prod">
         <span class="nav-num">01</span>
-        <span class="nav-text">Research</span>
+        <span class="nav-text">Shipped</span>
+      </a>
+      <a href="/#research" class="nav-item" data-cursor="SMLM">
+        <span class="nav-num">02</span>
+        <span class="nav-text">SMLM</span>
       </a>
       <a href="/#metacognition" class="nav-item" data-cursor="SCS">
-        <span class="nav-num">02</span>
-        <span class="nav-text">Metacognition</span>
+        <span class="nav-num">03</span>
+        <span class="nav-text">Reasoning</span>
       </a>
       <a href="/#contributions" class="nav-item" data-cursor="Open">
-        <span class="nav-num">03</span>
-        <span class="nav-text">Contributions</span>
-      </a>
-      <a href="/#lab" class="nav-item" data-cursor="Lab">
         <span class="nav-num">04</span>
-        <span class="nav-text">Lab</span>
+        <span class="nav-text">Systems</span>
       </a>
       <a href="/#record" class="nav-item" data-cursor="Record">
         <span class="nav-num">05</span>
         <span class="nav-text">Record</span>
       </a>
-      <a href="/#contact" class="nav-item" data-cursor="Terminal">
+      <a href="/#contact" class="nav-item" data-cursor="Contact">
         <span class="nav-num">06</span>
         <span class="nav-text">Contact</span>
+      </a>
+      <a href="/cv.pdf" target="_blank" class="nav-cv-btn" title="Download Curriculum Vitae (PDF)">
+        <span>CV ↓</span>
       </a>
 
       <!-- Theme Switcher -->
@@ -215,6 +218,34 @@ import { site } from '../data/site';
   .nav-num {
     color: var(--c-accent);
     font-size: 0.65rem;
+  }
+
+  .nav-cv-btn {
+    display: inline-flex;
+    align-items: center;
+    font-family: var(--f-mono);
+    font-size: var(--t-xs);
+    font-weight: 600;
+    color: var(--c-accent);
+    padding: 0.25rem 0.55rem;
+    border: 1px solid rgba(0, 229, 163, 0.4);
+    border-radius: var(--radius);
+    transition: all 0.2s ease;
+  }
+
+  .nav-cv-btn:hover {
+    background: rgba(0, 229, 163, 0.12);
+    border-color: var(--c-accent);
+    transform: translateY(-1px);
+  }
+
+  :global([data-theme="light"]) .nav-cv-btn {
+    border-color: rgba(5, 150, 105, 0.35);
+    color: #059669;
+  }
+
+  :global([data-theme="light"]) .nav-cv-btn:hover {
+    background: rgba(5, 150, 105, 0.08);
   }
 
   .theme-switch {

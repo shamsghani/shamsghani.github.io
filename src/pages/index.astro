@@ -19,8 +19,8 @@ const openmouse = site.openSourceContributions[0];
         <!-- Left: Editorial Typography & Thesis -->
         <div class="hero-editorial" data-reveal="up">
           <div class="hero-kicker">
-            <span class="mono-badge">ML & PERCEPTION</span>
-            <span class="kicker-text">BELFAST, UK · QUEEN'S UNIVERSITY ALUMNUS</span>
+            <span class="mono-badge">MACHINE LEARNING ENGINEER</span>
+            <span class="kicker-text">QUEEN'S UNIVERSITY BELFAST ALUMNUS · COMPUTER VISION & REPRESENTATION LEARNING</span>
           </div>
 
           <h1 class="hero-name" data-split="chars" data-intro>
@@ -28,30 +28,34 @@ const openmouse = site.openSourceContributions[0];
           </h1>
 
           <p class="hero-thesis">
-            Machine Learning Engineer and researcher exploring perception and representation learning, from 
-            <strong>sub-diffraction microscopy</strong> and <strong>loss landscape topology</strong> to 
-            <strong>contrastive embeddings</strong> and an ongoing effort to create a harness that may or may not bring about metacognitive awareness.
+            Machine Learning Engineer with production computer vision experience and research in scientific imaging. I work on perception and representation learning, from 
+            <strong>single-molecule microscopy</strong> and <strong>loss design</strong> to 
+            <strong>contrastive retrieval embeddings</strong>, and I'm prototyping a supervisory harness for iterative LLM reasoning.
           </p>
 
           <div class="hero-badges">
             <div class="badge-item">
               <span class="badge-dot"></span>
-              <span>Graduate Trainee @ Itanz</span>
+              <span>Graduate Trainee @ Itanz (Oct 2026 – Present)</span>
             </div>
             <div class="badge-item">
               <span class="badge-dot cyan"></span>
-              <span>MSc AI (Queen's Belfast, Russell Group)</span>
+              <span>MSc AI (Queen's Belfast) · Valid UK Visa till Jan 2028</span>
             </div>
           </div>
 
           <div class="hero-actions">
-            <a href="#research" class="btn-primary" data-magnetic="0.25">
-              <span>Explore Research</span>
+            <a href="#shipped" class="btn-primary" data-magnetic="0.25">
+              <span>Shipped Systems</span>
               <span class="arrow-glyph">↓</span>
             </a>
-            <a href="#metacognition" class="btn-ghost">
-              <span>Metacognitive Harness</span>
+            <a href="#research" class="btn-ghost">
+              <span>SMLM Research</span>
               <span class="arrow-glyph">→</span>
+            </a>
+            <a href="/cv.pdf" target="_blank" class="btn-ghost">
+              <span>Download CV (PDF)</span>
+              <span class="arrow-glyph">↓</span>
             </a>
           </div>
 
@@ -69,15 +73,42 @@ const openmouse = site.openSourceContributions[0];
     </div>
   </section>
 
+  <!-- ================= 1. SHIPPED PRODUCTION SYSTEMS ================= -->
+  <section class="section-container" id="shipped">
+    <div class="section-header" data-reveal="up">
+      <div class="section-num">01</div>
+      <div class="section-title-wrap">
+        <span class="section-kicker">PRODUCTION ML SYSTEMS</span>
+        <h2 class="section-title">Shipped Production Systems</h2>
+        <p class="section-subtitle">
+          Computer vision pipelines, neural retrieval microservices, and automated cataloging shipped in production.
+        </p>
+      </div>
+    </div>
+
+    <div class="shipped-grid" data-reveal="up">
+      {site.shippedSystems.map((item, idx) => (
+        <div class="shipped-card">
+          <div class="shipped-card-header">
+            <span class="shipped-idx">SYS_{String(idx + 1).padStart(2, '0')}</span>
+            <span class="shipped-tag">SHIPPED TO PRODUCTION</span>
+          </div>
+          <h3 class="shipped-title">{item.title}</h3>
+          <p class="shipped-desc">{item.desc}</p>
+        </div>
+      ))}
+    </div>
+  </section>
+
   <!-- ================= 2. DEEP FOCUS CASE STUDY ================= -->
   <section class="section-container" id="research">
     <div class="section-header" data-reveal="up">
-      <div class="section-num">01</div>
+      <div class="section-num">02</div>
       <div class="section-title-wrap">
         <span class="section-kicker">SCIENTIFIC IMAGING & LOSS TOPOLOGY</span>
         <h2 class="section-title">Deep FOCUS: Focal Loss in Single-Molecule Localization</h2>
         <p class="section-subtitle">
-          Proving that training objective landscape geometry is the decisive bottleneck in sparse sub-diffraction imaging.
+          On a 10,000-sample synthetic benchmark, a focal-loss objective outperformed the MSE, L1+L2 and BCE objectives used in regression baselines such as Deep-STORM: 33.8 dB PSNR versus 20.2 dB (L1+L2) and 17.1 dB (MSE).
         </p>
       </div>
     </div>
@@ -135,12 +166,12 @@ const openmouse = site.openSourceContributions[0];
   <!-- ================= 3. METACOGNITIVE EXPERIMENT ================= -->
   <section class="section-container" id="metacognition">
     <div class="section-header" data-reveal="up">
-      <div class="section-num">02</div>
+      <div class="section-num">03</div>
       <div class="section-title-wrap">
-        <span class="section-kicker">ONGOING RESEARCH PROTOTYPE</span>
-        <h2 class="section-title">SCS-1: Recursive Reasoning & Metacognitive Gating Harness</h2>
+        <span class="section-kicker">RESEARCH PROTOTYPE · ARCHITECTURE ONLY</span>
+        <h2 class="section-title">SCS-1: Supervisory Harness for Iterative Reasoning</h2>
         <p class="section-subtitle">
-          An ongoing effort to create an executive supervisory harness that acts upon iterative reasoning to explore whether external metacognitive oversight can cultivate adaptive cognitive awareness in neural systems.
+          An experimental supervisory harness for iterative LLM reasoning. It tracks semantic drift between reasoning steps, checks NLI entailment to decide when to halt, and applies a temperature ramp when the model gets stuck in repeated reasoning.
         </p>
       </div>
     </div>
@@ -173,7 +204,7 @@ const openmouse = site.openSourceContributions[0];
     <!-- Details Grid -->
     <div class="case-details-grid" data-reveal="up">
       <div class="details-card">
-        <h3 class="card-heading">Emergent Observations & Probing</h3>
+        <h3 class="card-heading">Harness Architecture & Dynamics</h3>
         <ul class="findings-list">
           {metacognition.findings.map(f => (
             <li>{f}</li>
@@ -198,7 +229,7 @@ const openmouse = site.openSourceContributions[0];
   <!-- ================= 4. CONTRASTIVE REPRESENTATION LEARNING ================= -->
   <section class="section-container" id="embeddings">
     <div class="section-header" data-reveal="up">
-      <div class="section-num">03</div>
+      <div class="section-num">04</div>
       <div class="section-title-wrap">
         <span class="section-kicker">ITANZ ML TRAINEESHIP · VECTOR GEOMETRY</span>
         <h2 class="section-title">{contrastive.title}</h2>
@@ -234,7 +265,7 @@ const openmouse = site.openSourceContributions[0];
   <!-- ================= 5. OPEN SOURCE CONTRIBUTIONS ================= -->
   <section class="section-container" id="contributions">
     <div class="section-header" data-reveal="up">
-      <div class="section-num">04</div>
+      <div class="section-num">05</div>
       <div class="section-title-wrap">
         <span class="section-kicker">OPEN SOURCE CONTRIBUTIONS</span>
         <h2 class="section-title">OpenMouse: Hardware Protocol Reverse Engineering</h2>
@@ -275,38 +306,7 @@ const openmouse = site.openSourceContributions[0];
     </div>
   </section>
 
-  <!-- ================= 6. THE EXPERIMENTAL LAB ================= -->
-  <section class="section-container" id="lab">
-    <div class="section-header" data-reveal="up">
-      <div class="section-num">05</div>
-      <div class="section-title-wrap">
-        <span class="section-kicker">INTERACTIVE EXPERIMENTS</span>
-        <h2 class="section-title">The Experimental Lab & Shader Playground</h2>
-        <p class="section-subtitle">
-          Explorations in CRT phosphor emulation, generative audio diffusion, Gaussian splatting, and neural style transfer.
-        </p>
-      </div>
-    </div>
-
-    <div class="lab-grid">
-      {site.labExperiments.map((exp, idx) => (
-        <div class="lab-card" data-reveal="up" data-delay={`${idx * 0.06}`}>
-          <div class="lab-card-top">
-            <span class="lab-idx">EXP_{String(idx + 1).padStart(2, '0')}</span>
-            <span class="lab-tech">{exp.tech}</span>
-          </div>
-          <h3 class="lab-title">{exp.title}</h3>
-          <p class="lab-desc">{exp.desc}</p>
-          <div class="lab-card-footer">
-            <span class="lab-status">ACTIVE PROTO</span>
-            <span class="lab-arrow">↗</span>
-          </div>
-        </div>
-      ))}
-    </div>
-  </section>
-
-  <!-- ================= 7. ACADEMIC & PROFESSIONAL RECORD ================= -->
+  <!-- ================= 6. ACADEMIC & PROFESSIONAL RECORD ================= -->
   <section class="section-container" id="record">
     <div class="section-header" data-reveal="up">
       <div class="section-num">06</div>
@@ -314,7 +314,7 @@ const openmouse = site.openSourceContributions[0];
         <span class="section-kicker">TRAJECTORY</span>
         <h2 class="section-title">Academic & Professional Record</h2>
         <p class="section-subtitle">
-          Queen's University Belfast, Itanz Graduate Traineeship, and startup engineering deployments.
+          Queen's University Belfast, Itanz Graduate Traineeship, startup engineering deployments, and extracurricular leadership.
         </p>
       </div>
     </div>
@@ -333,6 +333,24 @@ const openmouse = site.openSourceContributions[0];
               <div class="timeline-org">{exp.organization} · <span class="timeline-type">{exp.type}</span></div>
               <ul class="timeline-bullets">
                 {exp.bullets.map(b => (
+                  <li>{b}</li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+
+        <h3 class="col-title" style="margin-top: 3rem;">Leadership & Extracurricular</h3>
+        <div class="timeline">
+          {site.leadership.map(item => (
+            <div class="timeline-item">
+              <div class="timeline-head">
+                <span class="timeline-role">{item.role}</span>
+                <span class="timeline-period">{item.period}</span>
+              </div>
+              <div class="timeline-org">{item.organization} · <span class="timeline-type">{item.type}</span></div>
+              <ul class="timeline-bullets">
+                {item.bullets.map(b => (
                   <li>{b}</li>
                 ))}
               </ul>
@@ -609,6 +627,80 @@ const openmouse = site.openSourceContributions[0];
     grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
     gap: 1rem;
     margin-bottom: 2.5rem;
+  }
+
+  /* Shipped Systems Grid */
+  .shipped-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .shipped-card {
+    background: var(--c-card);
+    border: 1px solid var(--c-line);
+    border-radius: var(--radius-card);
+    padding: 1.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    transition: transform 0.2s ease, border-color 0.2s ease;
+  }
+
+  .shipped-card:hover {
+    transform: translateY(-2px);
+    border-color: var(--c-accent);
+  }
+
+  .shipped-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .shipped-idx {
+    font-family: var(--f-mono);
+    font-size: 0.7rem;
+    color: var(--c-accent);
+    letter-spacing: 0.05em;
+  }
+
+  .shipped-tag {
+    font-family: var(--f-mono);
+    font-size: 0.62rem;
+    color: var(--c-muted);
+    letter-spacing: 0.05em;
+    background: rgba(238, 243, 248, 0.04);
+    border: 1px solid var(--c-line);
+    padding: 0.15rem 0.45rem;
+    border-radius: 2px;
+  }
+
+  .shipped-title {
+    font-family: var(--f-display);
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: var(--c-fg);
+  }
+
+  .shipped-desc {
+    font-size: 0.9rem;
+    line-height: 1.55;
+    color: var(--c-muted);
+    margin: 0;
+  }
+
+  :global([data-theme="light"]) .shipped-card {
+    background: #ffffff;
+    border-color: rgba(15, 23, 42, 0.1);
+    box-shadow: 0 4px 18px rgba(15, 23, 42, 0.04);
+  }
+
+  :global([data-theme="light"]) .shipped-tag {
+    background: #f1f5f9;
+    border-color: rgba(15, 23, 42, 0.1);
+    color: #475569;
   }
 
   .metric-card {

@@ -27,8 +27,8 @@ export interface SolidPaths {
   seamless?: boolean;
 }
 
-export type Tone = "hi" | "mid" | "lo" | "faint";
-export type LineTone = Tone | "lit" | "red" | "green" | "blue";
+export type Tone = "hi" | "mid" | "lo" | "faint" | "lit" | "red" | "green" | "blue";
+export type LineTone = Tone;
 
 export const AZIMUTH = 45;
 export const ELEVATION = 30;
