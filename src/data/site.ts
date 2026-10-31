@@ -1,4 +1,14 @@
 // Ground truth data from CV, research specs, and active project repositories
+export type ItanzModule = {
+  id: string;
+  code: string;
+  title: string;
+  focus: string;
+  stack: string[];
+  desc: string;
+  metrics: string;
+};
+
 export type CaseStudy = {
   slug: string;
   title: string;
@@ -49,6 +59,62 @@ export const site = {
       desc: 'Multimodal feature extraction and segmentation-based background removal using contrast maps across 10,000+ product images.'
     }
   ],
+  itanzModules: [
+    {
+      id: '001',
+      code: 'MODULE_001',
+      title: 'Clinical Document AI & VLM Extraction',
+      focus: 'VLM & Schema Validation',
+      stack: ['PyMuPDF', 'Qwen3.5 VLM', 'Pydantic', 'Ollama', 'FastAPI'],
+      desc: 'Bypassed brittle OCR coordinate matching by feeding high-DPI rendered clinical PDFs directly into Vision-Language Models, enforcing strict Pydantic schema validation and evaluating extraction fidelity via an LLM-as-a-judge.',
+      metrics: 'Zero OCR reliance · Schema validated · LLM-as-a-judge scoring'
+    },
+    {
+      id: '002',
+      code: 'MODULE_002',
+      title: 'Soulsborne Grounded RAG Pipeline',
+      focus: 'Dense Retrieval & Abstention',
+      stack: ['all-MiniLM-L6-v2', 'JAX', 'Ollama (Llama 3.1 8B)', 'Python'],
+      desc: 'Engineered an end-to-end grounded RAG pipeline across 57,312 knowledge chunks with sub-3ms JAX vectorized similarity retrieval, provenance attribution, and a 3-way state machine enforcing strict abstention on unanswerable queries.',
+      metrics: '57,312 corpus chunks · < 3ms JAX search · 100% abstention accuracy'
+    },
+    {
+      id: '003',
+      code: 'MODULE_003',
+      title: 'AI Reliability, Quality Gates & Threat Modeling',
+      focus: 'Reliability & Quality Gates',
+      stack: ['Decoupled Eval', 'OWASP LLM Top 10', 'Circuit Breakers', 'Prometheus'],
+      desc: 'Audited empirical RAG claims with 100% precision reproduction, established 8 automated production quality gates, circuit breaker failovers, structured JSON telemetry with PII hashing, and prompt injection defense suites.',
+      metrics: '100% audit reproduction · 8 production gates · OWASP Top 10 audited'
+    },
+    {
+      id: '004',
+      code: 'MODULE_004',
+      title: 'Contrastive Representation Learning (MNRL)',
+      focus: 'Contrastive Representation',
+      stack: ['Sentence Transformers', 'MNRL', 'PyTorch / CUDA', 'GPU Profiling'],
+      desc: 'Fine-tuned dense retrieval encoders (all-MiniLM-L6-v2) via Multiple Negatives Ranking Loss across 57,312 chunks to eliminate domain entity polysemy and cross-game homonyms, achieving 100% Hit Rate@1 on adversarial test sets.',
+      metrics: 'Hit Rate@1: 86.4% → 100.0% · MRR@10: 0.91 → 1.00 · 64s re-indexing'
+    },
+    {
+      id: '005',
+      code: 'MODULE_005',
+      title: 'ML System Validation & Hybrid RRF Serving',
+      focus: 'Hybrid Serving & MLOps',
+      stack: ['FastAPI', 'Docker (Non-Root)', 'BM25 + Dense RRF', 'Prometheus'],
+      desc: 'Forensic audit scaling retrieval evaluation to the full unconstrained 57,312-chunk corpus, deploying a Hybrid Dense + BM25 Reciprocal Rank Fusion service (67.4% Hit@1, 88.9% Hit@10) with 0.94ms atomic model rollback.',
+      metrics: '67.41% Hit@1 (Full Corpus) · 0.94ms atomic rollback · 16-worker verified'
+    },
+    {
+      id: '006',
+      code: 'MODULE_006',
+      title: 'CERN Higgs Particle Classification (Predictive ML)',
+      focus: 'Predictive Tabular ML',
+      stack: ['Scikit-Learn', 'Gradient Boosting', 'Feature Engineering', 'EDA'],
+      desc: 'Formulated an end-to-end supervised predictive system on the CERN Higgs benchmark across 28 continuous kinematic predictors (21 detector observables + 7 invariant masses) with zero-leakage stratified validation.',
+      metrics: '28 kinematic predictors · Resonant mass features · Zero-leakage split'
+    }
+  ],
   education: [
     {
       degree: 'MSc Artificial Intelligence',
@@ -74,10 +140,12 @@ export const site = {
       type: 'Industrial ML & Enterprise Research',
       period: 'Oct 2026 to Present',
       bullets: [
-        'Fine-tuned dense retrieval encoders (all-MiniLM-L6-v2) via Multiple Negatives Ranking Loss (MNRL) on 57,312 Soulsborne chunks, resolving cross-game polysemy and boosting MRR@10 by +0.13 and Hit Rate@1 to >80%.',
-        'Engineered an automated Document AI pipeline rendering scanned clinical PDFs to high-DPI payloads for local Vision-Language Models (Qwen3.5) with Pydantic schema validation.',
-        'Conducted systematic GPU-accelerated RAG evaluation benchmarks, establishing optimal Pareto retrieval bounds (K=3) and designing hallucination-safe abstention tripwires.',
-        'Executed production MLOps validation: model packaging, concurrency stress testing, drift detection strategies, and API security auditing.'
+        'Document AI Pipeline (Module 001): Built an automated clinical extraction pipeline bypassing brittle OCR via direct PDF rendering (PyMuPDF) into local Vision-Language Models (Qwen3.5), validated by strict Pydantic schemas and evaluated using Qwen2.5-Coder as an LLM-as-a-judge.',
+        'Knowledge-Dense RAG Architecture (Module 002): Ingested and chunked 57,312 corpus documents, establishing sub-3ms exact dense retrieval using all-MiniLM-L6-v2 in JAX and implementing an attribution-grounded state machine with strict unanswerable query abstention.',
+        'AI Evaluation, Reliability & Guardrails (Module 003): Audited empirical RAG claims with 100% precision reproduction, decoupled retrieval and generation metrics, established 8 automated production quality gates, circuit breaker failovers, and OWASP Top 10 for LLMs prompt injection defenses.',
+        'Contrastive Representation Learning (Module 004): Fine-tuned dense bi-encoders using Multiple Negatives Ranking Loss (MNRL) on 57,312 domain chunks to resolve entity polysemy and cross-game homonyms, achieving 100% Hit Rate@1 on adversarial test sets with zero latency regression (10.37ms P50).',
+        'ML System Validation & Hybrid Deployment (Module 005): Conducted full-corpus forensic audits, deployed a Hybrid Dense + BM25 Reciprocal Rank Fusion service (67.4% Hit@1, 88.9% Hit@10), containerized non-root FastAPI service with Prometheus telemetry, and implemented 0.94ms atomic model rollback.',
+        'Predictive Machine Learning (Module 006): Formulated an end-to-end supervised predictive system on the CERN Higgs benchmark across 28 continuous kinematic predictors (21 detector observables + 7 invariant masses) with zero-leakage stratified validation.'
       ]
     },
     {

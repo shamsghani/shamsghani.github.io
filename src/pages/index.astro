@@ -28,9 +28,7 @@ const openmouse = site.openSourceContributions[0];
           </h1>
 
           <p class="hero-thesis">
-            Machine Learning Engineer with production computer vision experience and research in scientific imaging. I work on perception and representation learning, from 
-            <strong>single-molecule microscopy</strong> and <strong>loss design</strong> to 
-            <strong>contrastive retrieval embeddings</strong>, and I'm prototyping a supervisory harness for iterative LLM reasoning.
+            Machine Learning Engineer with production computer vision experience and research in scientific imaging. I work on perception and representation learning, from <strong>single-molecule microscopy</strong> and <strong>loss design</strong> to <strong>contrastive retrieval embeddings</strong>, and I am prototyping a supervisory harness for iterative LLM reasoning.
           </p>
 
           <div class="hero-badges">
@@ -53,7 +51,7 @@ const openmouse = site.openSourceContributions[0];
               <span>SMLM Research</span>
               <span class="arrow-glyph">→</span>
             </a>
-            <a href="/cv.pdf" target="_blank" class="btn-ghost">
+            <a href="/cv.pdf" target="_blank" download="Shams_Ghani_CV.pdf" class="btn-ghost">
               <span>Download CV (PDF)</span>
               <span class="arrow-glyph">↓</span>
             </a>
@@ -226,20 +224,49 @@ const openmouse = site.openSourceContributions[0];
     </div>
   </section>
 
-  <!-- ================= 4. CONTRASTIVE REPRESENTATION LEARNING ================= -->
+  <!-- ================= 4. ITANZ INDUSTRIAL ML SUITE & REPRESENTATION LEARNING ================= -->
   <section class="section-container" id="embeddings">
     <div class="section-header" data-reveal="up">
       <div class="section-num">04</div>
       <div class="section-title-wrap">
-        <span class="section-kicker">ITANZ ML TRAINEESHIP · VECTOR GEOMETRY</span>
-        <h2 class="section-title">{contrastive.title}</h2>
+        <span class="section-kicker">ITANZ GRADUATE TRAINEESHIP · INDUSTRIAL AI/ML SYSTEMS</span>
+        <h2 class="section-title">Production AI/ML Engineering & Evaluation Suite</h2>
         <p class="section-subtitle">
-          {contrastive.summary}
+          Six end-to-end industrial ML engineering modules completed during the ongoing graduate traineeship at Itanz (Oct 2026 to Present), bridging Document AI, dense vector retrieval, production reliability, contrastive fine-tuning, containerized MLOps, and predictive modeling.
         </p>
       </div>
     </div>
 
-    <div class="contrastive-banner" data-reveal="up">
+    <!-- 6-Assignment Traineeship Grid -->
+    <div class="itanz-grid" data-reveal="up">
+      {site.itanzModules.map((m) => (
+        <div class="itanz-card">
+          <div class="itanz-card-header">
+            <span class="itanz-code">{m.code}</span>
+            <span class="itanz-focus">{m.focus}</span>
+          </div>
+          <h3 class="itanz-title">{m.title}</h3>
+          <div class="itanz-tags">
+            {m.stack.map((s) => (
+              <span class="itanz-tag">{s}</span>
+            ))}
+          </div>
+          <p class="itanz-desc">{m.desc}</p>
+          <div class="itanz-metrics-row">
+            <span class="itanz-metric-lbl">VERIFIED DELIVERABLE</span>
+            <span class="itanz-metric-val">{m.metrics}</span>
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <!-- Module 004 Deep Dive Banner -->
+    <div class="contrastive-banner" data-reveal="up" style="margin-top: 2.5rem;">
+      <div class="banner-subhead">
+        <span class="mono-badge">MODULE 004 DEEP DIVE</span>
+        <h3 class="deep-dive-title">Representation Learning: Eliminating Polysemy via Contrastive Loss</h3>
+      </div>
+
       <div class="metrics-grid" style="margin-bottom: 2rem;">
         {contrastive.metrics.map(m => (
           <div class="metric-card">
@@ -423,6 +450,8 @@ const openmouse = site.openSourceContributions[0];
     display: flex;
     flex-direction: column;
     gap: 1.25rem;
+    position: relative;
+    z-index: 10;
   }
 
   .hero-kicker {
@@ -495,8 +524,11 @@ const openmouse = site.openSourceContributions[0];
 
   .hero-actions {
     display: flex;
+    flex-wrap: wrap;
     gap: 1rem;
     margin-top: 0.5rem;
+    position: relative;
+    z-index: 10;
   }
 
   .btn-primary {
@@ -510,6 +542,10 @@ const openmouse = site.openSourceContributions[0];
     font-size: var(--t-xs);
     font-weight: 600;
     border-radius: var(--radius);
+    position: relative;
+    z-index: 10;
+    pointer-events: auto;
+    cursor: pointer;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
   }
 
@@ -528,6 +564,10 @@ const openmouse = site.openSourceContributions[0];
     font-family: var(--f-mono);
     font-size: var(--t-xs);
     border-radius: var(--radius);
+    position: relative;
+    z-index: 10;
+    pointer-events: auto;
+    cursor: pointer;
     transition: all 0.2s ease;
   }
 
@@ -792,6 +832,31 @@ const openmouse = site.openSourceContributions[0];
     box-shadow: 0 4px 20px rgba(15, 23, 42, 0.04);
   }
 
+  :global([data-theme="light"]) .itanz-card {
+    background: #ffffff;
+    border-color: rgba(15, 23, 42, 0.1);
+    box-shadow: 0 4px 16px rgba(15, 23, 42, 0.03);
+  }
+
+  :global([data-theme="light"]) .itanz-card:hover {
+    border-color: #0284c7;
+    box-shadow: 0 8px 24px rgba(2, 132, 199, 0.1);
+  }
+
+  :global([data-theme="light"]) .itanz-tag {
+    background: rgba(2, 132, 199, 0.08);
+    border-color: rgba(2, 132, 199, 0.25);
+    color: #0284c7;
+  }
+
+  :global([data-theme="light"]) .itanz-code {
+    color: #059669;
+  }
+
+  :global([data-theme="light"]) .deep-dive-title {
+    color: #0f172a;
+  }
+
   :global([data-theme="light"]) .lab-card {
     background: #ffffff;
     border-color: rgba(15, 23, 42, 0.1);
@@ -898,7 +963,135 @@ const openmouse = site.openSourceContributions[0];
     color: var(--c-muted);
   }
 
-  /* Contrastive Section */
+  /* Contrastive & Itanz Engineering Section */
+  .itanz-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
+    margin-bottom: 2rem;
+  }
+
+  @media (max-width: 1024px) {
+    .itanz-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 640px) {
+    .itanz-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .itanz-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+    padding: 1.5rem;
+    background: var(--c-card, #0f131a);
+    border: 1px solid var(--c-line, rgba(238, 243, 248, 0.08));
+    border-radius: var(--radius-card, 4px);
+    transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+  }
+
+  .itanz-card:hover {
+    transform: translateY(-2px);
+    border-color: rgba(56, 189, 248, 0.35);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  }
+
+  .itanz-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    border-bottom: 1px solid var(--c-line);
+    padding-bottom: 0.5rem;
+  }
+
+  .itanz-code {
+    font-family: var(--f-mono);
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: var(--c-accent);
+    letter-spacing: 0.06em;
+  }
+
+  .itanz-focus {
+    font-family: var(--f-mono);
+    font-size: 0.62rem;
+    color: var(--c-muted);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .itanz-title {
+    font-family: var(--f-display);
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--c-fg);
+    line-height: 1.3;
+  }
+
+  .itanz-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+
+  .itanz-tag {
+    font-family: var(--f-mono);
+    font-size: 0.65rem;
+    padding: 0.18rem 0.45rem;
+    background: rgba(56, 189, 248, 0.08);
+    border: 1px solid rgba(56, 189, 248, 0.2);
+    border-radius: 2px;
+    color: #38bdf8;
+  }
+
+  .itanz-desc {
+    font-size: 0.85rem;
+    line-height: 1.5;
+    color: var(--c-muted);
+    flex-grow: 1;
+  }
+
+  .itanz-metrics-row {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    padding-top: 0.6rem;
+    border-top: 1px solid var(--c-line);
+    font-family: var(--f-mono);
+    font-size: 0.72rem;
+  }
+
+  .itanz-metric-lbl {
+    font-size: 0.6rem;
+    color: var(--c-muted);
+    letter-spacing: 0.06em;
+  }
+
+  .itanz-metric-val {
+    color: var(--c-fg);
+    font-weight: 500;
+  }
+
+  .banner-subhead {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .deep-dive-title {
+    font-family: var(--f-display);
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: var(--c-fg);
+  }
+
   .contrastive-banner {
     background: var(--c-card);
     border: 1px solid var(--c-line);

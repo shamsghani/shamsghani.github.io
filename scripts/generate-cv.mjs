@@ -193,10 +193,12 @@ const htmlContent = `<!DOCTYPE html>
       <span class="entry-date">Oct 2026 – Present</span>
     </div>
     <ul>
-      <li>Fine-tuned dense retrieval encoders (all-MiniLM-L6-v2) via Multiple Negatives Ranking Loss (MNRL) across 57,312 chunks, resolving cross-domain polysemy and improving MRR@10 by +0.13 and Hit Rate@1 to >80%.</li>
-      <li>Engineered an automated Document AI pipeline rendering scanned clinical PDFs to high-DPI payloads for local Vision-Language Models (Qwen3.5) with Pydantic schema validation.</li>
-      <li>Conducted GPU-accelerated RAG evaluation benchmarks, establishing optimal Pareto retrieval bounds (K=3) and designing hallucination-safe abstention tripwires.</li>
-      <li>Executed production MLOps validation: model packaging, concurrency stress testing, drift detection strategies, and API security auditing.</li>
+      <li><strong>Document AI & Clinical Extraction (001):</strong> Built pipeline rendering clinical PDFs (PyMuPDF) to local Vision-Language Models (Qwen3.5) with Pydantic validation and LLM-as-a-judge scoring.</li>
+      <li><strong>Grounded RAG & Abstention (002):</strong> Ingested 57,312 corpus documents, establishing sub-3ms exact dense retrieval in JAX with attribution and 100% precision abstention on unanswerable queries.</li>
+      <li><strong>Reliability & Threat Modeling (003):</strong> Audited RAG claims with bit-exact reproduction, enforcing 8 production quality gates, circuit breaker failovers, and OWASP Top 10 for LLMs defense.</li>
+      <li><strong>Contrastive Representation Learning (004):</strong> Fine-tuned bi-encoders via MNRL on 57,312 chunks to eliminate entity polysemy, achieving 100% Hit Rate@1 on adversarial test sets with 64s re-indexing.</li>
+      <li><strong>MLOps Validation & Hybrid Serving (005):</strong> Deployed containerized FastAPI service with Hybrid Dense + BM25 RRF (67.4% Hit@1 full-corpus), Prometheus metrics, and 0.94ms atomic model rollback.</li>
+      <li><strong>Predictive ML Systems (006):</strong> Built supervised classification pipeline on CERN Higgs benchmark across 28 continuous kinematic predictors with leakage-free stratified validation.</li>
     </ul>
   </div>
 

@@ -75,8 +75,8 @@ import { site } from '../data/site';
     }
 
     // 2. Smooth in-page anchor navigation via Lenis engine
-    const navAnchors = document.querySelectorAll<HTMLAnchorElement>('.nav-links a[href*="#"], .brand-link');
-    navAnchors.forEach((link) => {
+    const inPageAnchors = document.querySelectorAll<HTMLAnchorElement>('a[href*="#"], .brand-link');
+    inPageAnchors.forEach((link) => {
       link.onclick = (e) => {
         const href = link.getAttribute('href');
         if (!href) return;
